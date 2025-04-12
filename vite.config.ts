@@ -8,7 +8,7 @@ import {defineConfig} from "vite"
 export default defineConfig({
     assetsInclude: ['**/*.swf'],
     build: {
-        assetsInlineLimit: 0,
+        assetsInlineLimit: 10000,
     },
     plugins: [react(), tailwindcss()],
     resolve: {

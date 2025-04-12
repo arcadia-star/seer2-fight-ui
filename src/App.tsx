@@ -5,6 +5,13 @@ import {PetStat} from "@/components/stat.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx";
 import {toast} from "sonner"
 
+const random = (value: number) => {
+    return Math.floor((Math.random() * value));
+}
+const arrayRandom = function <T>(array: T[]) {
+    return array[random(array.length)];
+}
+
 function App() {
     const [frame, setFrame] = useState(() => {
         const pet: PetStat = {
@@ -37,7 +44,7 @@ function App() {
             {
                 name: "俩字",
                 category: "物理",
-                onClick: () => playRandom(),
+                onClick: () => playFight(1, '物理攻击'),
                 tips: `吴丝蜀桐张高秋，空山凝云颓不流。
         江娥啼竹素女愁，李凭中国弹箜篌。
 昆山玉碎凤凰叫，芙蓉泣露香兰笑。
@@ -48,22 +55,22 @@ function App() {
             }, {
                 name: "三个字",
                 category: "特殊",
-                onClick: () => playRandom(),
+                onClick: () => playFight(1, '特殊攻击'),
                 tips: "乐声清脆动听得就像昆仑山美玉击碎，凤凰鸣叫；时而像芙蓉在露水中饮泣，时而像香兰开怀欢笑。"
             }, {
                 name: "四字弟弟",
                 category: "属性",
-                onClick: () => playRandom(),
+                onClick: () => playFight(1, '属性攻击'),
                 tips: "昆山玉碎凤凰叫：昆仑玉碎，形容乐音清脆。昆山：即昆仑山。凤凰叫：形容乐音和缓。芙蓉泣露、香兰笑：形容乐声时而低回，时而轻快。"
             }, {
                 name: "五个字怎样",
                 category: "必杀",
-                onClick: () => playRandom(),
+                onClick: () => playFight(1, '必杀'),
                 tips: "“昆山”句是以声写声，着重表现乐声的起伏多变；“芙蓉”句则是以形写声，刻意渲染乐声的优美动听，用比喻的手法描绘了李凭弹奏箜篌的音乐特色。"
             }, {
                 name: "最多有六个字",
                 category: "合体",
-                onClick: () => playRandom(),
+                onClick: () => playFight(1, '合体攻击'),
                 tips: "昆山玉碎凤凰叫，芙蓉泣露香兰笑。"
             }
         ]
@@ -77,7 +84,7 @@ function App() {
                 onClick: () => toast("click skill")
             }, e))
         return {
-            background: "/svg/fight-bg.svg",
+            background: "/svg/demo-fight-bg.svg",
             left: pet,
             right: pet,
             round,
@@ -108,44 +115,39 @@ function App() {
     });
     const [url, setUrl] = useState("/swf/FightPlayer.swf")
     useEffect(() => {
-        const interval = setInterval(() => {
-            setFrame(frame => {
-                return {...frame, left: {...frame.left, hp: frame.left.hp - 100}};
-            })
-        }, 3000);
-        const interval2 = setInterval(() => {
-            setFrame(frame => {
-                arrayRandom(frame.skills)?.onClick();
-                return frame;
-            });
-        }, 3000);
-        const interval3 = setInterval(() => {
+        let stop = false;
+        const playRandom = () => {
             const r1 = random(1000);
             const r2 = random(1000);
             setUrl(`/swf/FightPlayer.swf?url=http://seer2.61.com/res/pet/fight/${r1}.swf&url2=http://seer2.61.com/res/pet/fight/${r2}.swf`);
-        }, 10 * 1000);
+            setFrame(frame => {
+                return {
+                    ...frame, round: {...frame.round, round: frame.round.round + 1}, onFlashEvent: (event) => {
+                        console.log(event);
+                        if (stop) {
+                            return;
+                        }
+                        if (event.event === 'init') {
+                            playFight(
+                                arrayRandom([1, 2]),
+                                arrayRandom(['物理攻击', '属性攻击', '特殊攻击', '必杀', '合体攻击']),
+                                arrayRandom(['被打', '被暴击', '闪避']),
+                                arrayRandom(['待机', '濒死'])
+                            );
+                        }
+                        if (event.event === 'moveEnd') {
+                            playRandom();
+                        }
+                    }
+                };
+            })
+        }
+        playRandom();
+
         return () => {
-            clearInterval(interval);
-            clearInterval(interval2);
-            clearInterval(interval3);
+            stop = true
         };
-    }, [])
-
-
-    const random = (value: number) => {
-        return Math.floor((Math.random() * value));
-    }
-    const arrayRandom = function <T>(array: T[]) {
-        return array[random(array.length)];
-    }
-    const playRandom = () => {
-        playFight(
-            arrayRandom([1, 2]),
-            arrayRandom(['物理攻击', '属性攻击', '特殊攻击', '必杀', '合体攻击']),
-            arrayRandom(['被打', '被暴击', '闪避', '']),
-            arrayRandom(['待机', '濒死'])
-        );
-    };
+    }, []);
 
     const arenaRef = useRef<ArenaEl>(null);
     const playFight = (side: number, ...args: string[]) => arenaRef.current?.playFight(side, ...args);

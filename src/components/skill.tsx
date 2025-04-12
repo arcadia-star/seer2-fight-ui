@@ -1,6 +1,8 @@
 import {cn} from "@/lib/utils.ts";
 import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.tsx";
 
+import BtnSkillBg from "@/assets/svg/skill-btn.svg";
+
 export interface SkillProps {
     name: string,
     tips: string,
@@ -28,7 +30,7 @@ export function Skill({
                     <div onClick={onClick}
                          className={cn("absolute w-full h-full z-1 cursor-pointer trigger-area")}></div>
                     <img src={typeIcon} alt="pet-type" className={cn("absolute w-2/10 left-1/10 top-5/20")}/>
-                    <img src="/svg/skill-btn.svg" alt="skill-bg" className={cn("w-full h-full")}/>
+                    <img src={BtnSkillBg} alt="skill-bg" className={cn("w-full h-full")}/>
                     <div
                         className={cn("text-left font-mono truncate absolute left-8/20 top-2/20", textColor)}>{name}</div>
                     <div

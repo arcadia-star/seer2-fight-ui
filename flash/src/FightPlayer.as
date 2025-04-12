@@ -1,12 +1,8 @@
 package {
-import flash.display.Loader;
 import flash.display.LoaderInfo;
 import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.events.IEventDispatcher;
-import flash.external.ExternalInterface;
-import flash.net.URLRequest;
 import flash.system.ApplicationDomain;
 import flash.text.TextField;
 
@@ -17,10 +13,11 @@ public class FightPlayer extends Sprite {
     public static const PET:String = "pet";
     public static const IDLE:String = FighterActionType.IDLE;
     public static const DEFAULT_JS_DISPATCH:String = "flash_dispatch";
-    public static const DEFAULT_SWF_URL:String = "http://seer2.61.com/res/pet/fight/6.swf";
+    public static const DEFAULT_SWF_URL:String = "http://seer2.61.com/res/pet/fight/4.swf";
     public static const AS_PLAY_FIGHT:String = "flash_playFight";
     private static const LEFT:int = 1;
     private static const RIGHT:int = 2;
+    private static const RES_MAP:Object = {};
 
     public function FightPlayer() {
         var params:Object = LoaderInfo(this.root.loaderInfo).parameters;
@@ -28,37 +25,26 @@ public class FightPlayer extends Sprite {
         var leftUrl:String = params["url"] || DEFAULT_SWF_URL;
         var rightUrl:String = params["url2"] || DEFAULT_SWF_URL;
 
-        var status:Array = [null, IDLE, IDLE];
-        var pets:Array = [null, null, null];
-        var depthes:Array = [null, 1, 2];
+        var fighters:Vector.<Fighter> = Vector.<Fighter>([null, initFighter(LEFT, leftUrl), initFighter(RIGHT, rightUrl)]);
 
         loadPet(leftUrl, function (left:MovieClip):void {
-            pets[LEFT] = left;
-            addChild(left);
-            left.x = 120;
-            left.y = 50;
-            updateStatus(LEFT, IDLE);
+            applyPet(LEFT, left);
             tryPlayFight();
         });
         loadPet(rightUrl, function (right:MovieClip):void {
-            pets[RIGHT] = right;
-            addChild(right);
-            right.scaleX = -1;
-            right.x = WINDOW_WIDTH - 120;
-            right.y = 50;
-            updateStatus(RIGHT, IDLE);
+            applyPet(RIGHT, right);
             tryPlayFight();
         });
 
         function tryPlayFight():void {
-            var left:MovieClip = pets[LEFT];
-            var right:MovieClip = pets[RIGHT];
+            var left:MovieClip = fighters[LEFT].pet;
+            var right:MovieClip = fighters[RIGHT].pet;
             if (!right || !left) {
                 return;
             }
 
-            callJs(jsDispatchEvent, FightEventType.INIT, {left: leftUrl, right: rightUrl});
-            addCallbackJs(AS_PLAY_FIGHT, playFight);
+            Utils.addCallbackJs(AS_PLAY_FIGHT, playFight);
+            Utils.callJs(jsDispatchEvent, FightEventType.INIT, {left: leftUrl, right: rightUrl});
         }
 
         function playFight(moveSide:int = LEFT,
@@ -66,7 +52,7 @@ public class FightPlayer extends Sprite {
                            hitLabel:String = FighterActionType.UNDER_ATK,
                            atkLabel:String = IDLE,
                            defLabel:String = IDLE):void {
-            callJs(jsDispatchEvent, FightEventType.PLAY, {
+            Utils.callJs(jsDispatchEvent, FightEventType.PLAY, {
                 moveSide: moveSide,
                 moveLabel: moveLabel,
                 hitLabel: hitLabel,
@@ -76,21 +62,21 @@ public class FightPlayer extends Sprite {
             var atkSide:int = moveSide == LEFT ? LEFT : RIGHT;
             var defSide:int = atkSide == RIGHT ? LEFT : RIGHT;
 
-            var atk:MovieClip = pets[atkSide];
-            var def:MovieClip = pets[defSide];
+            var atk:MovieClip = fighters[atkSide].pet;
+            var def:MovieClip = fighters[defSide].pet;
 
             updateDepth(defSide, 1);
             updateDepth(atkSide, 2);
 
             safeGotoAndStop(atk, moveLabel);
-            callJs(jsDispatchEvent, FightEventType.MOVE_START);
+            Utils.callJs(jsDispatchEvent, FightEventType.MOVE_START);
             onComplete(atk, function ():void {
                 updateStatus(atkSide, atkLabel);
-                callJs(jsDispatchEvent, FightEventType.MOVE_END);
+                Utils.callJs(jsDispatchEvent, FightEventType.MOVE_END);
             })
-            once(atk, HIT_EVENT, function ():void {
+            Utils.once(atk, HIT_EVENT, function ():void {
                 safeGotoAndStop(def, hitLabel);
-                callJs(jsDispatchEvent, FightEventType.HIT);
+                Utils.callJs(jsDispatchEvent, FightEventType.HIT);
                 onComplete(def, function ():void {
                     updateStatus(defSide, defLabel);
                 })
@@ -104,33 +90,54 @@ public class FightPlayer extends Sprite {
             if (valid) {
                 mc.gotoAndStop(label);
             } else {
-                trace("Error: invalid label:" + label);
-                mc.gotoAndStop(IDLE);
+                Utils.callJs(jsDispatchEvent, FightEventType.ERROR, "Error: invalid label:" + label);
+                if (FighterActionType.atk().indexOf(label) >= 0) {
+                    mc.gotoAndStop(FighterActionType.ATK_PHY);
+                } else {
+                    mc.gotoAndStop(IDLE);
+                }
             }
         }
 
         function updateStatus(side:int, label:String):void {
             if (side === LEFT || side === RIGHT) {
-                status[side] = label;
-                safeGotoAndStop(pets[side], label);
+                fighters[side].status = label;
+                safeGotoAndStop(fighters[side].pet, label);
             }
         }
 
         function updateDepth(side:int, depth:int):void {
             if (side === LEFT || side === RIGHT) {
-                depthes[side] = depth;
-                setChildIndex(pets[side], depth);
+                fighters[side].depth = depth;
+                setChildIndex(fighters[side].pet, depth);
             }
+        }
+
+        function applyPet(side:int, pet:MovieClip):void {
+            var fighter:Fighter = fighters[side];
+            var exist:MovieClip = fighter.pet;
+            if (exist) {
+                removeChild(exist);
+            }
+            fighter.pet = pet;
+            addChild(pet);
+            pet.x = fighter.x;
+            pet.y = fighter.y;
+            pet.scaleX = fighter.scaleX;
+            setChildIndex(pet, fighter.depth);
+            safeGotoAndStop(pet, fighter.status);
         }
 
         {
             var logText:TextField = new TextField();
             logText.textColor = 0x000000;
-            logText.width = 300;
+            logText.width = 600;
             addChild(logText);
 
             function updateSize():void {
-                logText.text = "size: " + stage.stageWidth + " x " + stage.stageHeight + "," + width + " x " + height
+                logText.text = "debug info:"
+                        + "\nloader:" + root.loaderInfo.loaderURL
+                        + "\nsize: " + stage.stageWidth + "x" + stage.stageHeight + ", " + width + "x" + height
                         + "\nleft: " + leftUrl
                         + "\nright: " + rightUrl;
             }
@@ -143,13 +150,24 @@ public class FightPlayer extends Sprite {
         }
     }
 
-    private function once(dispatcher:IEventDispatcher, name:String, cb:Function):void {
-        dispatcher.addEventListener(name, handleOnce);
-
-        function handleOnce(event:Event):void {
-            dispatcher.removeEventListener(name, handleOnce);
-            cb();
+    private function initFighter(side:Number, url:String):Fighter {
+        var fighter:Fighter = new Fighter();
+        fighter.side = side;
+        fighter.url = url;
+        fighter.fallback = true;
+        if (LEFT === side) {
+            fighter.x = 120;
+            fighter.y = 50;
+            fighter.scaleX = 1;
+            fighter.depth = 2;
+        } else {
+            fighter.x = WINDOW_WIDTH - 120;
+            fighter.y = 50;
+            fighter.scaleX = -1;
+            fighter.depth = 1;
         }
+        fighter.status = IDLE;
+        return fighter;
     }
 
     private function onComplete(pet:MovieClip, cb:Function):void {
@@ -165,28 +183,19 @@ public class FightPlayer extends Sprite {
     }
 
     private function loadPet(url:String, cb:Function):void {
-        loadSwf(url, function (domain:ApplicationDomain):void {
-            cb(new (domain.getDefinition(PET) as Class));
-        });
-    }
-
-    private function loadSwf(url:String, cb:Function):void {
-        var loader:Loader = new Loader();
-        loader.contentLoaderInfo.addEventListener(Event.COMPLETE, function (event:Event):void {
-            cb(loader.contentLoaderInfo.applicationDomain)
-        });
-        loader.load(new URLRequest(url));
-    }
-
-    private function callJs(func:String, event:String, data:Object = null):void {
-        if (ExternalInterface.available) {
-            ExternalInterface.call(func, {func: func, event: event, data: data});
-        }
-    }
-
-    private function addCallbackJs(functionName:String, closure:Function):void {
-        if (ExternalInterface.available) {
-            ExternalInterface.addCallback(functionName, closure);
+        var exist:Class = RES_MAP[url];
+        if (exist) {
+            cb(new exist);
+        } else {
+            Utils.loadSwf(url, function (domain:ApplicationDomain):void {
+                var clazz:Class = domain.getDefinition(PET) as Class;
+                RES_MAP[url] = clazz;
+                cb(new clazz);
+            }, function ():void {
+                if (url !== DEFAULT_SWF_URL) {
+                    loadPet(DEFAULT_SWF_URL, cb);
+                }
+            });
         }
     }
 }

@@ -1,4 +1,4 @@
-import {forwardRef, useEffect, useImperativeHandle, useRef} from "react";
+import {Ref, useEffect, useImperativeHandle, useRef} from "react";
 
 export interface FlashEvent {
     func: string,
@@ -13,11 +13,12 @@ export interface RufflePlayerEl {
 }
 
 interface RufflePlayerProps {
+    ref: Ref<RufflePlayerEl>,
     url: string;
     onFlashEvent: (event: FlashEvent) => void;
 }
 
-export const RufflePlayer = forwardRef(({url, onFlashEvent}: RufflePlayerProps, ref) => {
+export function RufflePlayer({ref, url, onFlashEvent}: RufflePlayerProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const playerRef = useRef(null);
 
@@ -28,15 +29,23 @@ export const RufflePlayer = forwardRef(({url, onFlashEvent}: RufflePlayerProps, 
     }));
 
     useEffect(() => {
-        // eslint-disable-next-line
-        // @ts-ignore
-        const ruffle = window.RufflePlayer.newest();
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        const Ruffle = window.RufflePlayer;
+        if (!Ruffle) {
+            console.error("RufflePlayer not exist");
+            return;
+        }
+        const ruffle = Ruffle.newest();
         const player = ruffle.createPlayer();
 
-        player.style.width = "1200px";
+        player.style.width = "100vw";
         player.style.height = "660px";
         player.config = {
-            contextMenu: "off",
+            autoplay: "on",
+            unmuteOverlay: "hidden",
+            splashScreen: false,
+            contextMenu: "rightClickOnly",
             backgroundColor: "#00000000",
             wmode: "transparent",
             allowScriptAccess: true,
@@ -61,4 +70,4 @@ export const RufflePlayer = forwardRef(({url, onFlashEvent}: RufflePlayerProps, 
     }, [url, onFlashEvent]);
 
     return <div ref={containerRef} className="cursor-none"/>;
-});
+}

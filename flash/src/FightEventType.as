@@ -5,5 +5,6 @@ public class FightEventType {
     public static const HIT:String = "hit";
     public static const INIT:String = "init";
     public static const PLAY:String = "play";
+    public static const ERROR:String = "error";
 }
 }

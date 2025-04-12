@@ -1,11 +1,20 @@
 import {FlashEvent, RufflePlayer, RufflePlayerEl} from "@/components/ruffle-player.tsx";
-import {forwardRef, useImperativeHandle, useRef, useState} from "react";
+import {Ref, useImperativeHandle, useRef, useState} from "react";
 import {PetStat, Stat} from "@/components/stat.tsx";
 import {Round, RoundProps} from "@/components/round.tsx";
 import {cn} from "@/lib/utils.ts";
 import {ScrollArea} from "@/components/ui/scroll-area.tsx";
 import {Skill, SkillProps} from "@/components/skill.tsx";
 import {Button} from "@/components/ui/button.tsx";
+
+import BtnPet from "@/assets/svg/fight-btn-pet.svg";
+import BtnCatch from "@/assets/svg/fight-btn-catch.svg";
+import BtnItem from "@/assets/svg/fight-btn-item.svg";
+import BtnEscape from "@/assets/svg/fight-btn-escape.svg";
+import BtnSkillLine from "@/assets/svg/fight-btn-skill-line.svg";
+import BtnSkillBg0 from "@/assets/svg/fight-btn-skill-bg0.svg";
+import BtnSkillBg from "@/assets/svg/fight-btn-skill-bg.svg";
+import BtnSkillHan from "@/assets/svg/fight-btn-skill-han.svg";
 
 enum FightTab {
     Catch,
@@ -20,27 +29,27 @@ function FightButtons({update}: { update: (tab: FightTab) => void }) {
     const center = "left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2";
     return <div className="flex-row min-h-[110px] min-w-[176px]">
         <div className="flex">
-            <img src="/svg/fight-btn-pet.svg" alt="btn-pet" className={cn(btn, "mr-1")}
+            <img src={BtnPet} alt="btn-pet" className={cn(btn, "mr-1")}
                  onClick={() => update(FightTab.Pet)}/>
-            <img src="/svg/fight-btn-catch.svg" alt="btn-catch" className={btn}
+            <img src={BtnCatch} alt="btn-catch" className={btn}
                  onClick={() => update(FightTab.Catch)}/>
         </div>
         <div className="my-1 cursor-pointer relative" onClick={() => update(FightTab.Skill)}>
-            <img src="/svg/fight-btn-skill-line.svg" alt="btn-skill"
+            <img src={BtnSkillLine} alt="btn-skill"
                  className={cn(center, "absolute rotate-90")}/>
-            <img src="/svg/fight-btn-skill-line.svg" alt="btn-skill"
+            <img src={BtnSkillLine} alt="btn-skill"
                  className={cn(center, "absolute")}/>
-            <img src="/svg/fight-btn-skill-bg0.svg" alt="btn-skill"
+            <img src={BtnSkillBg0} alt="btn-skill"
                  className="absolute"/>
-            <img src="/svg/fight-btn-skill-han.svg" alt="btn-skill"
+            <img src={BtnSkillHan} alt="btn-skill"
                  className={cn(center, "absolute")}/>
-            <img src="/svg/fight-btn-skill-bg.svg" alt="btn-skill"
+            <img src={BtnSkillBg} alt="btn-skill"
                  className="w-full h-full object-cover"/>
         </div>
         <div className="flex">
-            <img src="/svg/fight-btn-item.svg" alt="btn-item" className={cn(btn, "mr-1")}
+            <img src={BtnItem} alt="btn-item" className={cn(btn, "mr-1")}
                  onClick={() => update(FightTab.Item)}/>
-            <img src="/svg/fight-btn-escape.svg" alt="btn-escape" className={btn}
+            <img src={BtnEscape} alt="btn-escape" className={btn}
                  onClick={() => update(FightTab.Escape)}/>
         </div>
     </div>
@@ -73,6 +82,7 @@ export interface ArenaEl {
 }
 
 export interface ArenaProps {
+    ref: Ref<ArenaEl>,
     url: string,
     frame: {
         background: string,
@@ -89,7 +99,7 @@ export interface ArenaProps {
     },
 }
 
-export const Arena = forwardRef(({frame, url}: ArenaProps, ref) => {
+export function Arena({ref, frame, url}: ArenaProps) {
     const ruffleRef = useRef<RufflePlayerEl>(null);
     const playFight = (side: number, ...args: string[]) => ruffleRef.current?.callFlash('flash_playFight', side, ...args);
 
@@ -148,7 +158,7 @@ export const Arena = forwardRef(({frame, url}: ArenaProps, ref) => {
             </div>
         </div>
     </div>)
-})
+}
 
 
 
