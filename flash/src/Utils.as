@@ -1,6 +1,7 @@
 package {
 import flash.display.Loader;
 import flash.display.LoaderInfo;
+import flash.display.MovieClip;
 import flash.events.Event;
 import flash.events.IEventDispatcher;
 import flash.events.IOErrorEvent;
@@ -30,9 +31,9 @@ public class Utils {
         loader.load(new URLRequest(url));
     }
 
-    public static function callJs(func:String, event:String, data:Object = null):void {
+    public static function callJs(func:String, type0:String, data:Object = null, version:Object = null):void {
         if (ExternalInterface.available) {
-            ExternalInterface.call(func, {func: func, event: event, data: data});
+            ExternalInterface.call(func, {func: func, "type": type0, data: data, version: version});
         }
     }
 
@@ -40,6 +41,32 @@ public class Utils {
         if (ExternalInterface.available) {
             ExternalInterface.addCallback(functionName, closure);
         }
+    }
+
+    public static function promiseAll(array:Array, cb:Function):void {
+
+        function mayCb():void {
+            if (cnt == 0) {
+                cnt -= 1;
+                cb();
+            }
+        }
+
+        var cnt:uint = array.length;
+
+        mayCb();
+        for (var i:int = 0; i < array.length; i++) {
+            array[i](function ():void {
+                cnt -= 1;
+                mayCb();
+            })
+        }
+    }
+
+    public static function hasLabel(mc:MovieClip, label:String):Boolean {
+        return mc.currentLabels.some(function (e:Object, index:int, array:Array):Boolean {
+            return e.name == label;
+        });
     }
 }
 }

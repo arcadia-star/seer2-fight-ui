@@ -25,3 +25,5 @@ dist-ssr
 
 /out
 pnpm-lock.yaml
+
+stats.html

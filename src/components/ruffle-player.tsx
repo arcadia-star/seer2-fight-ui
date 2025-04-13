@@ -2,30 +2,39 @@ import {Ref, useEffect, useImperativeHandle, useRef} from "react";
 
 export interface FlashEvent {
     func: string,
-    event: string,
+    type: string,
     data: never
+    version: number,
 }
+
+type FlashEventHandler = (event: FlashEvent) => void;
 
 export interface RufflePlayerEl {
     // eslint-disable-next-line
     // @ts-expect-error
-    callFlash: (name: string, ...args) => void
+    callFlash: (name: string, ...args) => void,
+    updateCallback: (cb: FlashEventHandler) => void,
+    requestFullscreen: () => void,
 }
 
 interface RufflePlayerProps {
     ref: Ref<RufflePlayerEl>,
     url: string;
-    onFlashEvent: (event: FlashEvent) => void;
 }
 
-export function RufflePlayer({ref, url, onFlashEvent}: RufflePlayerProps) {
+export function RufflePlayer({ref, url}: RufflePlayerProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const playerRef = useRef(null);
+    const onFlashEventRef = useRef<FlashEventHandler>(null);
 
     useImperativeHandle(ref, () => ({
         // eslint-disable-next-line
         // @ts-ignore
-        callFlash: (name: string, ...args: never[]) => playerRef.current?.[name]?.(...args)
+        callFlash: (name: string, ...args: never[]) => playerRef.current?.[name]?.(...args),
+        updateCallback: (cb: FlashEventHandler) => onFlashEventRef.current = cb,
+        // eslint-disable-next-line
+        // @ts-ignore
+        requestFullscreen: () => playerRef.current?.requestFullscreen(),
     }));
 
     useEffect(() => {
@@ -39,8 +48,8 @@ export function RufflePlayer({ref, url, onFlashEvent}: RufflePlayerProps) {
         const ruffle = Ruffle.newest();
         const player = ruffle.createPlayer();
 
-        player.style.width = "100vw";
-        player.style.height = "660px";
+        player.style.width = "100%";
+        player.style.height = "100%";
         player.config = {
             autoplay: "on",
             unmuteOverlay: "hidden",
@@ -55,7 +64,10 @@ export function RufflePlayer({ref, url, onFlashEvent}: RufflePlayerProps) {
         const flashCb: string = "flash_cb_" + Math.floor(Math.random() * 100000000);
         // eslint-disable-next-line
         // @ts-ignore
-        window[flashCb] = onFlashEvent;
+        window[flashCb] = function (event: FlashEvent) {
+            console.info(event);
+            onFlashEventRef.current?.(event);
+        };
         console.log("add:" + flashCb);
         player.load(url + "?&cb=" + flashCb);
         playerRef.current = player;
@@ -67,7 +79,7 @@ export function RufflePlayer({ref, url, onFlashEvent}: RufflePlayerProps) {
             // @ts-ignore
             delete window[flashCb];
         };
-    }, [url, onFlashEvent]);
+    }, [url]);
 
-    return <div ref={containerRef} className="cursor-none"/>;
+    return <div ref={containerRef} className="w-full h-full"/>;
 }

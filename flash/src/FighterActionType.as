@@ -42,5 +42,8 @@ public class FighterActionType {
         return [WIN, DEAD];
     }
 
+    public static function status():Array {
+        return [IDLE, ABOUT_TO_DIE];
+    }
 }
 }
