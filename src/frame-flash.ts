@@ -9,6 +9,7 @@ export enum FlashEventType {
     ERROR = "error",
     INFO = "info",
     INIT = "init",
+    PLAY_END = "playEnd",
 }
 
 export enum FlashMoveLabelType {

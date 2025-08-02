@@ -60,7 +60,7 @@ export function Pet({data, onClick, disabled}: PetProps) {
                      disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                  )
              }>
-            <img className="h-[72px] w-full object-cover rounded" src={data.avatar} alt="pet"/>
+            <img className="h-[72px] w-[72px] object-cover rounded" src={data.avatar} alt="pet"/>
             <img className="max-h-6 max-w-6 absolute right-0 top-0" src={data.petType.icon} alt={data.petType.tips}/>
             <div className="absolute bottom-0 text-[9px] bg-black/60 px-1 rounded">
                 <div className="text-white">LV:{data.level} {data.hp}/{data.hpMax}</div>
@@ -87,7 +87,7 @@ export function Item({data, onClick, disabled}: ItemProps) {
                             disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
                         )
                     }>
-                    <img className="h-[70px] w-full object-cover rounded" src={data.icon} alt="item"
+                    <img className="h-[70px] w-[70px] object-cover rounded" src={data.icon} alt="item"
                          onClick={() => !disabled && onClick()}/>
                     <p className="absolute right-1 bottom-1 text-white text-xs font-bold">{data.count}</p>
                 </div>

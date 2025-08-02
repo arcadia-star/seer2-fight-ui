@@ -2,6 +2,7 @@ export enum FrameType {
     Idle = 1,
     Move = 2,
     Change = 3,
+    End = 8,
     Operate = 9,
 }
 

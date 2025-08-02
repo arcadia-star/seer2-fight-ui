@@ -8,5 +8,6 @@ public class FightEventType {
     public static const ERROR:String = "error";
     public static const INFO:String = "info";
     public static const INIT:String = "init";
+    public static const PLAY_END:String = "playEnd";
 }
 }

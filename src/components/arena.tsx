@@ -13,12 +13,18 @@ import {
 } from "@/frame";
 import {Ref, useEffect, useRef, useState} from "react";
 import {FlashEvent, RufflePlayer, RufflePlayerEl} from "@/components/ruffle-player";
-import {toast} from "sonner";
 import {Damage} from "@/components/arena-damage.tsx";
 import {gsap} from "gsap";
 import {build4PlayFight, build4UpdatePet, FlashEventType} from "@/frame-flash.ts";
 
-type CommandHandler = (data: { skill?: number, pet?: number, item?: number }) => void;
+export type CommandEvent = {
+    skill?: number,
+    pet?: number,
+    item?: number
+    capsule?: number
+}
+
+type CommandHandler = (event: CommandEvent) => void;
 
 enum FightTab {
     Catch,
@@ -131,10 +137,16 @@ function ArenaBottom({fighter, onClick, disabled}: ArenaBottomProps) {
                                  }}/>)
                         || fightBtnTab === FightTab.Catch && fighter.capsules.map((item, idx) =>
                             <Item key={idx} data={item} disabled={disabled}
-                                  onClick={() => toast.success("catch:" + idx) && setFightBtnTab(FightTab.Skill)}/>)
+                                  onClick={() => {
+                                      setFightBtnTab(FightTab.Skill);
+                                      onClick?.({capsule: idx + 1});
+                                  }}/>)
                         || fightBtnTab === FightTab.Item && fighter.items.map((item, idx) =>
                             <Item key={idx} data={item} disabled={disabled}
-                                  onClick={() => toast.success("item:" + idx) && setFightBtnTab(FightTab.Skill)}/>)
+                                  onClick={() => {
+                                      setFightBtnTab(FightTab.Skill);
+                                      onClick?.({item: idx + 1});
+                                  }}/>)
                         || fightBtnTab === FightTab.Escape && <Escape onClick={() => 0}/>
                     }
                 </div>
@@ -208,6 +220,7 @@ export function Arena({arenaRef, frame, onFrameEnd, onClick}: ArenaProps) {
 
     const ruffleRef = useRef<RufflePlayerEl>(null);
     const frameVersion = useRef(0);
+    const ruffleInit = useRef(false);
 
     useEffect(() => {
         if (!arenaRef || !('current' in arenaRef) || !arenaRef.current) return;
@@ -289,9 +302,15 @@ export function Arena({arenaRef, frame, onFrameEnd, onClick}: ArenaProps) {
             ruffleRef.current?.callFlash("flash_playFight", build4PlayFight(frame), version);
         }
 
+        function playEnd() {
+            console.log("call playEnd with version:" + version)
+            ruffleRef.current?.callFlash("flash_playEnd", null, version);
+        }
+
         function withCallback(player: () => void, handler: (event: FlashEvent) => void) {
             ruffleRef.current?.updateCallback(event => {
-                if (event.type === FlashEventType.INIT) {
+                if (!ruffleInit.current && event.type === FlashEventType.INIT) {
+                    ruffleInit.current = true;
                     player();
                 }
                 if (version !== frameVersion.current) {
@@ -302,7 +321,9 @@ export function Arena({arenaRef, frame, onFrameEnd, onClick}: ArenaProps) {
                 }
                 handler(event);
             });
-            player();
+            if (ruffleInit.current) {
+                player();
+            }
         }
 
         if (!frame) {
@@ -362,12 +383,30 @@ export function Arena({arenaRef, frame, onFrameEnd, onClick}: ArenaProps) {
                 }
             });
         }
+        if (frame.type === FrameType.End) {
+            const idleFrame = frame.data as IdleFrame;
+            withCallback(() => {
+                const frame = idleFrame;
+                updateFrame(frame);
+                updatePet(frame);
+            }, e => {
+                if (e.type === FlashEventType.READY) {
+                    withCallback(() => {
+                        playEnd();
+                    }, e => {
+                        if (e.type === FlashEventType.PLAY_END) {
+                            onFrameEnd?.();
+                        }
+                    })
+                }
+            });
+        }
     }, [frame, onFrameEnd]);
 
     return (<div ref={arenaRef} className="w-[1200px] h-[660px] mx-auto my-auto relative">
         {/* 战斗区域 */}
         <div className="absolute w-full h-full flex justify-center items-end pointer-events-none">
-            <RufflePlayer ref={ruffleRef} url={"/swf/FightPlayer.swf?silence=true"}/>
+            <RufflePlayer ref={ruffleRef} url={"FightPlayer.swf?silence=true"}/>
         </div>
         {
             damage && <ArenaDamage damage={damage} right={damageSide === 2}/>

@@ -79,7 +79,7 @@ export function Stat({data, right,}: StatProps) {
                         </div>
                         <div
                             className="h-full bg-gradient-to-r from-lime-500 to-green-600 transition-all duration-800"
-                            style={{"width": Math.floor(100 * data.hp / data.hpMax) + "%"}}>
+                            style={{"width": Math.max(Math.min(Math.floor(100 * data.hp / data.hpMax), 100), 0) + "%"}}>
                         </div>
                     </div>
                 </div>
@@ -91,7 +91,7 @@ export function Stat({data, right,}: StatProps) {
                         </div>
                         <div
                             className="h-full bg-gradient-to-r from-red-500 to-red-600 transition-all duration-800"
-                            style={{"width": Math.floor(100 * data.anger / data.angerMax) + "%"}}>
+                            style={{"width": Math.max(Math.min(Math.floor(100 * data.anger / data.angerMax), 100), 0) + "%"}}>
                         </div>
                     </div>
                 </div>

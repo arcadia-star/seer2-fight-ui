@@ -11,7 +11,7 @@ import {
     MoveSkillCategory
 } from "@/frame.ts";
 
-function random(max: number) {
+export function random(max: number) {
     return Math.floor(Math.random() * (max + 1))
 }
 
@@ -32,10 +32,12 @@ function randomInArray<T>(array: T[]) {
 }
 
 function randomPet() {
+    const prefix = location.protocol === 'https:' ? 'https://seer2-proxy.netlify.app/proxy/' : 'http://seer2.61.com/'
+    const monsterId = random(1000);
     const pet: FramePet = {
-        flash: `http://seer2.61.com/res/pet/fight/${random(1000)}.swf`,
+        flash: prefix + `res/pet/fight/${monsterId}.swf`,
         avatar: "/svg/demo-pet-avatar.svg",
-        name: "不大长的名字",
+        name: "M" + monsterId,
         hp: random(500),
         hpMax: random(100) + 500,
         anger: random(50),
@@ -173,6 +175,10 @@ function randomChangeFrame() {
     return frame;
 }
 
+export function randomIdleFrame() {
+    return randomFrame();
+}
+
 export function randomFrames() {
     const fullFrames: Frame[] = arrayWithLen(1000).map((e) => {
         const type = randomInArray([FrameType.Move, FrameType.Change]);
@@ -199,6 +205,31 @@ export function randomFrames() {
             const frame = thisFrame.data as MoveFrame | ChangeFrame;
             if (endFrame) {
                 frame.start = endFrame;
+            }
+        }
+        if (thisFrame.type === FrameType.Move) {
+            const frame = thisFrame.data as MoveFrame;
+            frame.end.left.master.flash = frame.start.left.master.flash;
+            frame.end.right.master.flash = frame.start.right.master.flash;
+            frame.end.left.master.name = frame.start.left.master.name;
+            frame.end.right.master.name = frame.start.right.master.name;
+        }
+        if (thisFrame.type === FrameType.Change) {
+            const frame = thisFrame.data as ChangeFrame;
+            const rand = random(1);
+            if (rand === 0) {
+                frame.end.left.master.flash = frame.start.left.master.flash;
+                frame.end.left.master.name = frame.start.left.master.name;
+            } else if (rand === 1) {
+                frame.end.right.master.flash = frame.start.right.master.flash;
+                frame.end.right.master.name = frame.start.right.master.name;
+            }
+        }
+        if (i === fullFrames.length - 1) {
+            if (thisFrame.type === FrameType.Move || thisFrame.type === FrameType.Change) {
+                const frame = thisFrame.data as MoveFrame | ChangeFrame;
+                thisFrame.type = FrameType.End;
+                thisFrame.data = frame.start;
             }
         }
     }

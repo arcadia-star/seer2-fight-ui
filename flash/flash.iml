@@ -2,7 +2,7 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="flash">
     <configurations>
-      <configuration name="flash" pure-as="true" main-class="FightPlayer" output-file="FightPlayer.swf" output-folder="$MODULE_DIR$/../out/production/flash">
+      <configuration name="flash" pure-as="true" main-class="FightPlayer" output-file="FightPlayer.swf" output-folder="$MODULE_DIR$/../public">
         <dependencies target-player="32.0">
           <entries>
             <entry library-name="greensock-taomee" library-level="project">
