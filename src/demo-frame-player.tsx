@@ -3,6 +3,7 @@ import {Toaster} from "@/components/ui/sonner.tsx";
 import {useCallback, useRef, useState} from "react";
 import {randomFrames} from "@/frame-random.ts";
 import {FrameType} from "@/frame.ts";
+import {Fullscreen} from "./components/fullscreen";
 
 export function DemoFramePlayer() {
     const [fullFrames] = useState(() => randomFrames())
@@ -25,13 +26,23 @@ export function DemoFramePlayer() {
     }, []);
 
     return <div>
-        <Arena arenaRef={arenaRef}
-               frame={frame}
-               onFrameEnd={onFrameEnd}
-               onClick={onClick}
-        />
+        <div className="border-5 border-red-500 flex justify-center">
+            <Fullscreen originalWidth={1200} originalHeight={660}>
+                <Arena arenaRef={arenaRef}
+                       frame={frame}
+                       onFrameEnd={onFrameEnd}
+                       onClick={onClick}
+                />
+            </Fullscreen>
+        </div>
         {/* 进度条控制器 */}
-        <div style={{margin: '24px 0 0 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12}}>
+        <div style={{
+            margin: '24px 0 0 0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 12
+        }}>
             <span>帧: {frameIdx + 1} / {fullFrames.length}</span>
             <input
                 type="range"
@@ -48,7 +59,13 @@ export function DemoFramePlayer() {
             }</span>
         </div>
         {/* 播放控制按钮 */}
-        <div style={{margin: '12px 0 0 0', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 12}}>
+        <div style={{
+            margin: '12px 0 0 0',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 12
+        }}>
             <button onClick={() => {
                 setFrameIdx(idx => Math.max(0, idx - 1));
             }} disabled={frameIdx === 0}>上一帧
@@ -59,7 +76,6 @@ export function DemoFramePlayer() {
                 setFrameIdx(idx => Math.min(fullFrames.length - 1, idx + 1));
             }} disabled={frameIdx === fullFrames.length - 1}>下一帧
             </button>
-            <button onClick={() => console.log(arenaRef.current?.requestFullscreen())}>控制全屏</button>
             <button
                 onClick={() => console.log(arenaRef.current?.querySelector("ruffle-player")?.requestFullscreen())}>动画全屏
             </button>

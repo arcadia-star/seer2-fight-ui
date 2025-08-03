@@ -2,6 +2,7 @@ import {Arena, CommandEvent} from "@/components/arena.tsx";
 import {useCallback, useEffect, useRef, useState} from "react";
 import {Frame, FrameType, IdleFrame, MoveSkillCategory} from "@/frame.ts";
 import {random, randomIdleFrame} from "@/frame-random.ts";
+import {Fullscreen} from "@/components/fullscreen";
 
 function copy<T>(obj: T): T {
     if (!obj) {
@@ -160,11 +161,13 @@ export function DemoGamePlayer() {
         processing.current = false;
     }, []);
 
-    return <div>
-        <Arena arenaRef={arenaRef}
-               frame={frame}
-               onFrameEnd={() => frameEndRef.current?.()}
-               onClick={onClick}
-        />
+    return <div className="border-5 border-red-500 flex justify-center">
+        <Fullscreen originalWidth={1200} originalHeight={660}>
+            <Arena arenaRef={arenaRef}
+                   frame={frame}
+                   onFrameEnd={() => frameEndRef.current?.()}
+                   onClick={onClick}
+            />
+        </Fullscreen>
     </div>
 }
