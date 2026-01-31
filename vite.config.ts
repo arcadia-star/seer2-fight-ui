@@ -1,9 +1,10 @@
 import path from "path"
 import tailwindcss from "@tailwindcss/vite"
 import react from "@vitejs/plugin-react"
-import {defineConfig} from "vite"
+import {defineConfig, searchForWorkspaceRoot} from "vite"
 import {viteStaticCopy} from "vite-plugin-static-copy";
 import {visualizer} from "rollup-plugin-visualizer";
+import json5Plugin from "vite-plugin-json5";
 
 
 // https://vite.dev/config/
@@ -36,11 +37,19 @@ export default defineConfig({
                     dest: 'ruffle'
                 }
             ]
-        })
+        }),
+        json5Plugin(),
     ],
     resolve: {
         alias: {
             "@": path.resolve(__dirname, "./src"),
         },
     },
+    server: {
+        fs: {
+            allow: [
+                searchForWorkspaceRoot(process.cwd()),
+            ]
+        }
+    }
 })

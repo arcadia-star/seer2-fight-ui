@@ -1,0 +1,28 @@
+<body>
+<div id="container"></div>
+<script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+<script>
+    window.RufflePlayer = window.RufflePlayer || {};
+    window.RufflePlayer.config = {
+        fontSources: [
+            "../out/FallbackFont.swf",
+            // "../out/EmojiFont.swf",
+        ],
+        defaultFonts: {
+            sans: [
+                "fallback",
+                // "emoji",
+            ],
+        }
+    }
+    window.addEventListener("load", (event) => {
+        const ruffle = window.RufflePlayer.newest();
+        const player = ruffle.createPlayer();
+        const container = document.getElementById("container");
+        container.appendChild(player);
+        player.ruffle().load("../out/DemoPlayer.swf");
+        player.style.width = "1200px";
+        player.style.height = "660px";
+    });
+</script>
+</body>

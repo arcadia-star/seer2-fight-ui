@@ -30,7 +30,12 @@ export function RufflePlayer({ref, url}: RufflePlayerProps) {
     useImperativeHandle(ref, () => ({
         // eslint-disable-next-line
         // @ts-ignore
-        callFlash: (name: string, ...args: never[]) => playerRef.current?.[name]?.(...args),
+        callFlash: (name: string, ...args: never[]) => {
+            console.debug("callFlash", name, args);
+            // eslint-disable-next-line
+            // @ts-ignore
+            playerRef.current?.[name]?.(...args);
+        },
         updateCallback: (cb: FlashEventHandler) => onFlashEventRef.current = cb,
         // eslint-disable-next-line
         // @ts-ignore
@@ -65,7 +70,7 @@ export function RufflePlayer({ref, url}: RufflePlayerProps) {
         // eslint-disable-next-line
         // @ts-ignore
         window[flashCb] = function (event: FlashEvent) {
-            console.info(event);
+            console.debug("flashEvent", event);
             onFlashEventRef.current?.(event);
         };
         console.log("add:" + flashCb);

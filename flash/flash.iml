@@ -2,10 +2,13 @@
 <module type="Flex" version="4">
   <component name="FlexBuildConfigurationManager" active="flash">
     <configurations>
-      <configuration name="flash" pure-as="true" main-class="FightPlayer" output-file="FightPlayer.swf" output-folder="$MODULE_DIR$/../public">
+      <configuration name="flash" pure-as="true" main-class="DemoPlayer" output-file="FightPlayer.swf" output-folder="$MODULE_DIR$/out">
         <dependencies target-player="32.0">
           <entries>
             <entry library-name="greensock-taomee" library-level="project">
+              <dependency linkage="Merged" />
+            </entry>
+            <entry library-name="as3corelib" library-level="project">
               <dependency linkage="Merged" />
             </entry>
           </entries>
@@ -27,5 +30,6 @@
     <orderEntry type="jdk" jdkName="AIRSDK" jdkType="Flex SDK Type (new)" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="greensock-taomee" level="project" />
+    <orderEntry type="library" exported="" name="as3corelib" level="project" />
   </component>
 </module>

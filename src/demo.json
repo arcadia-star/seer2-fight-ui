@@ -1,0 +1,1496 @@
+{
+  "globalVolume": 100,
+  "mapVolume": 100,
+  "frames": [
+    {
+      "logs": [
+        "<font color=\"#ff0000\">3秒</font><font color=\"#FFFFFF\">后开始</font>"
+      ],
+      "_name": "3秒后开始",
+      "sleep": 3000
+    },
+    {
+      "start": {
+        "tips": [
+          "要提前加载的资源可以放到urls中",
+          "资源引用支持内部引用，internal://UI_WeatherIcon1",
+          "tips3"
+        ],
+        "urls": [
+          "http://seer2.61.com/res/map/swf/100015.swf",
+          "http://seer2.61.com/res/map/sound/BGM_1002.mp3",
+          "http://seer2.61.com/res/pet/icon/946.swf",
+          "http://seer2.61.com/res/pet/fight/946.swf",
+          "http://seer2.61.com/res/pet/fight/948.swf"
+        ]
+      },
+      "data": {
+        "round": 1,
+        "mapSwf": "http://seer2.61.com/res/map/swf/100015.swf",
+        "mapSound": "http://seer2.61.com/res/map/sound/BGM_1002.mp3",
+        "weatherIcon": "internal://UI_WeatherIcon1",
+        "weatherTips": "This is a <font color=\"#ff0000\">weather</font> tips",
+        "left": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/946.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/946.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetOne",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 524,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": 1,
+              "def": 1,
+              "spa": 1,
+              "spd": 1,
+              "spe": 1,
+              "skills": [
+                {
+                  "id": 1,
+                  "name": "物理",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "物理",
+                  "typeIcon": "internal://UI_PetTypeIcon_1",
+                  "tips": "This is a <font color=\"#ff0000\">物理</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 2,
+                  "name": "特殊",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "特殊",
+                  "typeIcon": "internal://UI_PetTypeIcon_2",
+                  "tips": "This is a <font color=\"#ff0000\">特殊</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 3,
+                  "name": "属性",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "属性",
+                  "typeIcon": "internal://UI_PetTypeIcon_3",
+                  "tips": "This is a <font color=\"#ff0000\">属性</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 4,
+                  "name": "必杀",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "必杀",
+                  "typeIcon": "internal://UI_PetTypeIcon_4",
+                  "tips": "This is a <font color=\"#ff0000\">必杀</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 5,
+                  "name": "合体",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "合体_",
+                  "typeIcon": "https://seer.61.com/resource/countermark/icon/10100.swf",
+                  "tips": "This is a <font color=\"#ff0000\">合体</font> tips",
+                  "enable": "1"
+                }
+              ],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                },
+                {
+                  "id": 3,
+                  "name": "印记?+-———_!【💠🙂↔️ 🙂↕️ 🐦🔥 🍋🟩 🍄🟫 ⛓️💥 🧑🧑🧒 🧑🧑🧒🧒 🧑🧒 🧑🧒🧒】",
+                  "icon": "?",
+                  "tips": "This is a <font color=\"#ff0000\">?</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": 1,
+              "name": "道具A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200011.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 2,
+              "name": "道具B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200021.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 3,
+              "name": "道具C",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200031.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 99
+            },
+            {
+              "id": 4,
+              "name": "道具D",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200062.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 1
+            }
+          ],
+          "capsules": [
+            {
+              "id": 5,
+              "name": "捕捉A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200001.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            },
+            {
+              "id": 6,
+              "name": "捕捉B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200006.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            }
+          ]
+        },
+        "right": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/946.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/946.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetTwo",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 524,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": -1,
+              "def": -1,
+              "spa": -1,
+              "spd": -1,
+              "spe": -1,
+              "skills": [],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "logs": [
+        ""
+      ],
+      "_name": "战斗开始"
+    },
+    {
+      "logs": [
+        "<font color=\"#ff0000\">1秒</font><font color=\"#FFFFFF\">后继续</font>"
+      ],
+      "_name": "等待1秒",
+      "sleep": 1000
+    },
+    {
+      "logs": [
+        ""
+      ],
+      "_name": "左侧攻击帧，伤害加印记",
+      "data": {
+        "round": 1,
+        "mapSwf": "http://seer2.61.com/res/map/swf/100015.swf",
+        "mapSound": "http://seer2.61.com/res/map/sound/BGM_1002.mp3",
+        "weatherIcon": "internal://UI_WeatherIcon2",
+        "weatherTips": "This is a <font color=\"#ff0000\">weather</font> tips",
+        "left": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/946.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/946.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetOne",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 524,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": 1,
+              "def": 1,
+              "spa": 1,
+              "spd": -1,
+              "spe": 1,
+              "skills": [
+                {
+                  "id": 1,
+                  "name": "物理",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "物理",
+                  "typeIcon": "internal://UI_PetTypeIcon_1",
+                  "tips": "This is a <font color=\"#ff0000\">物理</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 2,
+                  "name": "特殊",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "特殊",
+                  "typeIcon": "internal://UI_PetTypeIcon_2",
+                  "tips": "This is a <font color=\"#ff0000\">特殊</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 3,
+                  "name": "属性",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "属性",
+                  "typeIcon": "internal://UI_PetTypeIcon_3",
+                  "tips": "This is a <font color=\"#ff0000\">属性</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 4,
+                  "name": "必杀",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "必杀",
+                  "typeIcon": "internal://UI_PetTypeIcon_4",
+                  "tips": "This is a <font color=\"#ff0000\">必杀</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 5,
+                  "name": "合体",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "合体_",
+                  "typeIcon": "https://seer.61.com/resource/countermark/icon/10100.swf",
+                  "tips": "This is a <font color=\"#ff0000\">合体</font> tips",
+                  "enable": "1"
+                }
+              ],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                },
+                {
+                  "id": 3,
+                  "name": "印记?+-———_!【💠🙂↔️ 🙂↕️ 🐦🔥 🍋🟩 🍄🟫 ⛓️💥 🧑🧑🧒 🧑🧑🧒🧒 🧑🧒 🧑🧒🧒】",
+                  "icon": "?",
+                  "tips": "This is a <font color=\"#ff0000\">?</font> tips",
+                  "count": 1
+                },
+                {
+                  "id": 4,
+                  "name": "外部资源",
+                  "count": 1,
+                  "icon": "https://seer.61.com/resource/countermark/icon/10100.swf",
+                  "tips": ""
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": 1,
+              "name": "道具A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200011.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 2,
+              "name": "道具B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200021.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 3,
+              "name": "道具C",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200031.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 99
+            },
+            {
+              "id": 4,
+              "name": "道具D",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200062.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 1
+            }
+          ],
+          "capsules": [
+            {
+              "id": 5,
+              "name": "捕捉A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200001.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            },
+            {
+              "id": 6,
+              "name": "捕捉B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200006.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            }
+          ]
+        },
+        "right": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/946.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/946.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetTwo",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 300,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": -1,
+              "def": -1,
+              "spa": -1,
+              "spd": -1,
+              "spe": -1,
+              "skills": [],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "move": {
+        "side": 1,
+        "skill": "攻击技能",
+        "category": "物理",
+        "damage": 9999,
+        "critical": 0,
+        "miss": 0,
+        "rate": 100,
+        "soundUrl": "http://seer2.61.com/res/skill/sound/02_1_003.mp3",
+        "effectUrl": "http://seer2.61.com/res/skill/effect/02_1_003.swf"
+      }
+    },
+    {
+      "logs": [
+        ""
+      ],
+      "_name": "右侧攻击帧，伤害减印记",
+      "data": {
+        "round": 1,
+        "mapSwf": "http://seer2.61.com/res/map/swf/100015.swf",
+        "mapSound": "http://seer2.61.com/res/map/sound/BGM_1002.mp3",
+        "weatherIcon": "internal://UI_WeatherIcon1",
+        "weatherTips": "This is a <font color=\"#ff0000\">weather</font> tips",
+        "left": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/946.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/946.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetOne",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 300,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": 1,
+              "def": 1,
+              "spa": 1,
+              "spd": 1,
+              "spe": 1,
+              "skills": [
+                {
+                  "id": 1,
+                  "name": "物理",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "物理",
+                  "typeIcon": "internal://UI_PetTypeIcon_1",
+                  "tips": "This is a <font color=\"#ff0000\">物理</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 2,
+                  "name": "特殊",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "特殊",
+                  "typeIcon": "internal://UI_PetTypeIcon_2",
+                  "tips": "This is a <font color=\"#ff0000\">特殊</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 3,
+                  "name": "属性",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "属性",
+                  "typeIcon": "internal://UI_PetTypeIcon_3",
+                  "tips": "This is a <font color=\"#ff0000\">属性</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 4,
+                  "name": "必杀",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "必杀",
+                  "typeIcon": "internal://UI_PetTypeIcon_4",
+                  "tips": "This is a <font color=\"#ff0000\">必杀</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 5,
+                  "name": "合体",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "合体_",
+                  "typeIcon": "https://seer.61.com/resource/countermark/icon/10100.swf",
+                  "tips": "This is a <font color=\"#ff0000\">合体</font> tips",
+                  "enable": "1"
+                }
+              ],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                },
+                {
+                  "id": 3,
+                  "name": "印记?+-———_!【💠🙂↔️ 🙂↕️ 🐦🔥 🍋🟩 🍄🟫 ⛓️💥 🧑🧑🧒 🧑🧑🧒🧒 🧑🧒 🧑🧒🧒】",
+                  "icon": "?",
+                  "tips": "This is a <font color=\"#ff0000\">?</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": 1,
+              "name": "道具A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200011.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 2,
+              "name": "道具B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200021.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 3,
+              "name": "道具C",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200031.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 99
+            },
+            {
+              "id": 4,
+              "name": "道具D",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200062.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 1
+            }
+          ],
+          "capsules": [
+            {
+              "id": 5,
+              "name": "捕捉A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200001.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            },
+            {
+              "id": 6,
+              "name": "捕捉B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200006.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            }
+          ]
+        },
+        "right": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/946.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/946.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetTwo",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 302,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": -1,
+              "def": -1,
+              "spa": -1,
+              "spd": -1,
+              "spe": -1,
+              "skills": [],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "move": {
+        "side": 2,
+        "skill": "攻击技能",
+        "category": "物理",
+        "damage": 9999,
+        "critical": 0,
+        "miss": 0,
+        "rate": 100,
+        "soundUrl": "http://seer2.61.com/res/skill/sound/02_1_003.mp3",
+        "effectUrl": "http://seer2.61.com/res/skill/effect/02_1_003.swf"
+      }
+    },
+    {
+      "logs": [
+        ""
+      ],
+      "_name": "左侧体力减少",
+      "data": {
+        "round": 1,
+        "mapSwf": "http://seer2.61.com/res/map/swf/100015.swf",
+        "mapSound": "http://seer2.61.com/res/map/sound/BGM_1002.mp3",
+        "weatherIcon": "internal://UI_WeatherIcon1",
+        "weatherTips": "This is a <font color=\"#ff0000\">weather</font> tips",
+        "left": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/946.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/946.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetOne",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 524,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": 1,
+              "def": 1,
+              "spa": 1,
+              "spd": 1,
+              "spe": 1,
+              "skills": [
+                {
+                  "id": 1,
+                  "name": "物理",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "物理",
+                  "typeIcon": "internal://UI_PetTypeIcon_1",
+                  "tips": "This is a <font color=\"#ff0000\">物理</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 2,
+                  "name": "特殊",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "特殊",
+                  "typeIcon": "internal://UI_PetTypeIcon_2",
+                  "tips": "This is a <font color=\"#ff0000\">特殊</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 3,
+                  "name": "属性",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "属性",
+                  "typeIcon": "internal://UI_PetTypeIcon_3",
+                  "tips": "This is a <font color=\"#ff0000\">属性</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 4,
+                  "name": "必杀",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "必杀",
+                  "typeIcon": "internal://UI_PetTypeIcon_4",
+                  "tips": "This is a <font color=\"#ff0000\">必杀</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 5,
+                  "name": "合体",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "合体_",
+                  "typeIcon": "https://seer.61.com/resource/countermark/icon/10100.swf",
+                  "tips": "This is a <font color=\"#ff0000\">合体</font> tips",
+                  "enable": "1"
+                }
+              ],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                },
+                {
+                  "id": 3,
+                  "name": "印记?+-———_!【💠🙂↔️ 🙂↕️ 🐦🔥 🍋🟩 🍄🟫 ⛓️💥 🧑🧑🧒 🧑🧑🧒🧒 🧑🧒 🧑🧒🧒】",
+                  "icon": "?",
+                  "tips": "This is a <font color=\"#ff0000\">?</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": 1,
+              "name": "道具A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200011.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 2,
+              "name": "道具B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200021.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 3,
+              "name": "道具C",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200031.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 99
+            },
+            {
+              "id": 4,
+              "name": "道具D",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200062.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 1
+            }
+          ],
+          "capsules": [
+            {
+              "id": 5,
+              "name": "捕捉A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200001.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            },
+            {
+              "id": 6,
+              "name": "捕捉B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200006.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            }
+          ]
+        },
+        "right": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/946.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/946.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetTwo",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 524,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": -1,
+              "def": -1,
+              "spa": -1,
+              "spd": -1,
+              "spe": -1,
+              "skills": [],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "event": {
+        "side": 1,
+        "delay": 0,
+        "type": 2,
+        "change": 99
+      }
+    },
+    {
+      "logs": [
+        ""
+      ],
+      "_name": "右侧体力增加",
+      "data": {
+        "round": 1,
+        "mapSwf": "http://seer2.61.com/res/map/swf/100015.swf",
+        "mapSound": "http://seer2.61.com/res/map/sound/BGM_1002.mp3",
+        "weatherIcon": "internal://UI_WeatherIcon1",
+        "weatherTips": "This is a <font color=\"#ff0000\">weather</font> tips",
+        "left": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/946.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/946.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetOne",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 524,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": 1,
+              "def": 1,
+              "spa": 1,
+              "spd": 1,
+              "spe": 1,
+              "skills": [
+                {
+                  "id": 1,
+                  "name": "物理",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "物理",
+                  "typeIcon": "internal://UI_PetTypeIcon_1",
+                  "tips": "This is a <font color=\"#ff0000\">物理</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 2,
+                  "name": "特殊",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "特殊",
+                  "typeIcon": "internal://UI_PetTypeIcon_2",
+                  "tips": "This is a <font color=\"#ff0000\">特殊</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 3,
+                  "name": "属性",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "属性",
+                  "typeIcon": "internal://UI_PetTypeIcon_3",
+                  "tips": "This is a <font color=\"#ff0000\">属性</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 4,
+                  "name": "必杀",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "必杀",
+                  "typeIcon": "internal://UI_PetTypeIcon_4",
+                  "tips": "This is a <font color=\"#ff0000\">必杀</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 5,
+                  "name": "合体",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "合体_",
+                  "typeIcon": "https://seer.61.com/resource/countermark/icon/10100.swf",
+                  "tips": "This is a <font color=\"#ff0000\">合体</font> tips",
+                  "enable": "1"
+                }
+              ],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                },
+                {
+                  "id": 3,
+                  "name": "印记?+-———_!【💠🙂↔️ 🙂↕️ 🐦🔥 🍋🟩 🍄🟫 ⛓️💥 🧑🧑🧒 🧑🧑🧒🧒 🧑🧒 🧑🧒🧒】",
+                  "icon": "?",
+                  "tips": "This is a <font color=\"#ff0000\">?</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": 1,
+              "name": "道具A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200011.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 2,
+              "name": "道具B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200021.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 3,
+              "name": "道具C",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200031.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 99
+            },
+            {
+              "id": 4,
+              "name": "道具D",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200062.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 1
+            }
+          ],
+          "capsules": [
+            {
+              "id": 5,
+              "name": "捕捉A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200001.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            },
+            {
+              "id": 6,
+              "name": "捕捉B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200006.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            }
+          ]
+        },
+        "right": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/946.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/946.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetTwo",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 524,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": -1,
+              "def": -1,
+              "spa": -1,
+              "spd": -1,
+              "spe": -1,
+              "skills": [],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "event": {
+        "side": 2,
+        "delay": 0,
+        "type": 1,
+        "change": 99
+      }
+    },
+    {
+      "logs": [
+        ""
+      ],
+      "_name": "等待1秒",
+      "sleep": 1000
+    },
+    {
+      "logs": [
+        ""
+      ],
+      "_name": "左侧变身，右侧换场",
+      "data": {
+        "round": 1,
+        "mapSwf": "http://seer2.61.com/res/map/swf/100015.swf",
+        "mapSound": "http://seer2.61.com/res/map/sound/BGM_1002.mp3",
+        "weatherIcon": "internal://UI_WeatherIcon1",
+        "weatherTips": "This is a <font color=\"#ff0000\">weather</font> tips",
+        "left": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/947.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/947.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetOne",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 524,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": 1,
+              "def": 1,
+              "spa": 1,
+              "spd": 1,
+              "spe": 1,
+              "skills": [
+                {
+                  "id": 1,
+                  "name": "物理",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "物理",
+                  "typeIcon": "internal://UI_PetTypeIcon_1",
+                  "tips": "This is a <font color=\"#ff0000\">物理</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 2,
+                  "name": "特殊",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "特殊",
+                  "typeIcon": "internal://UI_PetTypeIcon_2",
+                  "tips": "This is a <font color=\"#ff0000\">特殊</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 3,
+                  "name": "属性",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "属性",
+                  "typeIcon": "internal://UI_PetTypeIcon_3",
+                  "tips": "This is a <font color=\"#ff0000\">属性</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 4,
+                  "name": "必杀",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "必杀",
+                  "typeIcon": "internal://UI_PetTypeIcon_4",
+                  "tips": "This is a <font color=\"#ff0000\">必杀</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 5,
+                  "name": "合体",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "合体_",
+                  "typeIcon": "https://seer.61.com/resource/countermark/icon/10100.swf",
+                  "tips": "This is a <font color=\"#ff0000\">合体</font> tips",
+                  "enable": "1"
+                }
+              ],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                },
+                {
+                  "id": 3,
+                  "name": "印记?+-———_!【💠🙂↔️ 🙂↕️ 🐦🔥 🍋🟩 🍄🟫 ⛓️💥 🧑🧑🧒 🧑🧑🧒🧒 🧑🧒 🧑🧒🧒】",
+                  "icon": "?",
+                  "tips": "This is a <font color=\"#ff0000\">?</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": 1,
+              "name": "道具A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200011.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 2,
+              "name": "道具B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200021.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 3,
+              "name": "道具C",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200031.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 99
+            },
+            {
+              "id": 4,
+              "name": "道具D",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200062.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 1
+            }
+          ],
+          "capsules": [
+            {
+              "id": 5,
+              "name": "捕捉A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200001.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            },
+            {
+              "id": 6,
+              "name": "捕捉B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200006.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            }
+          ]
+        },
+        "right": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/100.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/100.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetTwo",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 524,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": -1,
+              "def": -1,
+              "spa": -1,
+              "spd": -1,
+              "spe": -1,
+              "skills": [],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "change": {
+        "left": 2,
+        "right": 1
+      }
+    },
+    {
+      "logs": [
+        ""
+      ],
+      "_name": "游戏结束，胜利",
+      "data": {
+        "round": 1,
+        "mapSwf": "http://seer2.61.com/res/map/swf/100015.swf",
+        "mapSound": "http://seer2.61.com/res/map/sound/BGM_1002.mp3",
+        "weatherIcon": "internal://UI_WeatherIcon1",
+        "weatherTips": "This is a <font color=\"#ff0000\">weather</font> tips",
+        "left": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/947.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/947.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetOne",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 524,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": 1,
+              "def": 1,
+              "spa": 1,
+              "spd": 1,
+              "spe": 1,
+              "skills": [
+                {
+                  "id": 1,
+                  "name": "物理",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "物理",
+                  "typeIcon": "internal://UI_PetTypeIcon_1",
+                  "tips": "This is a <font color=\"#ff0000\">物理</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 2,
+                  "name": "特殊",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "特殊",
+                  "typeIcon": "internal://UI_PetTypeIcon_2",
+                  "tips": "This is a <font color=\"#ff0000\">特殊</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 3,
+                  "name": "属性",
+                  "power": 99,
+                  "anger": 99,
+                  "category": "属性",
+                  "typeIcon": "internal://UI_PetTypeIcon_3",
+                  "tips": "This is a <font color=\"#ff0000\">属性</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 4,
+                  "name": "必杀",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "必杀",
+                  "typeIcon": "internal://UI_PetTypeIcon_4",
+                  "tips": "This is a <font color=\"#ff0000\">必杀</font> tips",
+                  "enable": "1"
+                },
+                {
+                  "id": 5,
+                  "name": "合体",
+                  "power": 99,
+                  "anger": 100,
+                  "category": "合体_",
+                  "typeIcon": "https://seer.61.com/resource/countermark/icon/10100.swf",
+                  "tips": "This is a <font color=\"#ff0000\">合体</font> tips",
+                  "enable": "1"
+                }
+              ],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                },
+                {
+                  "id": 3,
+                  "name": "印记?+-———_!【💠🙂↔️ 🙂↕️ 🐦🔥 🍋🟩 🍄🟫 ⛓️💥 🧑🧑🧒 🧑🧑🧒🧒 🧑🧒 🧑🧒🧒】",
+                  "icon": "?",
+                  "tips": "This is a <font color=\"#ff0000\">?</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ],
+          "items": [
+            {
+              "id": 1,
+              "name": "道具A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200011.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 2,
+              "name": "道具B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200021.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 9
+            },
+            {
+              "id": 3,
+              "name": "道具C",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200031.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 99
+            },
+            {
+              "id": 4,
+              "name": "道具D",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200062.swf",
+              "tips": "This is a <font color=\"#ff0000\">item</font> tips",
+              "count": 1
+            }
+          ],
+          "capsules": [
+            {
+              "id": 5,
+              "name": "捕捉A",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200001.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            },
+            {
+              "id": 6,
+              "name": "捕捉B",
+              "icon": "http://seer2.61.com/res/item/pet/icon/200006.swf",
+              "tips": "This is a <font color=\"#ff0000\">capsule</font> tips",
+              "count": 9
+            }
+          ]
+        },
+        "right": {
+          "pets": [
+            {
+              "pid": 1,
+              "petIcon": "http://seer2.61.com/res/pet/icon/100.swf",
+              "petSwf": "http://seer2.61.com/res/pet/fight/100.swf",
+              "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
+              "name": "PetTwo",
+              "level": 100,
+              "typeIcon": "internal://UI_PetTypeIcon_1",
+              "position": 1,
+              "alive": 1,
+              "anger": 30,
+              "maxAnger": 100,
+              "hp": 524,
+              "maxHp": 534,
+              "rate": 200,
+              "atk": -1,
+              "def": -1,
+              "spa": -1,
+              "spd": -1,
+              "spe": -1,
+              "skills": [],
+              "buffs": [
+                {
+                  "id": 1,
+                  "name": "印记A",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3002.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "印记B",
+                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "end": {
+        "winner": 1
+      }
+    }
+  ]
+}

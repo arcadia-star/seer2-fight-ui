@@ -1,0 +1,122 @@
+package animation.status {
+
+import data.pet.ArenaData;
+
+import enums.FightSide;
+
+import flash.display.MovieClip;
+import flash.display.Sprite;
+
+import ui.status.New_UI_FighterTitle;
+
+public class FightStatusPanel extends Sprite {
+
+
+    protected var _arenaData:ArenaData;
+
+    protected var _leftMainFighterBar:FighterStatusBar;
+
+    protected var _leftBuffIconBar:BuffIconBar;
+
+    protected var _leftCapsuleBar:CapsuleBar;
+
+    protected var _leftSkillBubble:SkillBubble;
+
+    protected var _leftAngerStatus:AngerStatusPanel;
+
+    protected var _rightMainFighterBar:FighterStatusBar;
+
+    protected var _rightBuffIconBar:BuffIconBar;
+
+    protected var _rightCapsuleBar:CapsuleBar;
+
+    protected var _rightSkillBubble:SkillBubble;
+
+    protected var _rightAngerStatus:AngerStatusPanel;
+
+    private var _title:MovieClip;
+
+    private var _weatherDisplay:FightWeatherDisplay;
+
+    public function FightStatusPanel() {
+        super();
+        this._leftCapsuleBar = new CapsuleBar();
+        _leftCapsuleBar.x = 6;
+        _leftCapsuleBar.y = 112;
+        addChild(this._leftCapsuleBar);
+        this._rightCapsuleBar = new CapsuleBar();
+        _rightCapsuleBar.x = 1123;
+        _rightCapsuleBar.y = 112;
+        addChild(this._rightCapsuleBar);
+        _leftMainFighterBar = new FighterStatusBar(FightSide.LEFT);
+        addChild(_leftMainFighterBar);
+        _rightMainFighterBar = new FighterStatusBar(FightSide.RIGHT);
+        addChild(_rightMainFighterBar);
+        this._leftBuffIconBar = new BuffIconBar(FightSide.LEFT);
+        _leftBuffIconBar.x = 174;
+        _leftBuffIconBar.y = 52;
+        addChild(this._leftBuffIconBar);
+        this._rightBuffIconBar = new BuffIconBar(FightSide.RIGHT);
+        _rightBuffIconBar.x = 994;
+        _rightBuffIconBar.y = 52;
+        addChild(this._rightBuffIconBar);
+        this._leftSkillBubble = new SkillBubble(FightSide.LEFT);
+        addChild(this._leftSkillBubble);
+        this._rightSkillBubble = new SkillBubble(FightSide.RIGHT);
+        addChild(this._rightSkillBubble);
+        this._leftAngerStatus = new AngerStatusPanel(FightSide.LEFT);
+        addChild(this._leftAngerStatus);
+        this._rightAngerStatus = new AngerStatusPanel(FightSide.RIGHT);
+        addChild(this._rightAngerStatus);
+        this._title = new New_UI_FighterTitle;
+        this._title.x = 532;
+        this._title.gotoAndStop(0);
+        this._title["count0"].gotoAndStop(0);
+        addChild(this._title);
+        this._weatherDisplay = new FightWeatherDisplay();
+        _weatherDisplay.x = 551;
+        _weatherDisplay.y = 40;
+        addChild(_weatherDisplay)
+    }
+
+    public function initData(param1:ArenaData):void {
+        this._arenaData = param1;
+        this._leftMainFighterBar.initData(param1.left.master);
+        this._leftBuffIconBar.initData(param1.left.master);
+        this._leftCapsuleBar.initData(param1.left.pets);
+        this._leftAngerStatus.setFight(param1.left.master);
+        this._rightMainFighterBar.initData(param1.right.master);
+        this._rightBuffIconBar.initData(param1.right.master);
+        this._rightCapsuleBar.initData(param1.right.pets);
+        this._rightAngerStatus.setFight(param1.right.master);
+        this.updateTitle();
+        this._weatherDisplay.initData(param1.weatherIcon, param1.weatherTips);
+    }
+
+
+    private function updateTitle():void {
+        var _loc1_:int = _arenaData.round;
+        if (_loc1_ / 100 >= 1) {
+            this._title.gotoAndStop(3);
+            this._title["count0"].gotoAndStop(int(_loc1_ / 100) + 1);
+            this._title["count1"].gotoAndStop(int(_loc1_ % 100 / 10) + 1);
+            this._title["count2"].gotoAndStop(_loc1_ % 100 % 10 + 1);
+        } else if (_loc1_ / 10 >= 1) {
+            this._title.gotoAndStop(2);
+            this._title["count0"].gotoAndStop(int(_loc1_ / 10) + 1);
+            this._title["count1"].gotoAndStop(_loc1_ % 10 + 1);
+        } else {
+            this._title.gotoAndStop(1);
+            this._title["count0"].gotoAndStop(_loc1_ + 1);
+        }
+    }
+
+    public function showSkillBubble(side:int, param2:String):void {
+        if (side == FightSide.LEFT) {
+            this._leftSkillBubble.setSkillName(param2);
+        } else {
+            this._rightSkillBubble.setSkillName(param2);
+        }
+    }
+}
+}
