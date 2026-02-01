@@ -101,6 +101,8 @@ public class DemoPlayer extends Sprite {
 
                     frameClear();
                     frame.move = moveData;
+                    frame.data.right.master.hp -= 100;
+                    frame.data.right.master.anger += 20;
                     var frameData:FrameData = FrameData.clone(frame);
                     frameData.logs = new Vector.<String>();
                     frameData.logs.push("<font color=\'#ffffff\'>[" + frame.data.round + "]</font><font color=\'#00ffff\'>" + frame.data.left.master.name + "</font><font color=\'#ffffff\'>使用技能</font><font color=\'#ffff00\'>" + skill.name + "</font>");

@@ -5,13 +5,11 @@
     window.RufflePlayer = window.RufflePlayer || {};
     window.RufflePlayer.config = {
         fontSources: [
-            "../out/FallbackFont.swf",
-            // "../out/EmojiFont.swf",
+            "../FallbackFont.swf",
         ],
         defaultFonts: {
             sans: [
                 "fallback",
-                // "emoji",
             ],
         }
     }
@@ -20,7 +18,7 @@
         const player = ruffle.createPlayer();
         const container = document.getElementById("container");
         container.appendChild(player);
-        player.ruffle().load("../out/DemoPlayer.swf");
+        player.ruffle().load("DemoPlayer.swf?playUrl=mock.json");
         player.style.width = "1200px";
         player.style.height = "660px";
     });

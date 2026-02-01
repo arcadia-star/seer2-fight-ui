@@ -124,35 +124,41 @@ internal class FighterStatusBar extends Sprite {
         }
     }
 
-    public function initData(param1:PetData):void {
-        this._fighter = param1;
-        this._iconDisplayer.initData(this._fighter.petIcon);
+    public function initData(pet:PetData):void {
+        var old:PetData = this._fighter;
+        this._fighter = pet;
+        this._iconDisplayer.initData(pet.petIcon);
         if (this.border) {
             DisplayObjectUtil.removeFromParent(this.border);
         }
-        var pet:PetData = this._fighter;
         this.updatePressStatus(pet.rate);
         if (this._hpSign.numChildren > 0) {
             this._hpSign.removeChildAt(0);
         }
-        this._hpSign.addChild(UINumberGenerator.generateHpNumber(pet.hp, pet.maxHp));
+        this._hpSign.addChild(UINumberGenerator.generateHpNumber(Math.max(pet.hp, 0), pet.maxHp));
         if (this._angerSign.numChildren > 0) {
             this._angerSign.removeChildAt(0);
         }
-        this._angerSign.addChild(UINumberGenerator.generateAngerNumber(pet.anger, pet.maxAnger));
-        this._angerBar.playToPercent(pet.anger / pet.maxAnger);
-        var hpPct:Number = pet.hp / pet.maxHp;
-        //playToPercent
-        this._healthBar.initAtPercent(hpPct);
-        this._healthShadowBar.initAtPercent(hpPct);
+        this._angerSign.addChild(UINumberGenerator.generateAngerNumber(Math.max(pet.anger, 0), pet.maxAnger));
+        var angerPct:Number = Math.max(pet.anger / pet.maxAnger, 0);
+        var hpPct:Number = Math.max(pet.hp / pet.maxHp, 0);
+        if (!old) {
+            this._angerBar.initAtPercent(angerPct);
+            this._healthBar.initAtPercent(hpPct);
+            this._healthShadowBar.initAtPercent(hpPct);
+        } else {
+            this._angerBar.playToPercent(angerPct);
+            this._healthBar.playToPercent(hpPct);
+            this._healthShadowBar.playToPercent(hpPct);
+        }
         if (this._levelSprite.numChildren > 1) {
             this._levelSprite.removeChildAt(1);
         }
-        var level:Sprite = UINumberGenerator.generateFighterLevelNumber(this._fighter.level);
+        var level:Sprite = UINumberGenerator.generateFighterLevelNumber(pet.level);
         level.x = 30;
         this._levelSprite.addChild(level);
-        (this._nameSprite["fighterNameTxt"] as TextField).text = this._fighter.name;
-        this._typeIcon.initData(this._fighter.typeIcon);
+        (this._nameSprite["fighterNameTxt"] as TextField).text = pet.name;
+        this._typeIcon.initData(pet.typeIcon);
     }
 
     private function updatePressStatus(rate:uint):void {

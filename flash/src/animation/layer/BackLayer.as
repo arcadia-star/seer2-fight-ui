@@ -27,7 +27,7 @@ public class BackLayer extends Sprite {
             return;
         }
         _url = url;
-        CacheUtils.loadContent(url, function (obj:DisplayObject):void {
+        CacheUtils.loadMapContent(url, function (obj:DisplayObject):void {
             if (_url === url) {
                 DisplayObjectUtil.removeFromParent(_sprite);
                 _sprite = obj;

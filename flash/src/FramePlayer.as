@@ -1,4 +1,5 @@
 package {
+import animation.event.Events;
 import animation.layer.BackLayer;
 import animation.layer.FaceLayer;
 import animation.layer.FrontLayer;
@@ -9,6 +10,7 @@ import animation.layer.UILayer;
 import data.pet.FrameData;
 
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.utils.setTimeout;
 
 import utils.an.DisplayObjectUtil;
@@ -57,14 +59,20 @@ public class FramePlayer extends Sprite {
         }
 
         function loadFrame(cb:Function):void {
-            petLayer.initData(frame, function ():void {
+            var flag:Boolean = false;
+            petLayer.initData(frame, function (event:Event):void {
                 if (!checkVersion(version)) {
                     return;
                 }
-                bgLayer.initData(frame.data.mapSwf);
-                soundLayer.playMapSound(frame.data.mapSound);
-                uiLayer.initData(frame.data);
-                cb();
+                if (!flag) {
+                    flag = true;
+                    bgLayer.initData(frame.data.mapSwf);
+                    soundLayer.playMapSound(frame.data.mapSound);
+                    uiLayer.initData(frame.data);
+                }
+                if (event.type === Events.FRAME_PLAY_END) {
+                    cb();
+                }
             });
         }
 

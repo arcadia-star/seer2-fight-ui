@@ -7,6 +7,7 @@ import flash.display.Stage;
 import flash.events.Event;
 import flash.events.IEventDispatcher;
 import flash.events.IOErrorEvent;
+import flash.events.SecurityErrorEvent;
 import flash.external.ExternalInterface;
 import flash.media.Sound;
 import flash.net.URLLoader;
@@ -25,34 +26,20 @@ public class Utils {
         }
     }
 
-    private static const waiting:Array = [];
-    private static var loading:int = 0;
-
-    private static function loadNext():void {
-        loading--;
-        var next:* = waiting.shift();
-        if (next) {
-            load(next.url, next.cb, next.onError);
-        }
-    }
-
-    public static function load(url:String, cb:Function, onError:Function = null):void {
-        if (loading > 20) {
-            waiting.push({url: url, cb: cb, onError: onError});
-            return;
-        }
-        loading++;
+    public static function load(url:String, cb:Function, onError:Function = null):Loader {
         var loader:Loader = new Loader();
         var contentLoaderInfo:LoaderInfo = loader.contentLoaderInfo;
         contentLoaderInfo.addEventListener(Event.COMPLETE, function (event:Event):void {
-            async(loadNext);
             cb(contentLoaderInfo)
         });
         contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, function (event:Event):void {
-            async(loadNext);
+            onError && onError(event)
+        });
+        contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function (event:Event):void {
             onError && onError(event)
         });
         loader.load(new URLRequest(url));
+        return loader;
     }
 
     public static function loadText(url:String, cb:Function, onError:Function = null):void {
@@ -64,6 +51,9 @@ public class Utils {
         loader.addEventListener(IOErrorEvent.IO_ERROR, function (event:Event):void {
             onError && onError(event)
         });
+        loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function (event:Event):void {
+            onError && onError(event)
+        });
         loader.load(new URLRequest(url));
     }
 
@@ -73,6 +63,9 @@ public class Utils {
             cb(sound)
         });
         sound.addEventListener(IOErrorEvent.IO_ERROR, function (event:Event):void {
+            onError && onError(event)
+        });
+        sound.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function (event:Event):void {
             onError && onError(event)
         });
         sound.load(new URLRequest(url));

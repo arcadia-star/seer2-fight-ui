@@ -1,4 +1,6 @@
 package animation.layer {
+import animation.event.Events;
+
 import com.greensock.TweenLite;
 import com.greensock.easing.Strong;
 
@@ -87,6 +89,7 @@ public class PetLayer extends Sprite {
                     if (!checkVersion(version)) {
                         return;
                     }
+                    cb && cb(Events.frameMoveHit());
                     if (FighterActionType.superAtk().indexOf(moveLabel) < 0) {
                         soundLayer.playSkillSound(moveData.soundUrl);
                     }
@@ -130,7 +133,7 @@ public class PetLayer extends Sprite {
                 });
             }
         ], function ():void {
-            cb && cb();
+            cb && cb(Events.framePlayEnd());
         });
     }
 
@@ -164,7 +167,7 @@ public class PetLayer extends Sprite {
                 if (!checkVersion(version)) {
                     return;
                 }
-                cb();
+                cb && cb(Events.framePlayEnd());
             })
             return;
         }
@@ -197,7 +200,7 @@ public class PetLayer extends Sprite {
                 lazyApplyPet(FightSide.RIGHT, right, rightLabel, change.right, version, resolve);
             }
         ], function ():void {
-            cb && cb();
+            cb && cb(Events.framePlayEnd());
         });
     }
 
