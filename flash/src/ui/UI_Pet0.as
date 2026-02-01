@@ -7,6 +7,7 @@ public class UI_Pet0 {
     [Embed(source="/assets/pet0.swf", mimeType="application/octet-stream")]
     private static var Pet0SwfBytes:Class;
 
+    [Embed(source="/assets/pet0.swf", symbol="pet")]
     public static var Pet0:Class;
 
     {

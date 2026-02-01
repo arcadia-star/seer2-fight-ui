@@ -44,7 +44,7 @@ public class DemoPlayer extends Sprite {
 
     private function play():void {
         var frame:FrameData;
-        Utils.loadText(config.playUrl || "../demo/mock.json", function (data:String):void {
+        Utils.loadText(config.playUrl || "../../public/demo/mock.json", function (data:String):void {
             var framesData:FramesData = FramesData.from(Utils.jsonParse(data));
             SoundLayer.updateGlobalSound(framesData.globalVolume / 100);
             SoundLayer.updateMapSound(framesData.mapVolume / 100);

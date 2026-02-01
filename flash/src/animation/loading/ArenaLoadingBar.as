@@ -1,5 +1,6 @@
 package animation.loading {
 import animation.common.IconDisplay;
+import animation.common.PetIconDisplay;
 
 import data.pet.PetData;
 import data.pet.TeamData;
@@ -36,7 +37,7 @@ public class ArenaLoadingBar extends Sprite {
 
     private var _leftLevelTxt:TextField;
 
-    private var _leftIconDisplayer:IconDisplay;
+    private var _leftIconDisplayer:PetIconDisplay;
 
     private var _leftPetTypeIcon:IconDisplay;
 
@@ -46,7 +47,7 @@ public class ArenaLoadingBar extends Sprite {
 
     private var _rightLevelTxt:TextField;
 
-    private var _rightIconDisplayer:IconDisplay;
+    private var _rightIconDisplayer:PetIconDisplay;
 
     private var _rightPetTypeIcon:IconDisplay;
 
@@ -167,7 +168,7 @@ public class ArenaLoadingBar extends Sprite {
         this._leftFighterNameTxt.text = param1.name;
         this._leftLevelTxt.text = param1.level.toString();
         if (this._leftIconDisplayer == null) {
-            this._leftIconDisplayer = new IconDisplay();
+            this._leftIconDisplayer = new PetIconDisplay();
         }
         if (this._leftPetTypeIcon == null) {
             this._leftPetTypeIcon = new IconDisplay();
@@ -200,7 +201,7 @@ public class ArenaLoadingBar extends Sprite {
         this._rightFighterNameTxt.text = param1.name;
         this._rightLevelTxt.text = param1.level.toString();
         if (this._rightIconDisplayer == null) {
-            this._rightIconDisplayer = new IconDisplay();
+            this._rightIconDisplayer = new PetIconDisplay();
         }
         if (this._rightPetTypeIcon == null) {
             this._rightPetTypeIcon = new IconDisplay();

@@ -1,4 +1,8 @@
 package utils {
+import animation.ext.S1Pet;
+
+import flash.display.MovieClip;
+
 import ui.IconFallback;
 import ui.SkillEffect0;
 import ui.UI_Pet0;
@@ -17,7 +21,19 @@ public class CacheUtils {
     }
 
     public static function loadPet(url:String, cb:Function):void {
-        CacheUtils0.loadClass(url, cb, "pet", UI_Pet0.Pet0);
+        var EXT:String = S1Pet.EXT;
+        var pet0:Class = UI_Pet0.Pet0;
+        if (url.slice(0, EXT.length) === EXT) {
+            CacheUtils0.loadClass(url.slice(EXT.length), function (mc:MovieClip):void {
+                if (mc is pet0) {
+                    cb(mc);
+                    return;
+                }
+                cb(new S1Pet(mc));
+            }, "pet", pet0);
+            return;
+        }
+        CacheUtils0.loadClass(url, cb, "pet", pet0);
     }
 
     public static function loadMapContent(url:String, cb:Function):void {
@@ -65,8 +81,8 @@ class CacheUtils0 {
     /**
      * 指定时间内未触发加载时快速失败
      */
-    public static function loadResource(url:String, cb:Function, onError:Function = null):void {
-        if (loading > 20) {
+    public static function loadResource(url:String, cb:Function, onError:Function = null, max:int = 100):void {
+        if (loading > max) {
             waiting.push({url: url, cb: cb, onError: onError});
             return;
         }
