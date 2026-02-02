@@ -20,7 +20,7 @@
           "pets": [
             {
               "pid": 1,
-              "petIcon": "http://seer.61.com.tw/resource/pet/head/5000.swf",
+              "petIcon": "http://seer.61.com/resource/pet/head/5000.swf",
               "petSwf": "ext-s1://https://seer.61.com/resource/fightResource/pet/swf/5000.swf",
               "petSound": "http://seer2.61.com/res/pet/sound/10.mp3",
               "name": "PetOne",
