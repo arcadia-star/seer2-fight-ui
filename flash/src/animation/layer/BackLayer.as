@@ -31,8 +31,8 @@ public class BackLayer extends Sprite {
             if (_url === url) {
                 DisplayObjectUtil.removeFromParent(_sprite);
                 _sprite = obj;
-                _front = _sprite["front_mc"];
-                _ground = _sprite["ground_mc"];
+                _front = _sprite["front_mc"] || new Sprite;
+                _ground = _sprite["ground_mc"] || new Sprite;
 
                 addChild(_sprite);
             }
