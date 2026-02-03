@@ -4,8 +4,9 @@ import animation.ext.S1Pet;
 import flash.display.MovieClip;
 
 import ui.IconFallback;
+import ui.PetFallback;
 import ui.SkillEffect0;
-import ui.UI_Pet0;
+import ui.UI_Map0;
 import ui.sound.MapSound0;
 import ui.sound.PetSound0;
 import ui.sound.SkillSound0;
@@ -22,22 +23,21 @@ public class CacheUtils {
 
     public static function loadPet(url:String, cb:Function):void {
         var EXT:String = S1Pet.EXT;
-        var pet0:Class = UI_Pet0.Pet0;
         if (url.slice(0, EXT.length) === EXT) {
             CacheUtils0.loadClass(url.slice(EXT.length), function (mc:MovieClip):void {
-                if (mc is pet0) {
+                if (mc is PetFallback) {
                     cb(mc);
                     return;
                 }
                 cb(new S1Pet(mc));
-            }, "pet", pet0);
+            }, "pet", PetFallback);
             return;
         }
-        CacheUtils0.loadClass(url, cb, "pet", pet0);
+        CacheUtils0.loadClass(url, cb, "pet", PetFallback);
     }
 
     public static function loadMapContent(url:String, cb:Function):void {
-        CacheUtils0.loadContent(url, cb, IconFallback);
+        CacheUtils0.loadContent(url, cb, UI_Map0);
     }
 
     public static function loadSkillSound(url:String, cb:Function):void {

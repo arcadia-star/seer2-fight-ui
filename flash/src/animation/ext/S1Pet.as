@@ -4,37 +4,23 @@ import enums.FighterActionType;
 import flash.display.DisplayObject;
 import flash.display.MovieClip;
 import flash.events.Event;
-import flash.text.TextField;
-import flash.utils.clearInterval;
-import flash.utils.setInterval;
+
+import ui.PetFallback;
 
 public class S1Pet extends MovieClip {
     public static const EXT:String = "ext-s1://";
 
     private var _origin:MovieClip;
-    private var _text:TextField;
 
     public function S1Pet(origin:MovieClip) {
         this._origin = origin;
-        addChild(_origin);
         _origin.x = 180;
         _origin.y = 250;
-        _text = new TextField();
-        addChild(_text);
-        _text.y = _origin.y - 50;
-        _text.textColor = 0xff0000;
+        addChild(_origin);
 
         gotoAndStop(FighterActionType.IDLE);
 
-        var interval:uint = setInterval(function ():void {
-            if (!_origin.stage) {
-                clearInterval(interval);
-                return;
-            }
-            var ch0:MovieClip = _origin.getChildAt(0) as MovieClip;
-            _text.text = _origin.currentFrame + "/" + _origin.totalFrames + "," +
-                    (ch0 ? (ch0.currentFrame + "/" + ch0.totalFrames) : "");
-        }, 100);
+        addChild(PetFallback.showPetFrames(_origin));
     }
 
     override public function get currentLabels():Array {
