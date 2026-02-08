@@ -35,6 +35,10 @@ export default defineConfig({
                 {
                     src: 'node_modules/@ruffle-rs/ruffle/**/*',
                     dest: 'ruffle'
+                },
+                {
+                    src: 'src/_fight/**/*',
+                    dest: '_fight'
                 }
             ]
         }),

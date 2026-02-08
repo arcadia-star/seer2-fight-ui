@@ -7,9 +7,10 @@ export interface FightPlayerProps {
     frames: Frames;
     idx: number;
     onChangeIdx: ((idx: number) => void);
+    onOperate?: ((data: never) => void);
 }
 
-export function FightPlayer({ruffleRef, frames, idx, onChangeIdx}: FightPlayerProps) {
+export function FightPlayer({ruffleRef, frames, idx, onChangeIdx, onOperate}: FightPlayerProps) {
     const ready = useRef(false);
     const version = useRef(0);
     useEffect(() => {
@@ -32,6 +33,9 @@ export function FightPlayer({ruffleRef, frames, idx, onChangeIdx}: FightPlayerPr
             const versionSnapshot = version.current++;
             playerEl.callFlash("playFrame", frame, versionSnapshot);
             playerEl.updateCallback(e => {
+                if (e.type === 'operate') {
+                    onOperate?.(e.data);
+                }
                 if (versionSnapshot !== e.version) {
                     return;
                 }
@@ -51,7 +55,7 @@ export function FightPlayer({ruffleRef, frames, idx, onChangeIdx}: FightPlayerPr
                 }
             });
         }
-    }, [ruffleRef, frames, idx, onChangeIdx]);
+    }, [ruffleRef, frames, idx, onChangeIdx, onOperate]);
     return <div className="w-[1200px] h-[660px] relative">
         {!ready.current && <div>播放器初始化中，请稍后</div>}
         <RufflePlayer ref={ruffleRef} url={"FightPlayer.swf?silence=true"}/>
