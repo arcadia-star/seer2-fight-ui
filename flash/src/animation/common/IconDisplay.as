@@ -50,7 +50,7 @@ public class IconDisplay extends Sprite {
     }
 
     protected function applyChange():void {
-        DisplayObjectUtil.setSize(_icon, _maxWidth, _maxHeight)
+        DisplayObjectUtil.setSize(_icon, _maxWidth, _maxHeight);
     }
 }
 }

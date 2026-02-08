@@ -12,6 +12,8 @@ public class HorizontalDrifting {
 
     private var _target:DisplayObject;
 
+    private var _targetRecordX:int;
+
     private var _targetBoundary:Rectangle;
 
     private var _direction:int = 0;
@@ -36,6 +38,7 @@ public class HorizontalDrifting {
             _loc3_ = this._targetBoundary.right + MOVE_DISTANCE - this._target.width;
             _loc3_ = _loc3_ > 0 ? 0 : _loc3_;
         }
+        this._targetRecordX = this._target.x;
         TweenLite.to(this._target, 1.5, {
             "x": _loc3_,
             "ease": Expo.easeOut,
@@ -57,6 +60,8 @@ public class HorizontalDrifting {
     }
 
     public function dispose():void {
+        //todo 影响效果，暂时不修改
+        //this._target.x = _targetRecordX;
         TweenLite.killTweensOf(this);
         this._target = null;
         this._targetBoundary = null;

@@ -1,7 +1,10 @@
 package utils {
+import animation.ext.ImgPet;
 import animation.ext.S1Pet;
 
+import flash.display.Bitmap;
 import flash.display.MovieClip;
+import flash.display.Sprite;
 
 import ui.IconFallback;
 import ui.PetFallback;
@@ -11,9 +14,14 @@ import ui.sound.MapSound0;
 import ui.sound.PetSound0;
 import ui.sound.SkillSound0;
 
-public class CacheUtils {
+public class CacheUtils extends Sprite {
+    public static const PET_EXT_S1:String = "ext-s1://";
+    public static const EXT_IMAGE:String = "ext-img://";
 
     public static function loadItem(url:String, cb:Function):void {
+        if (mayLoadAsExtImg(url, cb, IconFallback)) {
+            return;
+        }
         CacheUtils0.loadClass(url, cb, "item", IconFallback);
     }
 
@@ -22,21 +30,19 @@ public class CacheUtils {
     }
 
     public static function loadPet(url:String, cb:Function):void {
-        var EXT:String = S1Pet.EXT;
-        if (url.slice(0, EXT.length) === EXT) {
-            CacheUtils0.loadClass(url.slice(EXT.length), function (mc:MovieClip):void {
-                if (mc is PetFallback) {
-                    cb(mc);
-                    return;
-                }
-                cb(new S1Pet(mc));
-            }, "pet", PetFallback);
+        if (mayLoadAsExtImg(url, cb, PetFallback, ImgPet)) {
+            return;
+        }
+        if (mayLoadAsExtPet(url, cb, PetFallback, S1Pet)) {
             return;
         }
         CacheUtils0.loadClass(url, cb, "pet", PetFallback);
     }
 
     public static function loadMapContent(url:String, cb:Function):void {
+        if (mayLoadAsExtImg(url, cb, UI_Map0)) {
+            return;
+        }
         CacheUtils0.loadContent(url, cb, UI_Map0);
     }
 
@@ -50,6 +56,37 @@ public class CacheUtils {
 
     public static function loadMapSound(url:String, cb:Function):void {
         CacheUtils0.loadSound(url, cb, MapSound0);
+    }
+
+    private static function mayLoadAsExtImg(url:String, cb:Function, fallback:Class, wrapper:Class = null):Boolean {
+        var EXT:String = EXT_IMAGE;
+        if (url.slice(0, EXT.length) === EXT) {
+            CacheUtils0.loadContent(url.slice(EXT.length), function (content:*):void {
+                if (content is fallback) {
+                    cb(content);
+                    return;
+                }
+                var bitmap:Bitmap = new Bitmap(content.bitmapData.clone());
+                cb(wrapper ? new wrapper(bitmap) : bitmap);
+            }, fallback);
+            return true;
+        }
+        return false;
+    }
+
+    private static function mayLoadAsExtPet(url:String, cb:Function, fallback:Class, wrapper:Class):Boolean {
+        var EXT:String = PET_EXT_S1;
+        if (url.slice(0, EXT.length) === EXT) {
+            CacheUtils0.loadClass(url.slice(EXT.length), function (mc:MovieClip):void {
+                if (mc is fallback) {
+                    cb(mc);
+                    return;
+                }
+                cb(new wrapper(mc));
+            }, "pet", fallback);
+            return true;
+        }
+        return false;
     }
 }
 }

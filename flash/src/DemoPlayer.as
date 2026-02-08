@@ -55,6 +55,7 @@ public class DemoPlayer extends Sprite {
                 var pet:PetData = PetData.clone(seedPet);
                 var number:Number = NumberUtil.random(1, 1000);
                 pet.pid = pid;
+                pet.name = "R" + number;
                 pet.position = 0;
                 pet.petIcon = "http://seer2.61.com/res/pet/icon/" + number + ".swf";
                 pet.petSwf = "http://seer2.61.com/res/pet/fight/" + number + ".swf";

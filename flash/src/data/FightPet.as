@@ -3,7 +3,11 @@ import enums.FightSide;
 
 import flash.display.MovieClip;
 
+import ui.PetFallback;
+
 public class FightPet {
+    public static const UNREACHABLE_URL:String = "unreachable";
+
     public var x:int;
     public var y:int;
     public var scaleX:int;
@@ -22,8 +26,9 @@ public class FightPet {
             fighter.y = 50;
             fighter.scaleX = -1;
         }
-        fighter.url = null;
-        fighter.pet = null;
+        fighter.url = UNREACHABLE_URL;
+        fighter.pet = new PetFallback;
+        fighter.pet.visible = false;
         return fighter;
     }
 }

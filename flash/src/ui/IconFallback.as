@@ -22,6 +22,7 @@ public dynamic class IconFallback extends MovieClip {
                 this.x += this.width;
             }
         } catch (e:*) {
+            //ignore
         }
     }
 }

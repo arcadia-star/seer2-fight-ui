@@ -40,6 +40,8 @@ public class PetLayer extends Sprite {
         this.fighters.push(FightPet.build(FightSide.LEFT));
         this.fighters.push(FightPet.build(FightSide.RIGHT));
         addChild(new Sprite());
+        addChild(fighters[FightSide.LEFT].pet);
+        addChild(fighters[FightSide.RIGHT].pet);
     }
 
     public function initData(frame:FrameData, cb:Function):void {
@@ -79,6 +81,7 @@ public class PetLayer extends Sprite {
                     if (!checkVersion(version)) {
                         return;
                     }
+                    //todo 是否切换petSwf
                     updateStatus(atk, buildIdleLabel(pets[atkSide]), version);
                     resolve();
                     atk.dispatchEvent(new Event("hit"))
@@ -127,6 +130,7 @@ public class PetLayer extends Sprite {
                         if (!checkVersion(version)) {
                             return;
                         }
+                        //todo 是否切换petSwf
                         updateStatus(def, buildIdleLabel(pets[defSide]), version);
                         resolve();
                     })
@@ -159,7 +163,7 @@ public class PetLayer extends Sprite {
                     }
                     var fightPet:FightPet = fighters[FightSide.RIGHT];
                     if (fightPet.pet) {
-                        fightPet.url = null;
+                        fightPet.url = FightPet.UNREACHABLE_URL;
                         fightPet.pet.visible = false;
                     }
                 }, version);

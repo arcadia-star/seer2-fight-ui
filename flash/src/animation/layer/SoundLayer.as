@@ -82,7 +82,7 @@ public class SoundLayer {
                 return
             }
             clearSound();
-            currentMapSound = sound.play();
+            currentMapSound = sound.play(0, int.MAX_VALUE);
             currentMapSound.soundTransform = new SoundTransform(_mapSound);
         });
     }

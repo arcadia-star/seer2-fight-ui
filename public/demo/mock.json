@@ -101,7 +101,7 @@
                 {
                   "id": 2,
                   "name": "印记B",
-                  "icon": "http://seer2.61.com/res/skill/sideEffect/3003.swf",
+                  "icon": "ext-img://https://cdn.deepseek.com/chat/icon.png",
                   "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
                   "count": 1
                 },

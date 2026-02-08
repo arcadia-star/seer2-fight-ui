@@ -6,5 +6,14 @@ public class OperateData {
     public var capsule:uint;
     public var escape:uint;
 
+    public function toObject():* {
+        return {
+            skill: this.skill,
+            pet: this.pet,
+            item: this.item,
+            capsule: this.capsule,
+            escape: this.escape
+        }
+    }
 }
 }

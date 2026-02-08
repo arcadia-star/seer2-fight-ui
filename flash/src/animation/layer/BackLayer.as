@@ -31,15 +31,21 @@ public class BackLayer extends Sprite {
             if (_url === url) {
                 DisplayObjectUtil.removeFromParent(_sprite);
                 _sprite = obj;
-                _front = _sprite["front_mc"] || new Sprite;
-                _ground = _sprite["ground_mc"] || new Sprite;
-
+                try {
+                    _front = _sprite["front_mc"];
+                    _ground = _sprite["ground_mc"];
+                } catch (e:*) {
+                    //ignore
+                }
                 addChild(_sprite);
             }
         })
     }
 
     public function drift(side:int):void {
+        if (!_ground) {
+            return;
+        }
         if (side == FightSide.LEFT) {
             ArenaUtil.startDrift(DriftDirection.LEFT, _ground);
         } else {
@@ -49,6 +55,9 @@ public class BackLayer extends Sprite {
     }
 
     public function vibrate():void {
+        if (!_ground || !_front) {
+            return;
+        }
         ArenaUtil.startVibrate(_ground);
         ArenaUtil.startVibrate(_front);
     }

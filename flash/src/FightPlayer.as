@@ -1,4 +1,5 @@
 package {
+import animation.event.OperateEvent;
 import animation.layer.SoundLayer;
 
 import data.Config;
@@ -26,7 +27,10 @@ public class FightPlayer extends Sprite {
         Utils.addCallbackJs("updateMapSound", updateMapSound);
         Utils.async(function ():void {
             callJs('init')
-        })
+        });
+        framePlayer.addEventListener(OperateEvent.OPERATE_END, function (event:OperateEvent):void {
+            callJs('operate', event.data.toObject());
+        });
     }
 
     public function playFrame(frame:Object, version:Object):void {

@@ -2,6 +2,15 @@ export type int = number;
 export type String = string;
 export type Boolean = boolean;
 
+//eg: <url, item swf>
+//eg: ext-img://<url, image>
+export type IconUrl = String;
+
+//eg: <url, seer2 pet fight swf>
+//eg: ext-s1://<url, seer pet fight swf>
+//eg: ext-img://<url, image>
+export type PetSwfUrl = String;
+
 export const enum Side {
     Left = 1,
     Right = 2,
@@ -46,7 +55,7 @@ export type Arena = {
     round: int;
     mapSwf: String;
     mapSound: String;
-    weatherIcon: String;
+    weatherIcon: IconUrl;
     weatherTips: String;
 }
 export type Team = {
@@ -56,12 +65,12 @@ export type Team = {
 }
 export type Pet = {
     pid: int;
-    petIcon: String;
-    petSwf: String;
+    petIcon: IconUrl;
+    petSwf: PetSwfUrl;
     petSound: String;
     name: String;
     level: int;
-    typeIcon: String;
+    typeIcon: IconUrl;
     position: Position;
     alive: int;
     anger: int;
@@ -83,7 +92,7 @@ export type Skill = {
     power: int;
     anger: int;
     category: String;
-    typeIcon: String;
+    typeIcon: IconUrl;
     tips: String;
     enable: Boolean;
 }
@@ -91,14 +100,14 @@ export type Buff = {
     id: int;
     name: String;
     count: int;
-    icon: String;
+    icon: IconUrl;
     tips: String;
 }
 export type Item = {
     id: int;
     name: String;
     count: int;
-    icon: String;
+    icon: IconUrl;
     tips: String;
 }
 export type Move = {

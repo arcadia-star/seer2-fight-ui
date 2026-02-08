@@ -8,8 +8,6 @@ import flash.events.Event;
 import ui.PetFallback;
 
 public class S1Pet extends MovieClip {
-    public static const EXT:String = "ext-s1://";
-
     private var _origin:MovieClip;
 
     public function S1Pet(origin:MovieClip) {
