@@ -9,7 +9,10 @@ public class Config {
     public var silence:Boolean;
     public var loading:Boolean;
     public var playUrl:String;
+
     public static var isHttps:Boolean;
+
+    public static const HTTPS:String = "https://";
 
     public static function from(source:Sprite):Config {
         var config:Config = new Config();
@@ -21,7 +24,7 @@ public class Config {
         config.silence = params["silence"] || false;
         config.loading = params["loading"] || false;
         config.playUrl = params["playUrl"];
-        isHttps = loaderInfo.loaderURL.slice(0, "https://".length) === "https://";
+        isHttps = loaderInfo.loaderURL.slice(0, HTTPS.length) === HTTPS;
         return config;
     }
 }
