@@ -136,5 +136,17 @@ public class FramePlayer extends Sprite {
             ;
         });
     }
+
+    public function updateUiStyle(uiStyle:int):void {
+        uiLayer.updateUiStyle(uiStyle);
+    }
+
+    public function updateGlobalSound(sound:Number):void {
+        soundLayer.updateGlobalSound(sound);
+    }
+
+    public function updateMapSound(sound:Number):void {
+        soundLayer.updateMapSound(sound);
+    }
 }
 }

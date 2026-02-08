@@ -1,11 +1,13 @@
 package data.pet {
 public class FramesData {
+    public var uiStyle:int;
     public var globalVolume:int;
     public var mapVolume:int;
     public var frames:Vector.<FrameData>;
 
     public static function from(obj:Object):FramesData {
         var target:FramesData = new FramesData;
+        target.uiStyle = obj.uiStyle;
         target.globalVolume = obj.globalVolume;
         target.mapVolume = obj.mapVolume;
         target.frames = transFrame(obj.frames);

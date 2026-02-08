@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useRef} from "react";
-import type {EndFrame, EventFrame, Frame, Frames, MoveFrame, SleepFrame} from "@/types";
+import {EndFrame, EventFrame, Frame, Frames, MoveFrame, SleepFrame, UiStyle} from "@/types";
 import {FrameEditor, getFrameKind} from "@/editors/FrameEditor";
 import {Button} from "@/components/ui/button";
 import {Card, CardContent, CardHeader} from "@/components/ui/card";
@@ -13,6 +13,7 @@ import {Copy, FileDown, FileUp, Plus, Trash2} from "lucide-react";
 import {FightPlayer} from "@/player/fight-player.tsx";
 import {RufflePlayerEl} from "@/components/ruffle-player.tsx";
 import mock from '@/demo.json'
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
 
 function copyTextToClipboard(text: string): Promise<void> {
     if (navigator.clipboard?.writeText) {
@@ -41,6 +42,11 @@ const FRAME_KIND_LABELS: Record<ReturnType<typeof getFrameKind>, string> = {
     change: "Change",
     data: "Data",
 };
+
+const uiStyleOptions = [
+    {value: UiStyle.Classic, label: "经典"},
+    {value: UiStyle.Spt, label: "SPT"},
+];
 
 function getFrameDisplayName(frame: Frame): string {
     if (frame._name?.trim()) return frame._name;
@@ -149,6 +155,26 @@ export function FramesEditor() {
             <aside className="flex h-full w-72 min-w-0 flex-col overflow-hidden border-r bg-card shrink-0">
                 <div className="shrink-0 border-b p-4 space-y-3">
                     <h1 className="text-sm font-semibold">Frames 生成工具</h1>
+                    <div className="space-y-1.5">
+                        <Label className="text-xs">UI风格</Label>
+                        <Select
+                            value={"" + (data.uiStyle || 0)}
+                            onValueChange={(v) =>
+                                setData({...data, uiStyle: Number(v) || 0})
+                            }
+                        >
+                            <SelectTrigger className="w-full">
+                                <SelectValue/>
+                            </SelectTrigger>
+                            <SelectContent>
+                                {uiStyleOptions.map((opt) => (
+                                    <SelectItem key={opt.value} value={"" + opt.value}>
+                                        {opt.label}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
                     <div className="space-y-1.5">
                         <Label className="text-xs">全局音量</Label>
                         <Input

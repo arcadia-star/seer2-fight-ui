@@ -262,5 +262,18 @@ public class DisplayUtil {
             }
         }
     }
+
+    public static function replaceChild(child:*, target:*):* {
+        var parent:DisplayObjectContainer = child.parent;
+        var index:int = parent.getChildIndex(child);
+        parent.addChildAt(target, index);
+        parent.removeChild(child);
+        return target;
+    }
+
+    public static function setChildPosition(param1:DisplayObject, param2:int, param3:int):void {
+        param1.x = param2;
+        param1.y = param3;
+    }
 }
 }

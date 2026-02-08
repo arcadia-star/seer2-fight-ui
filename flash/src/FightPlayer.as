@@ -1,6 +1,5 @@
 package {
 import animation.event.OperateEvent;
-import animation.layer.SoundLayer;
 
 import data.Config;
 import data.pet.FrameData;
@@ -23,6 +22,7 @@ public class FightPlayer extends Sprite {
         addChild(framePlayer);
 
         Utils.addCallbackJs("playFrame", playFrame);
+        Utils.addCallbackJs("updateUiStyle", updateUiStyle);
         Utils.addCallbackJs("updateGlobalSound", updateGlobalSound);
         Utils.addCallbackJs("updateMapSound", updateMapSound);
         Utils.async(function ():void {
@@ -41,12 +41,16 @@ public class FightPlayer extends Sprite {
         })
     }
 
+    public function updateUiStyle(uiStyle:int):void {
+        framePlayer.updateUiStyle(uiStyle);
+    }
+
     public function updateGlobalSound(volume:Number):void {
-        SoundLayer.updateGlobalSound(volume / 100);
+        framePlayer.updateGlobalSound(volume / 100);
     }
 
     public function updateMapSound(volume:Number):void {
-        SoundLayer.updateMapSound(volume / 100);
+        framePlayer.updateMapSound(volume / 100);
     }
 
     public function callJs(type0:String, data:Object = null, version:Object = null):void {

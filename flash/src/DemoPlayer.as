@@ -2,7 +2,6 @@ package {
 import animation.event.Events;
 import animation.event.OperateEvent;
 import animation.layer.AlertLayer;
-import animation.layer.SoundLayer;
 
 import data.Config;
 import data.pet.ChangeData;
@@ -46,8 +45,9 @@ public class DemoPlayer extends Sprite {
         var frame:FrameData;
         Utils.loadText(config.playUrl || "../../public/demo/mock.json", function (data:String):void {
             var framesData:FramesData = FramesData.from(Utils.jsonParse(data));
-            SoundLayer.updateGlobalSound(framesData.globalVolume / 100);
-            SoundLayer.updateMapSound(framesData.mapVolume / 100);
+            framePlayer.updateUiStyle(framesData.uiStyle);
+            framePlayer.updateGlobalSound(framesData.globalVolume / 100);
+            framePlayer.updateMapSound(framesData.mapVolume / 100);
             frame = framesData.frames[0];
             var seedPet:PetData = PetData.clone(frame.data.left.master);
 

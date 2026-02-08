@@ -34,7 +34,13 @@ export const enum MoveCategory {
     Fusion = '合体',
 }
 
+export const enum UiStyle {
+    Classic = 0,
+    Spt = 1,
+}
+
 export type Frames = {
+    uiStyle: UiStyle;
     globalVolume: int;
     mapVolume: int;
     frames?: Frame[];

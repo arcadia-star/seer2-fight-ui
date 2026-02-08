@@ -27,6 +27,7 @@ export function FightPlayer({ruffleRef, frames, idx, onChangeIdx}: FightPlayerPr
                 console.log("frame is null");
                 return;
             }
+            playerEl.callFlash("updateUiStyle", frames.uiStyle);
             playerEl.callFlash("updateGlobalSound", frames.globalVolume);
             playerEl.callFlash("updateMapSound", frames.mapVolume);
             const versionSnapshot = version.current++;

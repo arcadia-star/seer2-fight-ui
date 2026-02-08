@@ -9,6 +9,8 @@ import flash.display.Sprite;
 
 import ui.status.New_UI_FighterTitle;
 
+import utils.an.DisplayUtil;
+
 public class FightStatusPanel extends Sprite {
 
 
@@ -41,24 +43,16 @@ public class FightStatusPanel extends Sprite {
     public function FightStatusPanel() {
         super();
         this._leftCapsuleBar = new CapsuleBar();
-        _leftCapsuleBar.x = 6;
-        _leftCapsuleBar.y = 112;
         addChild(this._leftCapsuleBar);
         this._rightCapsuleBar = new CapsuleBar();
-        _rightCapsuleBar.x = 1123;
-        _rightCapsuleBar.y = 112;
         addChild(this._rightCapsuleBar);
         _leftMainFighterBar = new FighterStatusBar(FightSide.LEFT);
         addChild(_leftMainFighterBar);
         _rightMainFighterBar = new FighterStatusBar(FightSide.RIGHT);
         addChild(_rightMainFighterBar);
         this._leftBuffIconBar = new BuffIconBar(FightSide.LEFT);
-        _leftBuffIconBar.x = 174;
-        _leftBuffIconBar.y = 52;
         addChild(this._leftBuffIconBar);
         this._rightBuffIconBar = new BuffIconBar(FightSide.RIGHT);
-        _rightBuffIconBar.x = 994;
-        _rightBuffIconBar.y = 52;
         addChild(this._rightBuffIconBar);
         this._leftSkillBubble = new SkillBubble(FightSide.LEFT);
         addChild(this._leftSkillBubble);
@@ -76,7 +70,9 @@ public class FightStatusPanel extends Sprite {
         this._weatherDisplay = new FightWeatherDisplay();
         _weatherDisplay.x = 551;
         _weatherDisplay.y = 40;
-        addChild(_weatherDisplay)
+        addChild(_weatherDisplay);
+        this.beforeLayout();
+        this.layout();
     }
 
     public function initData(param1:ArenaData):void {
@@ -92,7 +88,6 @@ public class FightStatusPanel extends Sprite {
         this.updateTitle();
         this._weatherDisplay.initData(param1.weatherIcon, param1.weatherTips);
     }
-
 
     private function updateTitle():void {
         var _loc1_:int = _arenaData.round;
@@ -118,5 +113,18 @@ public class FightStatusPanel extends Sprite {
             this._rightSkillBubble.setSkillName(param2);
         }
     }
+
+    protected function beforeLayout():void {
+    }
+
+    protected function layout():void {
+        var setChildPosition:Function = DisplayUtil.setChildPosition;
+        setChildPosition(_rightMainFighterBar, 1200, 0);
+        setChildPosition(_leftBuffIconBar, 174, 52);
+        setChildPosition(_rightBuffIconBar, 994, 52);
+        setChildPosition(_leftCapsuleBar, 6, 112);
+        setChildPosition(_rightCapsuleBar, 1123, 112);
+    }
+
 }
 }
