@@ -1,5 +1,7 @@
 package animation.layer {
 import animation.hub.FightControlPanel;
+import animation.status.Double2v1FightStatusPanel;
+import animation.status.DoubleFightStatusPanel;
 import animation.status.FightStatusPanel;
 import animation.status.SPTFightStatusPanel;
 
@@ -47,6 +49,10 @@ public class UILayer extends Sprite {
         _uiStyle = uiStyle;
         if (_uiStyle === 1) {
             this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new SPTFightStatusPanel());
+        } else if (_uiStyle === 2) {
+            this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new DoubleFightStatusPanel());
+        } else if (_uiStyle === 3) {
+            this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new Double2v1FightStatusPanel());
         } else {
             this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new FightStatusPanel());
         }

@@ -24,6 +24,7 @@ export const enum ChangeType {
 export const enum Position {
     Default = 0,
     Master = 1,
+    Slave = 2,
 }
 
 export const enum MoveCategory {
@@ -37,6 +38,8 @@ export const enum MoveCategory {
 export const enum UiStyle {
     Classic = 0,
     Spt = 1,
+    Double2v2 = 2,
+    Double2v1 = 3,
 }
 
 export type Frames = {
@@ -139,6 +142,7 @@ export const enum EventType {
     ITEM_ANGER = 4,
     CATCH_FAILED = 5,
     CATCH_SUCCESS = 6,
+    PET_EXCHANGE = 7,
 }
 
 export type BaseEvent = { side: Side; delay: int };
@@ -147,7 +151,8 @@ export type ChangeEvent = BaseEvent & {
     change: int;
 };
 export type CatchEvent = BaseEvent & { type: EventType.CATCH_FAILED | EventType.CATCH_SUCCESS };
-export type Event = ChangeEvent | CatchEvent;
+export type ExchangeEvent = BaseEvent & { type: EventType.PET_EXCHANGE };
+export type Event = ChangeEvent | CatchEvent | ExchangeEvent;
 
 export type Start = {
     urls?: String[];

@@ -13,6 +13,7 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.system.System;
 import flash.text.TextField;
+import flash.utils.setInterval;
 import flash.utils.setTimeout;
 
 import utils.an.DisplayObjectUtil;
@@ -44,8 +45,6 @@ public class FramePlayer extends Sprite {
         petLayer.bgLayer = bgLayer;
         petLayer.fgLayer = fgLayer;
         petLayer.soundLayer = soundLayer;
-
-        showDebug(this);
     }
 
     public function playFrame(frame:FrameData, next:Function):void {
@@ -124,8 +123,8 @@ public class FramePlayer extends Sprite {
         textField.textColor = 0xff0000;
         textField.width = 500;
         framePlayer.addChild(textField);
-        framePlayer.addEventListener(Event.ENTER_FRAME, function (event:Event):void {
-            var _this:FramePlayer = event.target as FramePlayer;
+        setInterval(function ():void {
+            var _this:FramePlayer = framePlayer;
             textField.text = ""
                     + "bgLayer children:" + _this.bgLayer.numChildren + "\n"
                     + "petLayer children:" + _this.petLayer.numChildren + "\n"
@@ -134,7 +133,7 @@ public class FramePlayer extends Sprite {
                     + "faceLayer children:" + _this.faceLayer.numChildren + "\n"
                     + "system memory:" + int(System.totalMemory / 1024 / 1024) + "MB" + "\n"
             ;
-        });
+        }, 1000);
     }
 
     public function updateUiStyle(uiStyle:int):void {

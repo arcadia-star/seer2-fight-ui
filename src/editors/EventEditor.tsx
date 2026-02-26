@@ -22,6 +22,7 @@ const eventTypeOptions = [
     {value: String(EventType.ITEM_ANGER), label: "道具怒气"},
     {value: String(EventType.CATCH_FAILED), label: "捕捉失败"},
     {value: String(EventType.CATCH_SUCCESS), label: "捕捉成功"},
+    {value: String(EventType.PET_EXCHANGE), label: "主次换位"},
 ];
 
 function isChangeEvent(

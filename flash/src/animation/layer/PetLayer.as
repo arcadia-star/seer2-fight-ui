@@ -12,6 +12,7 @@ import data.pet.FrameData;
 import data.pet.MoveData;
 import data.pet.PetData;
 
+import enums.FightPosition;
 import enums.FightSide;
 import enums.FighterActionType;
 import enums.SkillCategoryName;
@@ -26,6 +27,10 @@ import utils.Utils;
 
 public class PetLayer extends Sprite {
     public static const IDLE:String = FighterActionType.IDLE;
+    public static const LEFT_SUB:int = 0;
+    public static const RIGHT_SUB:int = 1;
+    public static const LEFT_MAIN:int = 2;
+    public static const RIGHT_MAIN:int = 3;
     private var fighters:Vector.<FightPet>;
 
     public var bgLayer:BackLayer;
@@ -36,12 +41,13 @@ public class PetLayer extends Sprite {
 
     public function PetLayer() {
         this.fighters = new Vector.<FightPet>();
-        this.fighters.push(null);
-        this.fighters.push(FightPet.build(FightSide.LEFT));
-        this.fighters.push(FightPet.build(FightSide.RIGHT));
-        addChild(new Sprite());
-        addChild(fighters[FightSide.LEFT].pet);
-        addChild(fighters[FightSide.RIGHT].pet);
+        this.fighters.push(FightPet.build(FightSide.LEFT, FightPosition.SUB));
+        this.fighters.push(FightPet.build(FightSide.RIGHT, FightPosition.SUB));
+        this.fighters.push(FightPet.build(FightSide.LEFT, FightPosition.MAIN));
+        this.fighters.push(FightPet.build(FightSide.RIGHT, FightPosition.MAIN));
+        for (var idx:int = 0; idx < fighters.length; idx++) {
+            addChild(fighters[idx].pet);
+        }
     }
 
     public function initData(frame:FrameData, cb:Function):void {
@@ -61,10 +67,10 @@ public class PetLayer extends Sprite {
         var moveSides:Vector.<int> = buildMoveSide(moveData.side);
         var atkSide:int = moveSides[0];
         var defSide:int = moveSides[1];
-        var atk:MovieClip = fighters[atkSide].pet;
-        var def:MovieClip = fighters[defSide].pet;
-        setChildIndex(def, 1);
-        setChildIndex(atk, 2);
+        var atk:MovieClip = fighters[1 + atkSide].pet;
+        var def:MovieClip = fighters[1 + defSide].pet;
+        setChildIndex(def, 2);
+        setChildIndex(atk, 3);
         var moveLabel:String = SkillCategoryName.atkLabel(moveData.category);
         var hitLabel:String = buildHurtLabel(moveData.miss, moveData.critical);
         var pets:Vector.<PetData> = Vector.<PetData>([null, frame.data.left.master, frame.data.right.master]);
@@ -161,7 +167,7 @@ public class PetLayer extends Sprite {
                     if (!checkVersion(version)) {
                         return;
                     }
-                    var fightPet:FightPet = fighters[FightSide.RIGHT];
+                    var fightPet:FightPet = fighters[RIGHT_MAIN];
                     if (fightPet.pet) {
                         fightPet.url = FightPet.UNREACHABLE_URL;
                         fightPet.pet.visible = false;
@@ -173,6 +179,38 @@ public class PetLayer extends Sprite {
                 }
                 cb && cb(Events.framePlayEnd());
             })
+            return;
+        }
+        if (typ === EventData.PET_EXCHANGE) {
+            var main:FightPet = fighters[LEFT_MAIN];
+            var sub:FightPet = fighters[LEFT_SUB];
+            Utils.promiseAll([
+                function (resolve:Function):void {
+                    TweenLite.to(main.pet, 0.5, {
+                        "x": sub.x,
+                        "y": sub.y,
+                        "scaleX": sub.scaleX,
+                        "scaleY": sub.scaleY,
+                        "ease": Strong.easeIn,
+                        "onComplete": resolve
+                    });
+                },
+                function (resolve:Function):void {
+                    TweenLite.to(sub.pet, 0.5, {
+                        "x": main.x,
+                        "y": main.y,
+                        "scaleX": main.scaleX,
+                        "scaleY": main.scaleY,
+                        "ease": Strong.easeIn,
+                        "onComplete": resolve
+                    });
+                }
+            ], function ():void {
+                if (!checkVersion(version)) {
+                    return;
+                }
+                loadFrame(frame, cb, version);
+            });
             return;
         }
         if (typ === EventData.HP_INCREASE) {
@@ -191,17 +229,19 @@ public class PetLayer extends Sprite {
 
     private function loadFrame(frame:FrameData, cb:Function, version:int):void {
         var arenaData:ArenaData = frame.data;
-        var left:PetData = arenaData.left.master;
-        var right:PetData = arenaData.right.master;
-        var leftLabel:String = buildIdleLabel(left);
-        var rightLabel:String = buildIdleLabel(right);
         var change:ChangeData = frame.change || new ChangeData();
         Utils.promiseAll([
             function (resolve:Function):void {
-                lazyApplyPet(FightSide.LEFT, left, leftLabel, change.left, version, resolve);
+                lazyApplyPet(fighters[LEFT_SUB], arenaData.left.slave, 0, version, resolve);
             },
             function (resolve:Function):void {
-                lazyApplyPet(FightSide.RIGHT, right, rightLabel, change.right, version, resolve);
+                lazyApplyPet(fighters[RIGHT_SUB], arenaData.right.slave, 0, version, resolve);
+            },
+            function (resolve:Function):void {
+                lazyApplyPet(fighters[LEFT_MAIN], arenaData.left.master, change.left, version, resolve);
+            },
+            function (resolve:Function):void {
+                lazyApplyPet(fighters[RIGHT_MAIN], arenaData.right.master, change.right, version, resolve);
             }
         ], function ():void {
             cb && cb(Events.framePlayEnd());
@@ -228,10 +268,17 @@ public class PetLayer extends Sprite {
         }
     }
 
-    private function lazyApplyPet(side:int, petData:PetData, status:String, change:int, version:int, resolve:Function):void {
+    private function lazyApplyPet(fighter:FightPet, petData:PetData, change:int, version:int, resolve:Function):void {
+        if (!petData) {
+            fighter.url = FightPet.UNREACHABLE_URL;
+            fighter.pet.visible = false;
+            resolve();
+            return;
+        }
+
         var url:String = petData.petSwf;
         var petSound:String = petData.petSound;
-        var fighter:FightPet = fighters[side];
+        var status:String = buildIdleLabel(petData);
         if (!change && fighter.url === url) {
             updateStatus(fighter.pet, status, version);
             resolve();
@@ -257,7 +304,7 @@ public class PetLayer extends Sprite {
             function petDisappear(exit:MovieClip):void {
                 if (exit) {
                     TweenLite.to(exit, 0.5, {
-                        "x": side == FightSide.LEFT ? -200 : 1160,
+                        "x": fighter.side == FightSide.LEFT ? -200 : 1160,
                         "ease": Strong.easeIn,
                         "onComplete": function ():void {
                             twiceWillRemove(exit);
@@ -272,10 +319,11 @@ public class PetLayer extends Sprite {
                 if (exist) {
                     twiceWillRemove(exist);
                 }
-                addChild(pet);
+                addChildAt(pet, fighter.depth);
                 pet.x = fighter.x;
                 pet.y = fighter.y;
                 pet.scaleX = fighter.scaleX;
+                pet.scaleY = fighter.scaleY;
                 fighter.url = url;
                 fighter.pet = pet;
 
@@ -308,7 +356,7 @@ public class PetLayer extends Sprite {
             }
             //replace
             else if (change === 1) {
-                if (side === FightSide.LEFT) {
+                if (fighter.side === FightSide.LEFT) {
                     petDisappear(exist);
                     fgLayer.playLeftPresent(function ():void {
                         if (!checkVersion(version)) {

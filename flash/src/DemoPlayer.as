@@ -49,7 +49,7 @@ public class DemoPlayer extends Sprite {
             framePlayer.updateGlobalSound(framesData.globalVolume / 100);
             framePlayer.updateMapSound(framesData.mapVolume / 100);
             frame = framesData.frames[0];
-            var seedPet:PetData = PetData.clone(frame.data.left.master);
+            var seedPet:PetData = frame.data.left.master;
 
             function randomPet(pid:int):PetData {
                 var pet:PetData = PetData.clone(seedPet);
@@ -63,11 +63,14 @@ public class DemoPlayer extends Sprite {
             }
 
             frame.data.left.pets = new Vector.<PetData>();
-            frame.data.left.pets.push(PetData.clone(seedPet));
+            frame.data.left.pets.push(seedPet);
             frame.data.left.pets.push(randomPet(101));
             frame.data.left.pets.push(randomPet(102));
             frame.data.left.pets.push(randomPet(103));
             frame.data.left.pets.push(randomPet(104));
+            frame.data.left.pets[0].position = 1;
+            frame.data.left.pets[1].position = 2;
+            frame.data.left.init();
 
             function frameClear():void {
                 frame.move = null;
@@ -108,7 +111,14 @@ public class DemoPlayer extends Sprite {
                     frameData.logs = new Vector.<String>();
                     frameData.logs.push("<font color=\'#ffffff\'>[" + frame.data.round + "]</font><font color=\'#00ffff\'>" + frame.data.left.master.name + "</font><font color=\'#ffffff\'>使用技能</font><font color=\'#ffff00\'>" + skill.name + "</font>");
                     framePlayer.playFrame(frameData, function ():void {
-
+                        frame.move.side = 2;
+                        frame.data.left.master.hp -= 100;
+                        frame.data.left.master.anger += 20;
+                        var frameData:FrameData = FrameData.clone(frame);
+                        frameData.logs = new Vector.<String>();
+                        frameData.logs.push("<font color=\'#ffffff\'>[" + frame.data.round + "]</font><font color=\'#00ffff\'>" + frame.data.right.master.name + "</font><font color=\'#ffffff\'>使用技能</font><font color=\'#ffff00\'>" + skill.name + "</font>");
+                        framePlayer.playFrame(frameData, function ():void {
+                        });
                     });
                 }
                 if (event.data.pet > 0) {
@@ -121,6 +131,7 @@ public class DemoPlayer extends Sprite {
                             pet.position = 0;
                         }
                     }
+                    team.init();
                     frameClear();
                     frame.change = new ChangeData();
                     frame.change.left = 1;
@@ -159,13 +170,18 @@ public class DemoPlayer extends Sprite {
             framePlayer.addEventListener(Events.BTN_MORPH_CLICK, function (event:Event):void {
                 event.stopImmediatePropagation();
                 frameClear();
-                frame.change = new ChangeData();
-                frame.change.left = 2;
-                if (frame.data.left.pets[0].petSwf === "http://seer2.61.com/res/pet/fight/946.swf") {
-                    frame.data.left.pets[0].petSwf = "http://seer2.61.com/res/pet/fight/947.swf"
-                } else if (frame.data.left.pets[0].petSwf === "http://seer2.61.com/res/pet/fight/947.swf") {
-                    frame.data.left.pets[0].petSwf = "http://seer2.61.com/res/pet/fight/946.swf"
-                }
+//                frame.change = new ChangeData();
+//                frame.change.left = 2;
+//                if (frame.data.left.pets[0].petSwf === "http://seer2.61.com/res/pet/fight/946.swf") {
+//                    frame.data.left.pets[0].petSwf = "http://seer2.61.com/res/pet/fight/947.swf"
+//                } else if (frame.data.left.pets[0].petSwf === "http://seer2.61.com/res/pet/fight/947.swf") {
+//                    frame.data.left.pets[0].petSwf = "http://seer2.61.com/res/pet/fight/946.swf"
+//                }
+                frame.event = new EventData();
+                frame.event.type = EventData.PET_EXCHANGE;
+                frame.data.left.master.position = 2;
+                frame.data.left.slave.position = 1;
+                frame.data.left.init();
                 framePlayer.playFrame(FrameData.clone(frame), function ():void {
 
                 });

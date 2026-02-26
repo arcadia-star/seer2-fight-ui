@@ -7,7 +7,8 @@ public class SPTFightStatusPanel extends FightStatusPanel {
     public function SPTFightStatusPanel() {
     }
 
-    override protected function beforeLayout():void {
+    override protected function createChildren():void {
+        super.createChildren();
         var replaceChild:Function = DisplayUtil.replaceChild;
         _leftMainFighterBar = replaceChild(_leftMainFighterBar, new SPTFighterStatusBar(FightSide.LEFT));
         _rightMainFighterBar = replaceChild(_rightMainFighterBar, new SPTBossStatusBar(FightSide.RIGHT));

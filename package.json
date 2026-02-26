@@ -20,6 +20,7 @@
     "@radix-ui/react-tooltip": "^1.2.7",
     "@ruffle-rs/ruffle": "0.2.0-nightly.2025.7.27",
     "@tailwindcss/vite": "^4.1.11",
+    "buffer": "^6.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gsap": "^3.13.0",

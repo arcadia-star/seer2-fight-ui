@@ -50,8 +50,6 @@ internal class FighterStatusBar extends Sprite {
 
     protected var _hpSign:Sprite;
 
-    protected var _preeeMC:MovieClip;
-
     protected var _shape:Shape;
 
     private var border:MovieClip;
@@ -60,10 +58,21 @@ internal class FighterStatusBar extends Sprite {
         super();
         DisplayObjectUtil.disableSprite(this);
         this.createChildren();
+        var preeMc:MovieClip = this._back["preeMC"];
+        if (preeMc) {
+            preeMc.gotoAndStop(1);
+        }
         this.layout(side);
+        this.visible = false;
     }
 
     public function initData(pet:PetData):void {
+        if (!pet) {
+            this.visible = false;
+            this._fighter = null;
+            return;
+        }
+        this.visible = true;
         var old:PetData = this._fighter;
         this._fighter = pet;
         this._iconDisplayer.initData(pet.petIcon);
@@ -111,13 +120,14 @@ internal class FighterStatusBar extends Sprite {
         } else if (rate > 100) {
             _loc4_ = 2;
         }
-        this._preeeMC.gotoAndStop(_loc4_);
+        var preeMc:MovieClip = this._back["preeMC"];
+        if (preeMc) {
+            preeMc.gotoAndStop(_loc4_);
+        }
     }
 
     protected function createChildren():void {
         this._back = new UI_FightStatusBarBack;
-        this._preeeMC = this._back["preeMC"];
-        this._preeeMC.gotoAndStop(1);
         addChild(this._back);
         this._shape = new Shape();
         addChild(this._shape);

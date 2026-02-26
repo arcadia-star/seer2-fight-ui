@@ -32,6 +32,7 @@ export function PetEditor({value, onChange, onRemove}: PetEditorProps) {
     const positionOptions = [
         {value: String(PositionEnum.Default), label: "默认 (0)"},
         {value: String(PositionEnum.Master), label: "主位 (1)"},
+        {value: String(PositionEnum.Slave), label: "副位 (2)"},
     ];
 
     return (

@@ -25,9 +25,11 @@ internal class CapsuleBar extends Sprite {
         this.createCapsuleVec(this._emptyVec, UI_FightCapsuleEmpty);
         this._occupiedVec = new Vector.<Sprite>();
         this.createCapsuleVec(this._occupiedVec, UI_FightCapsuleOccupied);
+        this.visible = false;
     }
 
     public function initData(param1:Vector.<PetData>):void {
+        this.visible = true;
         for (var idx:int = 0; idx < CAPSULE_NUM; idx++) {
             var sprite:Sprite = this._occupiedVec[idx];
             if (idx < param1.length) {

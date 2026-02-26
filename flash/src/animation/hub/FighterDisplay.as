@@ -128,7 +128,7 @@ internal class FighterDisplay extends Sprite {
     private function updateInfoDisplay():void {
         var _loc1_:PetData = this._fighter;
         this._lvTxt.text = _loc1_.level.toString();
-        this._hpTxt.text = _loc1_.hp + "/" + _loc1_.maxHp;
+        this._hpTxt.text = Math.max(_loc1_.hp, 0) + "/" + _loc1_.maxHp;
         this._nameTxt.text = _loc1_.name;
     }
 
@@ -137,6 +137,9 @@ internal class FighterDisplay extends Sprite {
         var _loc2_:Number = _loc1_.hp / _loc1_.maxHp;
         if (_loc2_ > 1) {
             _loc2_ = 1;
+        }
+        if (_loc2_ < 0) {
+            _loc2_ = 0;
         }
         this._healthBar.scaleX = _loc2_;
     }

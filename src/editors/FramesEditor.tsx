@@ -14,6 +14,7 @@ import {FightPlayer} from "@/player/fight-player.tsx";
 import {RufflePlayerEl} from "@/components/ruffle-player.tsx";
 import mock from '@/demo.json'
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
+import {DemoPlayer} from "@/player/demo-player.tsx";
 
 function copyTextToClipboard(text: string): Promise<void> {
     if (navigator.clipboard?.writeText) {
@@ -46,6 +47,8 @@ const FRAME_KIND_LABELS: Record<ReturnType<typeof getFrameKind>, string> = {
 const uiStyleOptions = [
     {value: UiStyle.Classic, label: "经典"},
     {value: UiStyle.Spt, label: "SPT"},
+    {value: UiStyle.Double2v2, label: "2v2"},
+    {value: UiStyle.Double2v1, label: "2v1"},
 ];
 
 function getFrameDisplayName(frame: Frame): string {
@@ -274,6 +277,7 @@ export function FramesEditor() {
                             <TabsTrigger value="edit">编辑</TabsTrigger>
                             <TabsTrigger value="io">导入 / 导出 / 预览</TabsTrigger>
                             <TabsTrigger value="play">播放</TabsTrigger>
+                            <TabsTrigger value="demo">演示</TabsTrigger>
                         </TabsList>
                     </div>
                     <TabsContent value="edit" className="flex-1 m-0 overflow-auto p-4">
@@ -378,6 +382,9 @@ export function FramesEditor() {
                     <TabsContent value="play" className="flex-1 m-0 overflow-auto p-4">
                         <FightPlayer ruffleRef={ruffleRef} frames={data}
                                      idx={selectedIndex || 0} onChangeIdx={setSelectedIndex}/>
+                    </TabsContent>
+                    <TabsContent value="demo" className="flex-1 m-0 overflow-auto p-4">
+                        <DemoPlayer ruffleRef={ruffleRef} frames={data} idx={selectedIndex || 0}/>
                     </TabsContent>
                 </Tabs>
             </main>

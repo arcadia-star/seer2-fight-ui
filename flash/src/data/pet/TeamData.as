@@ -2,6 +2,7 @@ package data.pet {
 
 public class TeamData {
     public var _master:PetData;
+    public var _slave:PetData;
     public var pets:Vector.<PetData>;
     public var items:Vector.<ItemData>;
     public var capsules:Vector.<ItemData>;
@@ -72,11 +73,17 @@ public class TeamData {
         return _master;
     }
 
-    private function init():void {
+    public function get slave():PetData {
+        return _slave;
+    }
+
+    public function init():void {
         for (var i:int = 0; i < pets.length; i++) {
             var pet:PetData = pets[i];
             if (pet.position === 1) {
                 _master = pet;
+            } else if (pet.position === 2) {
+                _slave = pet;
             }
         }
         if (!_master) {

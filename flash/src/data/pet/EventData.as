@@ -6,6 +6,7 @@ public class EventData {
     public static const ITEM_ANGER:int = 4;
     public static const CATCH_FAILED:int = 5;
     public static const CATCH_SUCCESS:int = 6;
+    public static const PET_EXCHANGE:int = 7;
 
     public var type:int;
     public var side:int;
