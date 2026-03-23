@@ -94,6 +94,7 @@ export type Pet = {
     spe: int;
     skills?: Skill[];
     buffs?: Buff[];
+    items?: Item[];
 }
 export type Skill = {
     id: int;

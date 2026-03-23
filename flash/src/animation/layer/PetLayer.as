@@ -182,8 +182,8 @@ public class PetLayer extends Sprite {
             return;
         }
         if (typ === EventData.PET_EXCHANGE) {
-            var main:FightPet = fighters[LEFT_MAIN];
-            var sub:FightPet = fighters[LEFT_SUB];
+            var main:FightPet = fighters[side === FightSide.RIGHT ? RIGHT_MAIN : LEFT_MAIN];
+            var sub:FightPet = fighters[side === FightSide.RIGHT ? RIGHT_SUB : LEFT_SUB];
             Utils.promiseAll([
                 function (resolve:Function):void {
                     TweenLite.to(main.pet, 0.5, {
