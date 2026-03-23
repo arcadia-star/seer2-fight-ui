@@ -11,10 +11,12 @@ public class NumDisplay extends MovieClip {
 
     public function NumDisplay() {
         var textField:TextField = new TextField();
-        textField.defaultTextFormat = new TextFormat("_sans", 12);
+        var textFormat:TextFormat = new TextFormat("_sans", 12);
+        textFormat.align = "right";
+        textField.defaultTextFormat = textFormat;
         textField.textColor = 16777215;
         textField.text = _num + "";
-        textField.width = 10;
+        textField.width = 32;
         textField.height = 17;
         var glowFilter:GlowFilter = new GlowFilter();
         glowFilter.color = 3342336; // 描边颜色
@@ -35,8 +37,8 @@ public class NumDisplay extends MovieClip {
             return;
         }
         this._num = num;
-        if (_num > 9) {
-            this._textField.text = "+";
+        if (_num > 9999) {
+            this._textField.text = "1w+";
         } else {
             this._textField.text = _num + "";
         }

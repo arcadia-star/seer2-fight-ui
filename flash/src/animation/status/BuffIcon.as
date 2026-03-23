@@ -27,7 +27,7 @@ internal class BuffIcon extends Sprite {
         _icon.setSize(ICON_WIDTH);
         sprite.addChild(this._icon);
         this._numDisplay = new NumDisplay();
-        _numDisplay.x = 22;
+        _numDisplay.x = 0;
         _numDisplay.y = 15;
         _numDisplay.visible = false;
         this._showNumMin = 2;
