@@ -22,6 +22,7 @@ public class PetData {
     public var spe:int;
     public var skills:Vector.<SkillData>
     public var buffs:Vector.<BuffData>
+    public var items:Vector.<ItemData>
 
     public static function from(obj:Object):PetData {
         var target:PetData = new PetData;
@@ -46,6 +47,7 @@ public class PetData {
         target.spe = obj.spe;
         target.skills = transSkill(obj.skills);
         target.buffs = transBuff(obj.buffs);
+        target.items = transItem(obj.items);
         return target;
     }
 
@@ -72,6 +74,7 @@ public class PetData {
         target.spe = obj.spe;
         target.skills = cloneSkill(obj.skills);
         target.buffs = cloneBuff(obj.buffs);
+        target.items = cloneItem(obj.items);
         return target;
     }
 
@@ -97,6 +100,17 @@ public class PetData {
         return res;
     }
 
+    private static function transItem(array:Array):Vector.<ItemData> {
+        var res:Vector.<ItemData> = new Vector.<ItemData>();
+        if (!array) {
+            return res;
+        }
+        for (var i:int = 0; i < array.length; i++) {
+            res.push(ItemData.from(array[i]));
+        }
+        return res;
+    }
+
     private static function cloneSkill(array:Vector.<SkillData>):Vector.<SkillData> {
         var res:Vector.<SkillData> = new Vector.<SkillData>();
         if (!array) {
@@ -115,6 +129,17 @@ public class PetData {
         }
         for (var i:int = 0; i < array.length; i++) {
             res.push(BuffData.clone(array[i]));
+        }
+        return res;
+    }
+
+    private static function cloneItem(array:Vector.<ItemData>):Vector.<ItemData> {
+        var res:Vector.<ItemData> = new Vector.<ItemData>();
+        if (!array) {
+            return res;
+        }
+        for (var i:int = 0; i < array.length; i++) {
+            res.push(ItemData.clone(array[i]));
         }
         return res;
     }

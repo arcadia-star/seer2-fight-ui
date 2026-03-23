@@ -113,6 +113,22 @@
                   "tips": "This is a <font color=\"#ff0000\">?</font> tips",
                   "count": 1
                 }
+              ],
+              "items": [
+                {
+                  "id": 1,
+                  "name": "道具A",
+                  "icon": "http://seer2.61.com/res/item/pet/icon/200011.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 9
+                },
+                {
+                  "id": 2,
+                  "name": "道具B",
+                  "icon": "http://seer2.61.com/res/item/pet/icon/200012.swf",
+                  "tips": "This is a <font color=\"#ff0000\">buff</font> tips",
+                  "count": 1
+                }
               ]
             }
           ],
