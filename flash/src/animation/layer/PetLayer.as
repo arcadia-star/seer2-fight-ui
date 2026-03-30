@@ -102,7 +102,7 @@ public class PetLayer extends Sprite {
                     if (FighterActionType.superAtk().indexOf(moveLabel) < 0) {
                         soundLayer.playSkillSound(moveData.soundUrl);
                     }
-                    fgLayer.playSkillEffect(moveData.effectUrl);
+                    fgLayer.playSkillEffect(moveData.effectUrl, atkSide);
                     if (FighterActionType.ATK_BUF === moveLabel) {
                         updateStatus(def, buildIdleLabel(pets[defSide]), version);
                         resolve();

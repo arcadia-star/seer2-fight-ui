@@ -8,6 +8,7 @@ import animation.fight.CatchHintAnimation;
 import animation.fight.FightAbsorbAnimation;
 import animation.fight.FightCountDownAnimation;
 import animation.fight.FightMissAnimation;
+import animation.fight.FightWaitingAnimation;
 import animation.fight.HPIncreaseAnimation;
 import animation.fight.HpDecreaseAnimation;
 import animation.fight.ItemUseAnimation;
@@ -15,6 +16,10 @@ import animation.fight.KOAnimation;
 import animation.fight.PowSkillHitAnimation;
 import animation.fight.PowSkillStartAnimation;
 import animation.fight.PresentAnimation;
+
+import data.location.FighterLocation;
+
+import enums.FightSide;
 
 import enums.SkillTypeRelation;
 
@@ -175,7 +180,16 @@ public class FrontLayer extends Sprite {
         })
     }
 
-    public function playSkillEffect(url:String):void {
+    public function playFightWaiting():void {
+        var sprite:FightWaitingAnimation = new FightWaitingAnimation;
+        addChild(sprite);
+        sprite.play();
+        Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            DisplayObjectUtil.removeFromParent(sprite);
+        })
+    }
+
+    public function playSkillEffect(url:String, side:int):void {
         if (!url) {
             return;
         }
@@ -186,6 +200,12 @@ public class FrontLayer extends Sprite {
             }
             addChild(sprite);
             sprite.gotoAndPlay(1);
+            var location:FighterLocation = FighterLocation.build(side, 1);
+            sprite.x = location.targetX;
+            sprite.y = location.targetY;
+            if (side === FightSide.RIGHT) {
+                sprite.scaleX *= -1;
+            }
             Utils.onComplete(sprite, function ():void {
                 DisplayObjectUtil.removeFromParent(sprite);
             })

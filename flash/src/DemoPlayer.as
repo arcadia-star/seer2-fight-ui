@@ -100,8 +100,8 @@ public class DemoPlayer extends Sprite {
                     moveData.critical = Math.random() > 0.5 ? 1 : 0;
                     moveData.miss = Math.random() > 0.9 ? 1 : 0;
                     moveData.rate = Math.random() > 0.5 ? 200 : 100;
-                    moveData.soundUrl = "http://seer2.61.com/res/skill/sound/02_1_003.mp3";
-                    moveData.effectUrl = "http://seer2.61.com/res/skill/effect/02_1_003.swf";
+                    moveData.soundUrl = "http://seer2.61.com/res/skill/sound/12_3_002.mp3";
+                    moveData.effectUrl = "http://seer2.61.com/res/skill/effect/12_1_003.swf";
 
                     frameClear();
                     frame.move = moveData;

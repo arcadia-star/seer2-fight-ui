@@ -60,5 +60,9 @@ public class UILayer extends Sprite {
             this._statusPanel.initData(_arenaData);
         }
     }
+
+    public function get controlPanel():FightControlPanel {
+        return _controlPanel;
+    }
 }
 }

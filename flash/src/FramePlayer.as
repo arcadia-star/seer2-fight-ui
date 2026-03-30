@@ -16,9 +16,14 @@ import flash.text.TextField;
 import flash.utils.setInterval;
 import flash.utils.setTimeout;
 
+import ui.Resource;
+
 import utils.an.DisplayObjectUtil;
 
 public class FramePlayer extends Sprite {
+    {
+        Resource.init();
+    }
 
     private var bgLayer:BackLayer;
     private var petLayer:PetLayer;
@@ -47,16 +52,20 @@ public class FramePlayer extends Sprite {
         petLayer.soundLayer = soundLayer;
     }
 
+    public function playFrameJson(frame:Object, next:Function):void {
+        playFrame(FrameData.from(frame), next);
+    }
+
     public function playFrame(frame:FrameData, next:Function):void {
         _version++;
         var version:int = _version;
-        DisplayObjectUtil.disableSprite(uiLayer);
+        DisplayObjectUtil.disableSprite(uiLayer.controlPanel);
         var next0:Function = next;
         next = function ():void {
             if (!checkVersion(version)) {
                 return;
             }
-            DisplayObjectUtil.enableSprite(uiLayer);
+            DisplayObjectUtil.enableSprite(uiLayer.controlPanel);
             next0();
         }
 
@@ -111,6 +120,18 @@ public class FramePlayer extends Sprite {
             loadFrame(next);
             uiLayer.showSkillBubble(frame.move);
         }
+    }
+
+    public function playCountDown(next:Function):void {
+        fgLayer.playCountDown(next);
+    }
+
+    public function playFightWaiting():void {
+        fgLayer.playFightWaiting();
+    }
+
+    public function clearFgLayer():void {
+        DisplayObjectUtil.removeAllChildren(fgLayer);
     }
 
     private function checkVersion(version:int):Boolean {
