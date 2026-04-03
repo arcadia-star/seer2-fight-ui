@@ -16,6 +16,7 @@ import data.pet.TeamData;
 
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.text.TextField;
 
 import ui.Resource;
 
@@ -33,12 +34,39 @@ public class DemoPlayer extends Sprite {
         Resource.init();
 
         this.config = Config.from(this);
+        Config.redirectRes = true;
+
         this.framePlayer = new FramePlayer();
         this.alertLayer = new AlertLayer();
         addChild(framePlayer);
         addChild(alertLayer);
 
         play()
+    }
+
+    private function play0():void {
+        var _text:TextField = new TextField();
+        _text.textColor = 0xff0000;
+        addChild(_text);
+        Utils.loadText(config.playUrl || "../../public/demo/mock.json", function (data:String):void {
+            var framesData:FramesData = FramesData.from(Utils.jsonParse(data));
+            framePlayer.updateUiStyle(framesData.uiStyle);
+            framePlayer.updateGlobalSound(framesData.globalVolume / 100);
+            framePlayer.updateMapSound(framesData.mapVolume / 100);
+
+            var idx:int = 0;
+
+            function next():void {
+                if (idx < framesData.frames.length) {
+                    _text.text = "idx:" + idx;
+                    var frame:FrameData = framesData.frames[idx];
+                    idx++;
+                    framePlayer.playFrame(frame, next);
+                }
+            }
+
+            next();
+        });
     }
 
     private function play():void {

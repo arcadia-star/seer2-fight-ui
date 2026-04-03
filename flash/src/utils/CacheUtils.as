@@ -233,8 +233,12 @@ class CacheUtils0 {
 
     private static const S2_DOMAIN:String = "http://seer2.61.com/";
     private static const S2_PROXY:String = "https://cdn.jsdelivr.net/gh/arcadia-star/seer2-origin-client@1.0.0/seer2.61.com/";
+    private static const RES:String = "res/";
 
     private static function proxyHttp2Https(url:String):String {
+        if (Config.redirectRes && url.slice(0, RES.length) === RES) {
+            url = S2_DOMAIN + url;
+        }
         if (Config.isHttps && url.slice(0, S2_DOMAIN.length) === S2_DOMAIN) {
             return S2_PROXY + url.slice(S2_DOMAIN.length)
         }

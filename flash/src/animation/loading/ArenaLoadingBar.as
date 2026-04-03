@@ -120,7 +120,7 @@ public class ArenaLoadingBar extends Sprite {
         this._format.size = 14;
         this._format.align = "center";
         this._TipTxt.defaultTextFormat = this._format;
-        this._TipTxt.selectable = false;
+        this._TipTxt.selectable = true;
         this._TipTxt.wordWrap = true;
         this._TipTxt.multiline = true;
         this._TipTxt.x = 228 + 110;
@@ -154,14 +154,15 @@ public class ArenaLoadingBar extends Sprite {
     }
 
     private function updateTxt():void {
-        if (_curIndex >= _tipList.length) {
-            return;
-        }
-        var tips:* = this._tipList[this._curIndex];
         this._format.color = this.RGB(255, uint(255 * Math.random()), uint(255 * Math.random()));
         this._format.color = 16777062;
         this._TipTxt.defaultTextFormat = this._format;
-        this._TipTxt.htmlText = "<font color=\'#FFFF66\'>小贴士:</font>" + tips;
+        if (_curIndex >= _tipList.length) {
+            this._TipTxt.htmlText = "<a href='https://github.com/arcadia-star/seer2-fight-ui' target='_blank'>https://github.com/arcadia-star/seer2-fight-ui</a>";
+        } else {
+            var tips:* = this._tipList[this._curIndex];
+            this._TipTxt.htmlText = "<font color=\'#FFFF66\'>小贴士:</font>" + tips;
+        }
     }
 
     private function setLeftFighterInfo(param1:PetData, param2:PetData):void {

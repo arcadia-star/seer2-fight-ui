@@ -18,6 +18,8 @@ import flash.utils.setTimeout;
 
 import ui.Resource;
 
+import utils.Utils;
+
 import utils.an.DisplayObjectUtil;
 
 public class FramePlayer extends Sprite {
@@ -53,6 +55,7 @@ public class FramePlayer extends Sprite {
     }
 
     public function playFrameJson(frame:Object, next:Function):void {
+        Utils.callJs("log", "frame", frame);
         playFrame(FrameData.from(frame), next);
     }
 
@@ -79,7 +82,7 @@ public class FramePlayer extends Sprite {
                     flag = true;
                     bgLayer.initData(frame.data.mapSwf);
                     soundLayer.playMapSound(frame.data.mapSound);
-                    uiLayer.initData(frame.data);
+                    uiLayer.initData(frame.data, frame.move);
                 }
                 if (event.type === Events.FRAME_PLAY_END) {
                     cb();
@@ -113,7 +116,11 @@ public class FramePlayer extends Sprite {
                     if (!checkVersion(version)) {
                         return;
                     }
-                    faceLayer.playEnd(frame.end.winner, next);
+                    if (frame.end.alert === 2) {
+                        next();
+                    } else {
+                        faceLayer.playEnd(frame.end.winner, next);
+                    }
                 });
             });
         } else {

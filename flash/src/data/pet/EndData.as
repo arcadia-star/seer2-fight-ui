@@ -1,6 +1,7 @@
 package data.pet {
 public class EndData {
     public var winner:int;
+    public var alert:int;
 
     public static function from(obj:Object):EndData {
         if (!obj) {
@@ -8,6 +9,7 @@ public class EndData {
         }
         var target:EndData = new EndData();
         target.winner = obj.winner;
+        target.alert = obj.alert;
         return target;
     }
 
@@ -17,6 +19,7 @@ public class EndData {
         }
         var target:EndData = new EndData();
         target.winner = obj.winner;
+        target.alert = obj.alert;
         return target;
     }
 }

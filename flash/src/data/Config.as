@@ -11,6 +11,7 @@ public class Config {
     public var playUrl:String;
 
     public static var isHttps:Boolean;
+    public static var redirectRes:Boolean;
 
     public static const HTTPS:String = "https://";
 

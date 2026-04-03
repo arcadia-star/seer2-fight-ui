@@ -25,10 +25,10 @@ public class UILayer extends Sprite {
         addChild(_statusPanel);
     }
 
-    public function initData(arenaData:ArenaData):void {
+    public function initData(arenaData:ArenaData, move:MoveData):void {
         this._arenaData = arenaData;
         this._controlPanel.initData(arenaData.left);
-        this._statusPanel.initData(arenaData);
+        this._statusPanel.initData(arenaData, move);
     }
 
     public function showSkillBubble(move:MoveData):void {
@@ -57,7 +57,7 @@ public class UILayer extends Sprite {
             this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new FightStatusPanel());
         }
         if (_arenaData) {
-            this._statusPanel.initData(_arenaData);
+            this._statusPanel.initData(_arenaData, null);
         }
     }
 

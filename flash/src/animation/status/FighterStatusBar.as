@@ -2,6 +2,8 @@ package animation.status {
 import animation.common.IconDisplay;
 import animation.common.PetIconDisplay;
 
+import data.pet.MoveData;
+
 import data.pet.PetData;
 
 import enums.FightSide;
@@ -66,14 +68,13 @@ internal class FighterStatusBar extends Sprite {
         this.visible = false;
     }
 
-    public function initData(pet:PetData):void {
+    public function initData(pet:PetData, move:MoveData):void {
         if (!pet) {
             this.visible = false;
             this._fighter = null;
             return;
         }
         this.visible = true;
-        var old:PetData = this._fighter;
         this._fighter = pet;
         this._iconDisplayer.initData(pet.petIcon);
         if (this.border) {
@@ -90,7 +91,7 @@ internal class FighterStatusBar extends Sprite {
         this._angerSign.addChild(UINumberGenerator.generateAngerNumber(Math.max(pet.anger, 0), pet.maxAnger));
         var angerPct:Number = Math.max(pet.anger / pet.maxAnger, 0);
         var hpPct:Number = Math.max(pet.hp / pet.maxHp, 0);
-        if (!old) {
+        if (!move) {
             this._angerBar.initAtPercent(angerPct);
             this._healthBar.initAtPercent(hpPct);
             this._healthShadowBar.initAtPercent(hpPct);

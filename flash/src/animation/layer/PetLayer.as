@@ -207,8 +207,12 @@ public class PetLayer extends Sprite {
                 }
             ], function ():void {
                 if (!checkVersion(version)) {
+                    //todo 复原
                     return;
                 }
+                var mainPet:MovieClip = main.pet;
+                main.pet = sub.pet;
+                sub.pet = mainPet;
                 loadFrame(frame, cb, version);
             });
             return;

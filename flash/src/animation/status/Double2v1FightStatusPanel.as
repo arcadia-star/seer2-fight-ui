@@ -1,5 +1,6 @@
 package animation.status {
 import data.pet.ArenaData;
+import data.pet.MoveData;
 
 import enums.FightSide;
 
@@ -13,9 +14,9 @@ public class Double2v1FightStatusPanel extends FightStatusPanel {
         super();
     }
 
-    override public function initData(param1:ArenaData):void {
-        super.initData(param1);
-        this._leftSubFighterBar.initData(param1.left.slave);
+    override public function initData(param1:ArenaData, param2:MoveData):void {
+        super.initData(param1, param2);
+        this._leftSubFighterBar.initData(param1.left.slave, param2);
     }
 
     override protected function createChildren():void {

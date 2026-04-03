@@ -113,7 +113,7 @@ internal class FighterDisplay extends Sprite {
     }
 
     private function updateInteraction():void {
-        if (this._fighter.hp <= 0) {
+        if (this._fighter.alive <= 0) {
             this.mouseEnabled = false;
             DisplayObjectUtil.darkenDisplayObject(this);
         } else {
