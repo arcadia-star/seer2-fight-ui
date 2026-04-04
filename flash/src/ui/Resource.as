@@ -7,10 +7,10 @@ public class Resource {
     public static const MARK:String = "internal://";
 
     public static function init():void {
-        for (var i:int = 0; i <= 19; i++) {
+        for (var i:int = 0; i <= 23; i++) {
             clazz["UI_PetTypeIcon_" + i] = UI_PetTypeIcon_N.find(i);
         }
-        for (i = 1; i <= 9; i++) {
+        for (i = 1; i <= 18; i++) {
             clazz["UI_WeatherIcon" + i] = UI_WeatherIconN.find(i);
         }
         clazz.UI_FightFighterTraitIncrease_Atk = UI_FightFighterTraitX.UI_FightFighterTraitIncrease_Atk;

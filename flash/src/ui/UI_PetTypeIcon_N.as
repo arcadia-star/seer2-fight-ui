@@ -40,6 +40,14 @@ public class UI_PetTypeIcon_N {
     public static var UI_PetTypeIcon_18:Class;
     [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_19")]
     public static var UI_PetTypeIcon_19:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_20")]
+    public static var UI_PetTypeIcon_20:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_21")]
+    public static var UI_PetTypeIcon_21:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_22")]
+    public static var UI_PetTypeIcon_22:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_23")]
+    public static var UI_PetTypeIcon_23:Class;
 
     public static function find(idx:int):Class {
         if (idx == 0) {
@@ -101,6 +109,18 @@ public class UI_PetTypeIcon_N {
         }
         if (idx == 19) {
             return UI_PetTypeIcon_19;
+        }
+        if (idx == 20) {
+            return UI_PetTypeIcon_20;
+        }
+        if (idx == 21) {
+            return UI_PetTypeIcon_21;
+        }
+        if (idx == 22) {
+            return UI_PetTypeIcon_22;
+        }
+        if (idx == 23) {
+            return UI_PetTypeIcon_23;
         }
         return UI_PetTypeIcon_0;
     }

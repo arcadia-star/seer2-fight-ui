@@ -18,6 +18,24 @@ public class UI_WeatherIconN {
     public static var UI_WeatherIcon8:Class;
     [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon9")]
     public static var UI_WeatherIcon9:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon10")]
+    public static var UI_WeatherIcon10:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon11")]
+    public static var UI_WeatherIcon11:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon12")]
+    public static var UI_WeatherIcon12:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon13")]
+    public static var UI_WeatherIcon13:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon14")]
+    public static var UI_WeatherIcon14:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon15")]
+    public static var UI_WeatherIcon15:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon16")]
+    public static var UI_WeatherIcon16:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon17")]
+    public static var UI_WeatherIcon17:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon18")]
+    public static var UI_WeatherIcon18:Class;
 
     public static function find(idx:int):Class {
         if (idx == 1) {
@@ -46,6 +64,33 @@ public class UI_WeatherIconN {
         }
         if (idx == 9) {
             return UI_WeatherIcon9;
+        }
+        if (idx == 10) {
+            return UI_WeatherIcon10;
+        }
+        if (idx == 11) {
+            return UI_WeatherIcon11;
+        }
+        if (idx == 12) {
+            return UI_WeatherIcon12;
+        }
+        if (idx == 13) {
+            return UI_WeatherIcon13;
+        }
+        if (idx == 14) {
+            return UI_WeatherIcon14;
+        }
+        if (idx == 15) {
+            return UI_WeatherIcon15;
+        }
+        if (idx == 16) {
+            return UI_WeatherIcon16;
+        }
+        if (idx == 17) {
+            return UI_WeatherIcon17;
+        }
+        if (idx == 18) {
+            return UI_WeatherIcon18;
         }
         return UI_WeatherIcon1;
     }
