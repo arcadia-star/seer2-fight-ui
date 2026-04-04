@@ -348,7 +348,8 @@ public class PetLayer extends Sprite {
 
             var exist:MovieClip = fighter.pet;
             //morph
-            if (change === 2 && exist && Utils.hasLabel(exist, FighterActionType.CHANGE_STATUS)) {
+            if (change === ChangeData.MORPH && exist && Utils.hasLabel(exist, FighterActionType.CHANGE_STATUS)) {
+                setChildIndex(exist, 3);
                 updateStatus(exist, FighterActionType.CHANGE_STATUS, version);
                 onChild0Complete(exist, function ():void {
                     if (!checkVersion(version)) {
@@ -359,7 +360,7 @@ public class PetLayer extends Sprite {
                 })
             }
             //replace
-            else if (change === 1) {
+            else if (change === ChangeData.REPLACE) {
                 if (fighter.side === FightSide.LEFT) {
                     petDisappear(exist);
                     fgLayer.playLeftPresent(function ():void {

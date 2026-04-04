@@ -7,6 +7,8 @@ import animation.layer.PetLayer;
 import animation.layer.SoundLayer;
 import animation.layer.UILayer;
 
+import data.pet.EndData;
+
 import data.pet.FrameData;
 
 import flash.display.Sprite;
@@ -116,7 +118,7 @@ public class FramePlayer extends Sprite {
                     if (!checkVersion(version)) {
                         return;
                     }
-                    if (frame.end.alert === 2) {
+                    if (frame.end.alert === EndData.HIDDEN) {
                         next();
                     } else {
                         faceLayer.playEnd(frame.end.winner, next);
