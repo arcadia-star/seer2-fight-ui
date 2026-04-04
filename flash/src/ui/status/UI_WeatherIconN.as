@@ -36,6 +36,18 @@ public class UI_WeatherIconN {
     public static var UI_WeatherIcon17:Class;
     [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon18")]
     public static var UI_WeatherIcon18:Class;
+//    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon19")]
+//    public static var UI_WeatherIcon19:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon20")]
+    public static var UI_WeatherIcon20:Class;
+//    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon21")]
+//    public static var UI_WeatherIcon21:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon22")]
+    public static var UI_WeatherIcon22:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon23")]
+    public static var UI_WeatherIcon23:Class;
+    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon24")]
+    public static var UI_WeatherIcon24:Class;
 
     public static function find(idx:int):Class {
         if (idx == 1) {
@@ -91,6 +103,24 @@ public class UI_WeatherIconN {
         }
         if (idx == 18) {
             return UI_WeatherIcon18;
+        }
+//        if (idx == 19) {
+//            return UI_WeatherIcon19;
+//        }
+        if (idx == 20) {
+            return UI_WeatherIcon20;
+        }
+//        if (idx == 21) {
+//            return UI_WeatherIcon21;
+//        }
+        if (idx == 22) {
+            return UI_WeatherIcon22;
+        }
+        if (idx == 23) {
+            return UI_WeatherIcon23;
+        }
+        if (idx == 24) {
+            return UI_WeatherIcon24;
         }
         return UI_WeatherIcon1;
     }
