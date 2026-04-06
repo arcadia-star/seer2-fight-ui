@@ -1,5 +1,7 @@
 package animation.hub {
 
+import animation.event.OperateEvent;
+
 import flash.display.MovieClip;
 import flash.display.SimpleButton;
 import flash.display.Sprite;
@@ -44,7 +46,7 @@ public class FightPointPanel extends Sprite {
         this._contentTxt.multiline = true;
         this._contentTxt.htmlText = "";
         this._contentTxt.defaultTextFormat = new TextFormat("_sans", 14);
-        this._changFightUIBtn.addEventListener(MouseEvent.CLICK, this.onChangFight);
+        this._changFightUIBtn.addEventListener(MouseEvent.CLICK, this.onChangFightUI);
         this._prevBtn.addEventListener(MouseEvent.CLICK, this.onPrev);
         this._nextBtn.addEventListener(MouseEvent.CLICK, this.onNext);
         this._statusList = Vector.<String>([]);
@@ -71,7 +73,8 @@ public class FightPointPanel extends Sprite {
         }
     }
 
-    private function onChangFight(param1:MouseEvent):void {
+    private function onChangFightUI(param1:MouseEvent):void {
+        dispatchEvent(OperateEvent.changeUI())
     }
 
     private function onPrev(param1:MouseEvent):void {

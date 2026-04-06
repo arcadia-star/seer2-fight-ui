@@ -202,9 +202,14 @@ class CacheUtils0 {
             return;
         }
         loadResource(url, function (loaderInfo:LoaderInfo):void {
-            var clazz:Class = loaderInfo.applicationDomain.getDefinition(name) as Class;
-            CLASS_CACHE.put(url, clazz);
-            cb(new clazz);
+            try {
+                var clazz:Class = loaderInfo.applicationDomain.getDefinition(name) as Class;
+                CLASS_CACHE.put(url, clazz);
+                cb(new clazz);
+                //加载失败走兜底逻辑
+            } catch (e:Object) {
+                cb(new fallback);
+            }
         }, function ():void {
             cb(new fallback);
         });

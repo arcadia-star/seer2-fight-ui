@@ -43,5 +43,11 @@ public class OperateEvent extends Event {
         event.data.escape = escape;
         return event;
     }
+
+    public static function changeUI():OperateEvent {
+        var event:OperateEvent = new OperateEvent(OPERATE_END);
+        event.data.functional = OperateData.FUNCTIONAL_CHANGE_UI;
+        return event;
+    }
 }
 }
