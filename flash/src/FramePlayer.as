@@ -57,7 +57,6 @@ public class FramePlayer extends Sprite {
     }
 
     public function playFrameJson(frame:Object, next:Function):void {
-        Utils.callJs("log", "frame", frame);
         playFrame(FrameData.from(frame), next);
     }
 
