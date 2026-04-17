@@ -123,6 +123,8 @@ internal class FighterDisplay extends Sprite {
         if (this._fighter.position != 0) {
             this.mouseEnabled = false;
         }
+        //都放开点击，让调用方自己控制
+        this.mouseEnabled = true;
     }
 
     private function updateInfoDisplay():void {

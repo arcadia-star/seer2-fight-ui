@@ -38,6 +38,10 @@ public class UILayer extends Sprite {
         this._statusPanel.showSkillBubble(move.side, move.skill);
     }
 
+    public function showPetPanel():void {
+        this._controlPanel.showPetPanel();
+    }
+
     public function appendLogs(logs:Vector.<String>):void {
         this._controlPanel.appendLogs(logs);
     }

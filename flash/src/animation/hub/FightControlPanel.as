@@ -66,6 +66,10 @@ public class FightControlPanel extends Sprite {
         this._hubButtonPanel.reset();
     }
 
+    public function showPetPanel():void {
+        setCurrentPanel(this._fighterPanel);
+    }
+
     public function appendLogs(logs:Vector.<String>):void {
         this._fightPointPanel.entryValue(logs);
     }

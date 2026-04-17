@@ -176,5 +176,9 @@ public class FramePlayer extends Sprite {
     public function updateMapSound(sound:Number):void {
         soundLayer.updateMapSound(sound);
     }
+
+    public function showPetPanel():void {
+        this.uiLayer.showPetPanel();
+    }
 }
 }
