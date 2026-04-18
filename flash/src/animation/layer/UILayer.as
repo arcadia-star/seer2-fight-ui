@@ -25,10 +25,10 @@ public class UILayer extends Sprite {
         addChild(_statusPanel);
     }
 
-    public function initData(arenaData:ArenaData, move:MoveData):void {
+    public function initData(arenaData:ArenaData, smooth:int):void {
         this._arenaData = arenaData;
         this._controlPanel.initData(arenaData.left);
-        this._statusPanel.initData(arenaData, move);
+        this._statusPanel.initData(arenaData, smooth);
     }
 
     public function showSkillBubble(move:MoveData):void {

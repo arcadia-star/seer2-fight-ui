@@ -83,7 +83,8 @@ public class FramePlayer extends Sprite {
                     flag = true;
                     bgLayer.initData(frame.data.mapSwf);
                     soundLayer.playMapSound(frame.data.mapSound);
-                    uiLayer.initData(frame.data, frame.move);
+                    var smooth:int = frame.smooth > 0 ? frame.smooth : (frame.move ? FrameData.SMOOTH_TRUE : FrameData.SMOOTH_FALSE);
+                    uiLayer.initData(frame.data, smooth);
                 }
                 if (event.type === Events.FRAME_PLAY_END) {
                     cb();

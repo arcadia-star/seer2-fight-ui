@@ -47,13 +47,13 @@ public class FightStatusPanel extends Sprite {
         this.layout();
     }
 
-    public function initData(param1:ArenaData, param2:MoveData):void {
+    public function initData(param1:ArenaData, smooth:int):void {
         this._arenaData = param1;
-        this._leftMainFighterBar.initData(param1.left.master, param2);
+        this._leftMainFighterBar.initData(param1.left.master, smooth);
         this._leftBuffIconBar.initData(param1.left.master);
         this._leftCapsuleBar.initData(param1.left.pets);
         this._leftAngerStatus.setFight(param1.left.master);
-        this._rightMainFighterBar.initData(param1.right.master, param2);
+        this._rightMainFighterBar.initData(param1.right.master, smooth);
         this._rightBuffIconBar.initData(param1.right.master);
         this._rightCapsuleBar.initData(param1.right.pets);
         this._rightAngerStatus.setFight(param1.right.master);

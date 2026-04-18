@@ -1,5 +1,8 @@
 package data.pet {
 public class FrameData {
+    public static const SMOOTH_TRUE:int = 1;
+    public static const SMOOTH_FALSE:int = 2;
+
     public var data:ArenaData;
 
     public var move:MoveData;
@@ -9,6 +12,7 @@ public class FrameData {
     public var end:EndData
 
     public var sleep:int;
+    public var smooth:int;
     public var logs:Vector.<String>;
 
     public static function from(obj:Object):FrameData {
@@ -20,6 +24,7 @@ public class FrameData {
         target.start = StartData.from(obj.start);
         target.end = EndData.from(obj.end);
         target.sleep = obj.sleep;
+        target.smooth = obj.smooth;
         target.logs = transString(obj.logs);
         return target;
     }
@@ -33,6 +38,7 @@ public class FrameData {
         target.start = StartData.clone(obj.start);
         target.end = EndData.clone(obj.end);
         target.sleep = obj.sleep;
+        target.smooth = obj.smooth;
         target.logs = cloneString(obj.logs);
         return target;
     }

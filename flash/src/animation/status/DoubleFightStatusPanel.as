@@ -16,7 +16,7 @@ public class DoubleFightStatusPanel extends FightStatusPanel {
         super();
     }
 
-    override public function initData(param1:ArenaData, param2:MoveData):void {
+    override public function initData(param1:ArenaData, param2:int):void {
         super.initData(param1, param2);
         this._leftSubFighterBar.initData(param1.left.slave, param2);
         this._rightSubFighterBar.initData(param1.right.slave, param2);

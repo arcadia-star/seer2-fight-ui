@@ -83,7 +83,19 @@ public class PetLayer extends Sprite {
         updateStatus(atk, moveLabel, version);
         Utils.promiseAll([
             function (resolve:Function):void {
+                var atkComplete:Boolean = false;
+                //最多允许10s
+                var hitTimeout:int = Math.min(moveData.hitTimeout, 10000);
+                if (hitTimeout > 0) {
+                    setTimeout(function ():void {
+                        if (atkComplete) {
+                            return;
+                        }
+                        atk.dispatchEvent(new Event("hit"));
+                    }, hitTimeout);
+                }
                 onChild0Complete(atk, function ():void {
+                    atkComplete = true;
                     if (!checkVersion(version)) {
                         return;
                     }
