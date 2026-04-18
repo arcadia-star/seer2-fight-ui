@@ -40,7 +40,7 @@ internal class BuffIcon extends Sprite {
     public function initData(buff:BuffData):void {
         this._buff = buff;
         this._icon.initData(buff.icon)
-        this._tips.initData(buff.name + "[" + buff.count + "]\n" + buff.tips);
+        this._tips.initData(buff.tips || '无');
         if (buff.count >= _showNumMin) {
             this._numDisplay.initData(buff.count);
             this._numDisplay.visible = true;
