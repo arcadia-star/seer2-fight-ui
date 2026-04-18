@@ -110,11 +110,11 @@ public class FramePlayer extends Sprite {
                 loadFrame(next);
             });
         } else if (frame.end) {
-            fgLayer.playKO(function ():void {
+            loadFrame(function ():void {
                 if (!checkVersion(version)) {
                     return;
                 }
-                loadFrame(function ():void {
+                fgLayer.playKO(function ():void {
                     if (!checkVersion(version)) {
                         return;
                     }

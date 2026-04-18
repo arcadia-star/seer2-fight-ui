@@ -95,8 +95,8 @@ internal class BuffIconBar extends Sprite {
                 buff.id = id;
                 buff.name = name + (count > 0 ? "强化" : "弱化");
                 buff.icon = "internal://UI_FightFighterTrait" + (count > 0 ? "Increase" : "Decrease") + "_" + typ;
-                buff.tips = ""
                 buff.count = count > 0 ? count : -count;
+                buff.tips = buff.name + "[" + buff.count + "]";
                 buffs.push(buff);
             }
         }

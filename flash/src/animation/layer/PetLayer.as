@@ -246,18 +246,19 @@ public class PetLayer extends Sprite {
     private function loadFrame(frame:FrameData, cb:Function, version:int):void {
         var arenaData:ArenaData = frame.data;
         var change:ChangeData = frame.change || new ChangeData();
+        var winner:int = frame.end ? frame.end.winner : 0;
         Utils.promiseAll([
             function (resolve:Function):void {
-                lazyApplyPet(fighters[LEFT_SUB], arenaData.left.slave, 0, version, resolve);
+                lazyApplyPet(fighters[LEFT_SUB], arenaData.left.slave, 0, version, resolve, winner);
             },
             function (resolve:Function):void {
-                lazyApplyPet(fighters[RIGHT_SUB], arenaData.right.slave, 0, version, resolve);
+                lazyApplyPet(fighters[RIGHT_SUB], arenaData.right.slave, 0, version, resolve, winner);
             },
             function (resolve:Function):void {
-                lazyApplyPet(fighters[LEFT_MAIN], arenaData.left.master, change.left, version, resolve);
+                lazyApplyPet(fighters[LEFT_MAIN], arenaData.left.master, change.left, version, resolve, winner);
             },
             function (resolve:Function):void {
-                lazyApplyPet(fighters[RIGHT_MAIN], arenaData.right.master, change.right, version, resolve);
+                lazyApplyPet(fighters[RIGHT_MAIN], arenaData.right.master, change.right, version, resolve, winner);
             }
         ], function ():void {
             cb && cb(Events.framePlayEnd());
@@ -284,7 +285,7 @@ public class PetLayer extends Sprite {
         }
     }
 
-    private function lazyApplyPet(fighter:FightPet, petData:PetData, change:int, version:int, resolve:Function):void {
+    private function lazyApplyPet(fighter:FightPet, petData:PetData, change:int, version:int, resolve:Function, winner:int):void {
         if (!petData) {
             fighter.url = FightPet.UNREACHABLE_URL;
             fighter.pet.visible = false;
@@ -295,6 +296,9 @@ public class PetLayer extends Sprite {
         var url:String = petData.petSwf;
         var petSound:String = petData.petSound;
         var status:String = buildIdleLabel(petData);
+        if (winner === fighter.side) {
+            status = FighterActionType.WIN;
+        }
         if (!change && fighter.url === url) {
             updateStatus(fighter.pet, status, version);
             resolve();
