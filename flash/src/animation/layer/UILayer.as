@@ -61,7 +61,7 @@ public class UILayer extends Sprite {
             this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new FightStatusPanel());
         }
         if (_arenaData) {
-            this._statusPanel.initData(_arenaData, null);
+            this._statusPanel.initData(_arenaData, 0);
         }
     }
 
