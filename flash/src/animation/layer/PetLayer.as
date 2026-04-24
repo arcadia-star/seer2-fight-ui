@@ -247,18 +247,19 @@ public class PetLayer extends Sprite {
         var arenaData:ArenaData = frame.data;
         var change:ChangeData = frame.change || new ChangeData();
         var winner:int = frame.end ? frame.end.winner : 0;
+        var showReplace:int = frame.start ? ChangeData.REPLACE : 0;
         Utils.promiseAll([
             function (resolve:Function):void {
-                lazyApplyPet(fighters[LEFT_SUB], arenaData.left.slave, 0, version, resolve, winner);
+                lazyApplyPet(fighters[LEFT_SUB], arenaData.left.slave, showReplace || 0, version, resolve, winner);
             },
             function (resolve:Function):void {
-                lazyApplyPet(fighters[RIGHT_SUB], arenaData.right.slave, 0, version, resolve, winner);
+                lazyApplyPet(fighters[RIGHT_SUB], arenaData.right.slave, showReplace || 0, version, resolve, winner);
             },
             function (resolve:Function):void {
-                lazyApplyPet(fighters[LEFT_MAIN], arenaData.left.master, change.left, version, resolve, winner);
+                lazyApplyPet(fighters[LEFT_MAIN], arenaData.left.master, showReplace || change.left, version, resolve, winner);
             },
             function (resolve:Function):void {
-                lazyApplyPet(fighters[RIGHT_MAIN], arenaData.right.master, change.right, version, resolve, winner);
+                lazyApplyPet(fighters[RIGHT_MAIN], arenaData.right.master, showReplace || change.right, version, resolve, winner);
             }
         ], function ():void {
             cb && cb(Events.framePlayEnd());
