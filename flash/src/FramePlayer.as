@@ -103,12 +103,13 @@ public class FramePlayer extends Sprite {
                 next();
             }, frame.sleep);
         } else if (frame.start) {
+            //提前加载地图，提高播放流畅度
+            bgLayer.initData(frame.data.mapSwf);
+            uiLayer.initData(frame.data, 0);
             faceLayer.playStart(frame, function ():void {
                 if (!checkVersion(version)) {
                     return;
                 }
-                //先展示出ui，要配合出场动画
-                uiLayer.initData(frame.data, 0);
                 loadFrame(next);
             });
         } else if (frame.end) {
