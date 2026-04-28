@@ -1,7 +1,10 @@
 package animation.common {
 
 import flash.display.DisplayObject;
+import flash.display.MovieClip;
 import flash.display.Sprite;
+
+import ui.IconFallback;
 
 import utils.CacheUtils;
 import utils.an.DisplayObjectUtil;
@@ -31,9 +34,9 @@ public class IconDisplay extends Sprite {
         CacheUtils.loadItem(url, function (obj:DisplayObject):void {
             if (_url === url) {
                 DisplayObjectUtil.removeFromParent(_icon);
-                _icon = obj;
+                _icon = mayWrapIcon(url, obj);
                 if (!isNaN(_maxWidth)) {
-                    applyChange();
+                    DisplayObjectUtil.setSize(_icon, _maxWidth, _maxHeight);
                 }
                 addChild(_icon);
             }
@@ -49,8 +52,20 @@ public class IconDisplay extends Sprite {
         this._maxHeight = param2;
     }
 
-    protected function applyChange():void {
-        DisplayObjectUtil.setSize(_icon, _maxWidth, _maxHeight);
+    private static function mayWrapIcon(url:String, obj:DisplayObject):DisplayObject {
+        if (obj is IconFallback) {
+            return obj;
+        }
+
+        if (url.indexOf("res/pet/icon/") !== -1) {
+            return new CroppedMovieClip(obj as MovieClip, 54, 54);
+        }
+
+        if (url.indexOf("res/skill/sideEffect/") !== -1) {
+            return new CroppedMovieClip(obj as MovieClip, 30, 30);
+        }
+
+        return obj;
     }
 }
 }
