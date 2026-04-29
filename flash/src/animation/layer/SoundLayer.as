@@ -59,17 +59,10 @@ public class SoundLayer {
 
     private var currentMapSound:SoundChannel;
     private var currentMapSoundUrl:String;
-    private var _globalSound:Number;
-    private var _mapSound:Number;
+    private var _globalSound:Number = 1.0;
+    private var _mapSound:Number = 1.0;
 
     public function playMapSound(url:String):void {
-        function clearSound():void {
-            if (currentMapSound) {
-                currentMapSound.stop();
-                currentMapSound = null;
-            }
-        }
-
         if (currentMapSoundUrl === url) {
             return;
         }
@@ -81,10 +74,17 @@ public class SoundLayer {
             if (currentMapSoundUrl !== url) {
                 return
             }
-            clearSound();
+            clearMapSound();
             currentMapSound = sound.play(0, int.MAX_VALUE);
             currentMapSound.soundTransform = new SoundTransform(_mapSound);
         });
+    }
+
+    public function clearMapSound():void {
+        if (currentMapSound) {
+            currentMapSound.stop();
+            currentMapSound = null;
+        }
     }
 
     public function updateGlobalSound(sound:Number):void {

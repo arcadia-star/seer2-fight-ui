@@ -54,6 +54,10 @@ public class FramePlayer extends Sprite {
         petLayer.bgLayer = bgLayer;
         petLayer.fgLayer = fgLayer;
         petLayer.soundLayer = soundLayer;
+
+        addEventListener(Event.REMOVED_FROM_STAGE, function (e:Event):void {
+            soundLayer.clearMapSound();
+        });
     }
 
     public function playFrameJson(frame:Object, next:Function):void {
