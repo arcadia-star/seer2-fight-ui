@@ -24,7 +24,7 @@ public class NumDisplay extends MovieClip {
         glowFilter.blurX = 2; // 水平模糊量，控制描边宽度
         glowFilter.blurY = 2; // 垂直模糊量，控制描边宽度
         glowFilter.strength = 100; // 强度，设置得足够大以使边缘清晰
-        glowFilter.quality = BitmapFilterQuality.HIGH; // 使用高质量，避免模糊
+        glowFilter.quality = BitmapFilterQuality.LOW; // 使用高质量，避免模糊
         glowFilter.inner = false; // 不是内侧发光
         glowFilter.knockout = false; // 不挖空
         textField.filters = [glowFilter];

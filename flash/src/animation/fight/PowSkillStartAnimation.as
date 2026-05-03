@@ -48,6 +48,7 @@ public class PowSkillStartAnimation extends Sprite {
     public function dispose():void {
         if (this._animationSkillStart != null) {
             this._animationSkillStart.scaleX = 1;
+            this._animationSkillStart.gotoAndStop(this._animationSkillStart.totalFrames);
             DisplayUtil.removeForParent(this._animationSkillStart);
             this._animationSkillStart = null;
         }

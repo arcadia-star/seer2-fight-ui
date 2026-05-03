@@ -7,6 +7,7 @@ import data.pet.FrameData;
 import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.utils.clearTimeout;
 import flash.utils.setTimeout;
 
 import ui.end.UI_ScreenCover;
@@ -20,13 +21,14 @@ public class FaceLayer extends Sprite {
         var arenaLoadingBar:ArenaLoadingBar = new ArenaLoadingBar();
         arenaLoadingBar.initData(frame.data.left, frame.data.right, frame.start.tips);
         addChild(arenaLoadingBar);
+        var progressTimeout:uint = setTimeout(function ():void {
+            arenaLoadingBar.updateProgress(100);
+        }, 2500);
         Utils.once(arenaLoadingBar, Event.CLOSE, function ():void {
+            clearTimeout(progressTimeout);
             arenaLoadingBar.dispose();
             cb();
         })
-        setTimeout(function ():void {
-            arenaLoadingBar.updateProgress(100);
-        }, 2500);
     }
 
     public function playEnd(side:int, cb:Function):void {

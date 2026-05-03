@@ -266,6 +266,10 @@ public class DisplayUtil {
     public static function replaceChild(child:*, target:*):* {
         var parent:DisplayObjectContainer = child.parent;
         var index:int = parent.getChildIndex(child);
+        var oldContainer:DisplayObjectContainer = child as DisplayObjectContainer;
+        if (oldContainer) {
+            stopAllMovieClip(oldContainer);
+        }
         parent.addChildAt(target, index);
         parent.removeChild(child);
         return target;

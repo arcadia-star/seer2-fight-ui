@@ -9,6 +9,7 @@ import ui.PetFallback;
 
 public class S1Pet extends MovieClip {
     private var _origin:MovieClip;
+    private var _enterFrameHandler:Function;
 
     public function S1Pet(origin:MovieClip) {
         this._origin = origin;
@@ -51,10 +52,17 @@ public class S1Pet extends MovieClip {
         }
         _origin.gotoAndStop(label);
 
-        function handleEnterFrame(event:Event):void {
+        if (_enterFrameHandler != null) {
+            _origin.removeEventListener(Event.ENTER_FRAME, _enterFrameHandler);
+            _enterFrameHandler = null;
+        }
+
+        var self:S1Pet = this;
+        _enterFrameHandler = function handleEnterFrame(event:Event):void {
             var child0:MovieClip = _origin.getChildAt(0) as MovieClip;
             if (child0) {
-                _origin.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
+                _origin.removeEventListener(Event.ENTER_FRAME, _enterFrameHandler);
+                self._enterFrameHandler = null;
                 if (frame === FighterActionType.IDLE) {
                     child0.gotoAndStop(0);
                 } else {
@@ -73,9 +81,9 @@ public class S1Pet extends MovieClip {
                     }
                 }
             }
-        }
+        };
 
-        _origin.addEventListener(Event.ENTER_FRAME, handleEnterFrame)
+        _origin.addEventListener(Event.ENTER_FRAME, _enterFrameHandler);
     }
 }
 }

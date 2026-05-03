@@ -32,7 +32,7 @@ public class IconDisplay extends Sprite {
         }
         _url = url;
         CacheUtils.loadItem(url, function (obj:DisplayObject):void {
-            if (_url === url) {
+            if (_url === url && parent) {
                 DisplayObjectUtil.removeFromParent(_icon);
                 _icon = mayWrapIcon(url, obj);
                 if (!isNaN(_maxWidth)) {

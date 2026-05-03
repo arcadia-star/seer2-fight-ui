@@ -7,6 +7,7 @@ import enums.FightSide;
 import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.text.TextField;
+import flash.utils.clearTimeout;
 import flash.utils.setTimeout;
 
 import ui.status.UI_FightSkillLeftBubble;
@@ -29,6 +30,7 @@ internal class SkillBubble extends Sprite {
         this._side = param1;
         DisplayObjectUtil.disableSprite(this);
         this._bubble = this._side == FightSide.LEFT ? new UI_FightSkillLeftBubble : new UI_FightSkillRightBubble;
+        this._bubble.cacheAsBitmap = true;
         this._skillNameTxt = this._bubble["skillNameTxt"];
         addChild(this._bubble);
         this.alpha = 0;
@@ -42,8 +44,11 @@ internal class SkillBubble extends Sprite {
         this.emerge();
     }
 
+    private var _shrinkTimeout:uint;
+
     private function emerge():void {
         this.visible = true;
+        TweenLite.killTweensOf(this);
         TweenLite.to(this, 0.5, {
             "alpha": 1,
             "ease": Strong.easeIn,
@@ -53,10 +58,12 @@ internal class SkillBubble extends Sprite {
 
     private function onEmerge():void {
         this._skillNameTxt.text = this._bubbleContent;
-        setTimeout(this.shrink, 2000);
+        clearTimeout(_shrinkTimeout);
+        _shrinkTimeout = setTimeout(this.shrink, 2000);
     }
 
     private function shrink():void {
+        TweenLite.killTweensOf(this);
         TweenLite.to(this, 0.5, {
             "alpha": 0,
             "ease": Strong.easeIn,

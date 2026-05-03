@@ -9,6 +9,7 @@ import flash.display.Sprite;
 import ui.splash.UI_FightPresent;
 
 import utils.Utils;
+import utils.an.DisplayObjectUtil;
 
 public class PresentAnimation extends Sprite {
 
@@ -52,7 +53,11 @@ public class PresentAnimation extends Sprite {
     }
 
     public function dispose():void {
-        this._animation = null;
+        if (this._animation) {
+            this._animation.gotoAndStop(this._animation.totalFrames);
+            DisplayObjectUtil.removeFromParent(this._animation);
+            this._animation = null;
+        }
         this._onFighterPresent = null;
     }
 }

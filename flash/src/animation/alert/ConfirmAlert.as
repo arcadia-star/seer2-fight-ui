@@ -4,6 +4,7 @@ import animation.event.Events;
 import flash.display.MovieClip;
 import flash.display.SimpleButton;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 
@@ -26,6 +27,13 @@ public class ConfirmAlert extends Sprite {
         this._cancelBtn.addEventListener(MouseEvent.CLICK, this.onCancelBtnClick);
         this._contentTxt = this._ui["contentTxt"];
         addChild(this._ui);
+        addEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+    }
+
+    private function onRemoved(param1:Event):void {
+        removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+        _confirmBtn.removeEventListener(MouseEvent.CLICK, this.onConfirmBtnClick);
+        _cancelBtn.removeEventListener(MouseEvent.CLICK, this.onCancelBtnClick);
     }
 
     private function onConfirmBtnClick(param1:MouseEvent):void {

@@ -53,7 +53,7 @@ public class PetFallback extends MovieClip {
             if (hit) {
                 origin.dispatchEvent(new Event("hit", true));
             }
-        });
+        }, false, 0, true);
     }
 
     public static function showPetFrames(origin:MovieClip):TextField {
@@ -65,7 +65,7 @@ public class PetFallback extends MovieClip {
             var child0:MovieClip = origin.numChildren ? origin.getChildAt(0) as MovieClip : null;
             _text.text = origin.currentFrame + "/" + origin.totalFrames + "," +
                     (child0 ? (child0.currentFrame + "/" + child0.totalFrames) : "");
-        });
+        }, false, 0, true);
         return _text;
     }
 }

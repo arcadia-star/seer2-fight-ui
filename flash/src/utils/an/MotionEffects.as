@@ -24,6 +24,7 @@ public class MotionEffects {
     }
 
     public static function resetScale(param1:InteractiveObject):void {
+        TweenLite.killTweensOf(param1);
         param1.scaleX = 1;
         param1.scaleY = 1;
     }

@@ -42,7 +42,10 @@ internal class BuffIconBar extends Sprite {
     }
 
     public function initData(param1:PetData):void {
-        DisplayObjectUtil.removeAllChildren(this);
+        for (var ci:int = numChildren - 1; ci >= 0; ci--) {
+            var child:BuffIcon = getChildAt(ci) as BuffIcon;
+            if (child) child.visible = false;
+        }
         var buffs:Vector.<BuffData> = param1.buffs;
         var itemBuffs:Vector.<BuffData> = buildItemBuffs(param1.items);
         var lvBuffs:Vector.<BuffData> = buildLvBuffs(param1);
@@ -77,7 +80,16 @@ internal class BuffIconBar extends Sprite {
                 buffIcon.y = 0;
             }
             buffIcon.initData(buff);
-            addChild(buffIcon);
+            buffIcon.visible = true;
+            if (buffIcon.parent != this) {
+                addChild(buffIcon);
+            }
+        }
+        for (var ri:int = numChildren - 1; ri >= 0; ri--) {
+            var remain:BuffIcon = getChildAt(ri) as BuffIcon;
+            if (remain && !remain.visible) {
+                removeChildAt(ri);
+            }
         }
     }
 

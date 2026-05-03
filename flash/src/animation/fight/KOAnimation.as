@@ -25,9 +25,11 @@ public class KOAnimation extends Sprite {
     }
 
     public function play():void {
-        this._animation = new UI_FightKOAnimation;
-        this._animation.x = 32;
-        this._animation.y = 181;
+        if (!this._animation) {
+            this._animation = new UI_FightKOAnimation;
+            this._animation.x = 32;
+            this._animation.y = 181;
+        }
         addChild(this._animation);
         Utils.onComplete(this._animation, onAnimationEnd)
     }
@@ -38,7 +40,6 @@ public class KOAnimation extends Sprite {
 
     public function dispose():void {
         DisplayObjectUtil.removeFromParent(this._animation);
-        this._animation = null;
     }
 }
 }

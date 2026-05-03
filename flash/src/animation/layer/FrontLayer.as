@@ -45,6 +45,9 @@ public class FrontLayer extends Sprite {
         addChild(sprite);
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }
@@ -69,6 +72,9 @@ public class FrontLayer extends Sprite {
         addChild(sprite);
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }
@@ -78,6 +84,9 @@ public class FrontLayer extends Sprite {
         addChild(sprite);
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }
@@ -87,6 +96,9 @@ public class FrontLayer extends Sprite {
         addChild(sprite);
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }
@@ -99,6 +111,9 @@ public class FrontLayer extends Sprite {
         });
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }
@@ -113,6 +128,9 @@ public class FrontLayer extends Sprite {
         });
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }
@@ -132,6 +150,9 @@ public class FrontLayer extends Sprite {
         });
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }
@@ -144,6 +165,9 @@ public class FrontLayer extends Sprite {
         });
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }
@@ -156,6 +180,9 @@ public class FrontLayer extends Sprite {
         });
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }
@@ -165,6 +192,9 @@ public class FrontLayer extends Sprite {
         addChild(sprite);
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
             cb();
         })
@@ -175,6 +205,9 @@ public class FrontLayer extends Sprite {
         addChild(sprite);
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
             cb();
         })
@@ -185,6 +218,9 @@ public class FrontLayer extends Sprite {
         addChild(sprite);
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }
@@ -207,7 +243,10 @@ public class FrontLayer extends Sprite {
                 sprite.scaleX *= -1;
             }
             Utils.onComplete(sprite, function ():void {
-                DisplayObjectUtil.removeFromParent(sprite);
+                if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
+            DisplayObjectUtil.removeFromParent(sprite);
             })
         })
     }
@@ -217,6 +256,9 @@ public class FrontLayer extends Sprite {
         addChild(sprite);
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }
@@ -229,6 +271,9 @@ public class FrontLayer extends Sprite {
         });
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
             cb();
         })
@@ -239,6 +284,9 @@ public class FrontLayer extends Sprite {
         addChild(sprite);
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if ("dispose" in sprite) {
+                (sprite as Object).dispose();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
             cb();
         })

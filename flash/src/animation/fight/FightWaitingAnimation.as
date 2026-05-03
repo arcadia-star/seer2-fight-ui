@@ -28,8 +28,10 @@ public class FightWaitingAnimation extends Sprite {
     }
 
     public function dispose():void {
-        DisplayObjectUtil.removeFromParent(this._waitingSprite);
-        this._waitingSprite = null;
+        if (this._waitingSprite) {
+            DisplayObjectUtil.removeFromParent(this._waitingSprite);
+            this._waitingSprite = null;
+        }
     }
 }
 }
