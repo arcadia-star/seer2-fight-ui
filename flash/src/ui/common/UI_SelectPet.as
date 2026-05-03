@@ -3,7 +3,7 @@ import flash.display.MovieClip;
 import flash.display.SimpleButton;
 import flash.text.TextField;
 
-[Embed(source="/assets/UI.swf", symbol="UI_SelectPet")]
+[Embed(source="/_assets/assets.swf", symbol="UI_SelectPet")]
 public dynamic class UI_SelectPet extends MovieClip {
     public var cancelBtn:SimpleButton;
 

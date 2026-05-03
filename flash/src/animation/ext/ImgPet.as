@@ -8,7 +8,7 @@ import ui.PetFallback;
 import utils.an.DisplayObjectUtil;
 
 public class ImgPet extends MovieClip {
-    [Embed(source="/assets/img-pet0.swf", symbol="pet")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_ImgPet0")]
     public static var Pet0:Class;
 
     public var _img:Bitmap;

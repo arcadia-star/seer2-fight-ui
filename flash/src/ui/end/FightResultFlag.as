@@ -1,7 +1,7 @@
 package ui.end {
 import flash.display.MovieClip;
 
-[Embed(source="/assets/FightResultPanel.swf", symbol="com.taomee.seer2.module.app.fightResultPanel.FightResultFlag")]
+[Embed(source="/_assets/assets.swf", symbol="com_taomee_seer2_module_app_fightResultPanel_FightResultFlag")]
 public dynamic class FightResultFlag extends MovieClip {
 }
 }

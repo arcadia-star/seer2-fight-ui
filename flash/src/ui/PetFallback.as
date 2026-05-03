@@ -5,7 +5,7 @@ import flash.events.Event;
 import flash.text.TextField;
 
 public class PetFallback extends MovieClip {
-    [Embed(source="/assets/pet0.swf", symbol="pet")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_Pet0")]
     public static var Pet0:Class;
 
     private var _origin:MovieClip;

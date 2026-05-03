@@ -2,7 +2,7 @@ package ui.splash {
 import flash.display.MovieClip;
 import flash.events.Event;
 
-[Embed(source="/assets/UI_Arena.swf", symbol="UI_FightCatchFailed")]
+[Embed(source="/_assets/assets.swf", symbol="UI_FightCatchFailed")]
 public dynamic class UI_FightCatchFailed extends MovieClip {
     public function UI_FightCatchFailed() {
         super();

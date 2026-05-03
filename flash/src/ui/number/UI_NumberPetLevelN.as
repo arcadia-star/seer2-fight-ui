@@ -1,24 +1,24 @@
 package ui.number {
 public class UI_NumberPetLevelN {
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberPetLevel0")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberPetLevel0")]
     public static var UI_NumberPetLevel0:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberPetLevel1")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberPetLevel1")]
     public static var UI_NumberPetLevel1:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberPetLevel2")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberPetLevel2")]
     public static var UI_NumberPetLevel2:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberPetLevel3")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberPetLevel3")]
     public static var UI_NumberPetLevel3:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberPetLevel4")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberPetLevel4")]
     public static var UI_NumberPetLevel4:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberPetLevel5")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberPetLevel5")]
     public static var UI_NumberPetLevel5:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberPetLevel6")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberPetLevel6")]
     public static var UI_NumberPetLevel6:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberPetLevel7")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberPetLevel7")]
     public static var UI_NumberPetLevel7:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberPetLevel8")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberPetLevel8")]
     public static var UI_NumberPetLevel8:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberPetLevel9")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberPetLevel9")]
     public static var UI_NumberPetLevel9:Class;
 
     public static function find(idx:int):Class {

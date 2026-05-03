@@ -1,24 +1,24 @@
 package ui.splash {
 public class UI_NumberAngerIncreaseN {
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAngerIncrease0")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAngerIncrease0")]
     public static var UI_NumberAngerIncrease0:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAngerIncrease1")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAngerIncrease1")]
     public static var UI_NumberAngerIncrease1:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAngerIncrease2")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAngerIncrease2")]
     public static var UI_NumberAngerIncrease2:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAngerIncrease3")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAngerIncrease3")]
     public static var UI_NumberAngerIncrease3:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAngerIncrease4")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAngerIncrease4")]
     public static var UI_NumberAngerIncrease4:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAngerIncrease5")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAngerIncrease5")]
     public static var UI_NumberAngerIncrease5:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAngerIncrease6")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAngerIncrease6")]
     public static var UI_NumberAngerIncrease6:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAngerIncrease7")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAngerIncrease7")]
     public static var UI_NumberAngerIncrease7:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAngerIncrease8")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAngerIncrease8")]
     public static var UI_NumberAngerIncrease8:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAngerIncrease9")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAngerIncrease9")]
     public static var UI_NumberAngerIncrease9:Class;
 
     public static function find(idx:int):Class {

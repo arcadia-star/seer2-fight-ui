@@ -1,7 +1,7 @@
 package ui.end {
 import flash.display.SimpleButton;
 
-[Embed(source="/assets/FightResultPanel.swf", symbol="com.taomee.seer2.module.app.fightResultPanel.FightResultBtn")]
+[Embed(source="/_assets/assets.swf", symbol="com_taomee_seer2_module_app_fightResultPanel_FightResultBtn")]
 public dynamic class FightResultBtn extends SimpleButton {
 }
 }

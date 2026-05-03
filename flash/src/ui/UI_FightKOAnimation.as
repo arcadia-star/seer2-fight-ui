@@ -1,7 +1,7 @@
 package ui {
 import flash.display.MovieClip;
 
-[Embed(source="/assets/UI_Arena.swf", symbol="UI_FightKOAnimation")]
+[Embed(source="/_assets/assets.swf", symbol="UI_FightKOAnimation")]
 public dynamic class UI_FightKOAnimation extends MovieClip {
 
     public function UI_FightKOAnimation() {

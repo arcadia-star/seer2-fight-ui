@@ -1,7 +1,7 @@
 package ui.sound {
 import flash.media.Sound;
 
-[Embed(source="/assets/BGM_1002.mp3")]
+[Embed(source="/_assets/assets.swf", symbol="MapSound0")]
 public dynamic class MapSound0 extends Sound {
 }
 }

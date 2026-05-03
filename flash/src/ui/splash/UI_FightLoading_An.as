@@ -2,7 +2,7 @@ package ui.splash {
 import flash.display.MovieClip;
 import flash.events.Event;
 
-[Embed(source="/assets/UI_Arena.swf", symbol="_fla._554656er_5")]
+[Embed(source="/_assets/assets.swf", symbol="UI_FightLoading_An")]
 public dynamic class UI_FightLoading_An extends MovieClip {
 
     public function UI_FightLoading_An() {

@@ -1,52 +1,52 @@
 package ui {
 public class UI_PetTypeIcon_N {
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_1")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_1")]
     public static var UI_PetTypeIcon_0:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_1")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_1")]
     public static var UI_PetTypeIcon_1:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_2")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_2")]
     public static var UI_PetTypeIcon_2:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_3")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_3")]
     public static var UI_PetTypeIcon_3:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_4")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_4")]
     public static var UI_PetTypeIcon_4:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_5")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_5")]
     public static var UI_PetTypeIcon_5:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_6")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_6")]
     public static var UI_PetTypeIcon_6:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_7")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_7")]
     public static var UI_PetTypeIcon_7:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_8")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_8")]
     public static var UI_PetTypeIcon_8:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_9")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_9")]
     public static var UI_PetTypeIcon_9:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_10")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_10")]
     public static var UI_PetTypeIcon_10:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_11")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_11")]
     public static var UI_PetTypeIcon_11:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_12")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_12")]
     public static var UI_PetTypeIcon_12:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_13")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_13")]
     public static var UI_PetTypeIcon_13:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_14")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_14")]
     public static var UI_PetTypeIcon_14:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_15")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_15")]
     public static var UI_PetTypeIcon_15:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_16")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_16")]
     public static var UI_PetTypeIcon_16:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_17")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_17")]
     public static var UI_PetTypeIcon_17:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_18")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_18")]
     public static var UI_PetTypeIcon_18:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_19")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_19")]
     public static var UI_PetTypeIcon_19:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_20")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_20")]
     public static var UI_PetTypeIcon_20:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_21")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_21")]
     public static var UI_PetTypeIcon_21:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_22")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_22")]
     public static var UI_PetTypeIcon_22:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_PetTypeIcon_23")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_PetTypeIcon_23")]
     public static var UI_PetTypeIcon_23:Class;
 
     public static function find(idx:int):Class {

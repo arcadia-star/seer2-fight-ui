@@ -2,7 +2,7 @@ package ui {
 import flash.display.MovieClip;
 import flash.events.Event;
 
-[Embed(source="/assets/UI_Emotion18.swf", symbol="symbol2475")]
+[Embed(source="/_assets/assets.swf", symbol="UI_Emotion18")]
 public dynamic class IconFallback extends MovieClip {
     public function IconFallback() {
         addEventListener(Event.ADDED_TO_STAGE, onStageAdded);

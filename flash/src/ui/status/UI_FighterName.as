@@ -1,7 +1,7 @@
 package ui.status {
 import flash.display.MovieClip;
 
-[Embed(source="/assets/UI_Arena.swf", symbol="UI_FighterName")]
+[Embed(source="/_assets/assets.swf", symbol="UI_FighterName")]
 public dynamic class UI_FighterName extends MovieClip {
 }
 }

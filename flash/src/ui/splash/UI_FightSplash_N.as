@@ -1,24 +1,24 @@
 package ui.splash {
 public class UI_FightSplash_N {
-    [Embed(source="/assets/UI_Arena.swf", symbol="UI_FightSplash0")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_FightSplash0")]
     public static var UI_FightSplash0:Class;
-    [Embed(source="/assets/UI_Arena.swf", symbol="UI_FightSplash1")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_FightSplash1")]
     public static var UI_FightSplash1:Class;
-    [Embed(source="/assets/UI_Arena.swf", symbol="UI_FightSplash2")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_FightSplash2")]
     public static var UI_FightSplash2:Class;
-    [Embed(source="/assets/UI_Arena.swf", symbol="UI_FightSplash3")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_FightSplash3")]
     public static var UI_FightSplash3:Class;
-    [Embed(source="/assets/UI_Arena.swf", symbol="UI_FightSplash4")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_FightSplash4")]
     public static var UI_FightSplash4:Class;
-    [Embed(source="/assets/UI_Arena.swf", symbol="UI_FightSplash5")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_FightSplash5")]
     public static var UI_FightSplash5:Class;
-    [Embed(source="/assets/UI_Arena.swf", symbol="UI_FightSplash6")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_FightSplash6")]
     public static var UI_FightSplash6:Class;
-    [Embed(source="/assets/UI_Arena.swf", symbol="UI_FightSplash7")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_FightSplash7")]
     public static var UI_FightSplash7:Class;
-    [Embed(source="/assets/UI_Arena.swf", symbol="UI_FightSplash8")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_FightSplash8")]
     public static var UI_FightSplash8:Class;
-    [Embed(source="/assets/UI_Arena.swf", symbol="UI_FightSplash9")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_FightSplash9")]
     public static var UI_FightSplash9:Class;
 
     public static function find(idx:int):Class {

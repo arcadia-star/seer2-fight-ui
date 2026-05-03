@@ -2,7 +2,7 @@ package ui.splash {
 import flash.display.MovieClip;
 import flash.events.Event;
 
-[Embed(source="/assets/UI_Arena.swf", symbol="UI_FightHpRecover")]
+[Embed(source="/_assets/assets.swf", symbol="UI_FightHpRecover")]
 public dynamic class UI_FightHpRecover extends MovieClip {
 
     public function UI_FightHpRecover() {

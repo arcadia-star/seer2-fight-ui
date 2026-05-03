@@ -2,7 +2,7 @@ package ui.splash {
 import flash.display.MovieClip;
 import flash.events.Event;
 
-[Embed(source="/assets/UI_Arena.swf", symbol="UI_FightCatchHint")]
+[Embed(source="/_assets/assets.swf", symbol="UI_FightCatchHint")]
 public dynamic class UI_FightCatchHint extends MovieClip {
     public function UI_FightCatchHint() {
         super();

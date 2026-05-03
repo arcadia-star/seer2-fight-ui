@@ -1,24 +1,24 @@
 package ui.number {
 public class UI_NumberAngerN {
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAnger0")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAnger0")]
     public static var UI_NumberAnger0:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAnger1")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAnger1")]
     public static var UI_NumberAnger1:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAnger2")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAnger2")]
     public static var UI_NumberAnger2:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAnger3")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAnger3")]
     public static var UI_NumberAnger3:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAnger4")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAnger4")]
     public static var UI_NumberAnger4:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAnger5")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAnger5")]
     public static var UI_NumberAnger5:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAnger6")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAnger6")]
     public static var UI_NumberAnger6:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAnger7")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAnger7")]
     public static var UI_NumberAnger7:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAnger8")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAnger8")]
     public static var UI_NumberAnger8:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_NumberAnger9")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_NumberAnger9")]
     public static var UI_NumberAnger9:Class;
 
     public static function find(idx:int):Class {

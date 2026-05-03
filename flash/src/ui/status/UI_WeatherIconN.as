@@ -1,52 +1,52 @@
 package ui.status {
 public class UI_WeatherIconN {
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon1")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon1")]
     public static var UI_WeatherIcon1:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon2")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon2")]
     public static var UI_WeatherIcon2:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon3")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon3")]
     public static var UI_WeatherIcon3:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon4")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon4")]
     public static var UI_WeatherIcon4:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon5")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon5")]
     public static var UI_WeatherIcon5:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon6")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon6")]
     public static var UI_WeatherIcon6:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon7")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon7")]
     public static var UI_WeatherIcon7:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon8")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon8")]
     public static var UI_WeatherIcon8:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon9")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon9")]
     public static var UI_WeatherIcon9:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon10")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon10")]
     public static var UI_WeatherIcon10:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon11")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon11")]
     public static var UI_WeatherIcon11:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon12")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon12")]
     public static var UI_WeatherIcon12:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon13")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon13")]
     public static var UI_WeatherIcon13:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon14")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon14")]
     public static var UI_WeatherIcon14:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon15")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon15")]
     public static var UI_WeatherIcon15:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon16")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon16")]
     public static var UI_WeatherIcon16:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon17")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon17")]
     public static var UI_WeatherIcon17:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon18")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon18")]
     public static var UI_WeatherIcon18:Class;
-//    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon19")]
+//    [Embed(source="/assets/assets.swf", symbol="UI_WeatherIcon19")]
 //    public static var UI_WeatherIcon19:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon20")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon20")]
     public static var UI_WeatherIcon20:Class;
-//    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon21")]
+//    [Embed(source="/assets/assets.swf", symbol="UI_WeatherIcon21")]
 //    public static var UI_WeatherIcon21:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon22")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon22")]
     public static var UI_WeatherIcon22:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon23")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon23")]
     public static var UI_WeatherIcon23:Class;
-    [Embed(source="/assets/UI.swf", symbol="UI_WeatherIcon24")]
+    [Embed(source="/_assets/assets.swf", symbol="UI_WeatherIcon24")]
     public static var UI_WeatherIcon24:Class;
 
     public static function find(idx:int):Class {

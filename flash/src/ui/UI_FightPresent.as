@@ -2,7 +2,7 @@ package ui {
 import flash.display.MovieClip;
 import flash.events.Event;
 
-[Embed(source="/assets/UI_Arena.swf", symbol="UI_FightPresent")]
+[Embed(source="/_assets/assets.swf", symbol="UI_FightPresent")]
 public dynamic class UI_FightPresent extends MovieClip {
     public function UI_FightPresent() {
         super();
