@@ -11,10 +11,12 @@ import data.pet.EndData;
 
 import data.pet.FrameData;
 
+import flash.display.DisplayObject;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.system.System;
 import flash.text.TextField;
+import flash.utils.clearTimeout;
 import flash.utils.setInterval;
 import flash.utils.setTimeout;
 
@@ -147,7 +149,13 @@ public class FramePlayer extends Sprite {
     }
 
     public function clearFgLayer():void {
-        DisplayObjectUtil.removeAllChildren(fgLayer);
+        while (fgLayer.numChildren > 0) {
+            var child:DisplayObject = fgLayer.getChildAt(0);
+            if ("dispose" in child) {
+                (child as Object).dispose();
+            }
+            fgLayer.removeChildAt(0);
+        }
     }
 
     private function checkVersion(version:int):Boolean {

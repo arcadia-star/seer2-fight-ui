@@ -1,6 +1,7 @@
 package animation.common {
 import flash.display.MovieClip;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.geom.Point;
 import flash.text.TextField;
@@ -32,6 +33,16 @@ public class TipsDisplay extends Sprite {
         _source = param1;
         _source.addEventListener(MouseEvent.ROLL_OVER, this.onTargetOver);
         _source.addEventListener(MouseEvent.ROLL_OUT, this.onTargetOut);
+        addEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+    }
+
+    private function onRemoved(param1:Event):void {
+        removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+        if (_source) {
+            _source.removeEventListener(MouseEvent.ROLL_OVER, this.onTargetOver);
+            _source.removeEventListener(MouseEvent.ROLL_OUT, this.onTargetOut);
+        }
+        DisplayObjectUtil.removeFromParent(_tipSkin);
     }
 
     public function initData(tips:String):void {

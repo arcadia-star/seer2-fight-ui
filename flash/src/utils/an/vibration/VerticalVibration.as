@@ -44,6 +44,11 @@ public class VerticalVibration {
         this._targetRecordX = this._target.x;
         this._targetRecordY = this._target.y;
         this._target.addEventListener(Event.ENTER_FRAME, this.onTargetEnterFrame);
+        this._target.addEventListener(Event.REMOVED_FROM_STAGE, this.onRemovedFromStage);
+    }
+
+    private function onRemovedFromStage(param1:Event):void {
+        this.dispose();
     }
 
     private function onTargetEnterFrame(param1:Event):void {

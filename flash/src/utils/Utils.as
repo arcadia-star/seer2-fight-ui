@@ -29,15 +29,21 @@ public class Utils {
     public static function load(url:String, cb:Function, onError:Function = null):Loader {
         var loader:Loader = new Loader();
         var contentLoaderInfo:LoaderInfo = loader.contentLoaderInfo;
-        contentLoaderInfo.addEventListener(Event.COMPLETE, function (event:Event):void {
+        function handleComplete(event:Event):void {
+            contentLoaderInfo.removeEventListener(Event.COMPLETE, handleComplete);
+            contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, handleError);
+            contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, handleError);
             cb(contentLoaderInfo)
-        });
-        contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, function (event:Event):void {
+        }
+        function handleError(event:Event):void {
+            contentLoaderInfo.removeEventListener(Event.COMPLETE, handleComplete);
+            contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, handleError);
+            contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, handleError);
             onError && onError(event)
-        });
-        contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function (event:Event):void {
-            onError && onError(event)
-        });
+        }
+        contentLoaderInfo.addEventListener(Event.COMPLETE, handleComplete);
+        contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, handleError);
+        contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, handleError);
         loader.load(new URLRequest(url));
         return loader;
     }
@@ -45,29 +51,41 @@ public class Utils {
     public static function loadText(url:String, cb:Function, onError:Function = null):void {
         var loader:URLLoader = new URLLoader();
         loader.dataFormat = URLLoaderDataFormat.TEXT;
-        loader.addEventListener(Event.COMPLETE, function (event:Event):void {
+        function handleComplete(event:Event):void {
+            loader.removeEventListener(Event.COMPLETE, handleComplete);
+            loader.removeEventListener(IOErrorEvent.IO_ERROR, handleError);
+            loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, handleError);
             cb(loader.data)
-        });
-        loader.addEventListener(IOErrorEvent.IO_ERROR, function (event:Event):void {
+        }
+        function handleError(event:Event):void {
+            loader.removeEventListener(Event.COMPLETE, handleComplete);
+            loader.removeEventListener(IOErrorEvent.IO_ERROR, handleError);
+            loader.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, handleError);
             onError && onError(event)
-        });
-        loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function (event:Event):void {
-            onError && onError(event)
-        });
+        }
+        loader.addEventListener(Event.COMPLETE, handleComplete);
+        loader.addEventListener(IOErrorEvent.IO_ERROR, handleError);
+        loader.addEventListener(SecurityErrorEvent.SECURITY_ERROR, handleError);
         loader.load(new URLRequest(url));
     }
 
     public static function loadSound(url:String, cb:Function, onError:Function = null):void {
         var sound:Sound = new Sound();
-        sound.addEventListener(Event.COMPLETE, function (event:Event):void {
+        function handleComplete(event:Event):void {
+            sound.removeEventListener(Event.COMPLETE, handleComplete);
+            sound.removeEventListener(IOErrorEvent.IO_ERROR, handleError);
+            sound.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, handleError);
             cb(sound)
-        });
-        sound.addEventListener(IOErrorEvent.IO_ERROR, function (event:Event):void {
+        }
+        function handleError(event:Event):void {
+            sound.removeEventListener(Event.COMPLETE, handleComplete);
+            sound.removeEventListener(IOErrorEvent.IO_ERROR, handleError);
+            sound.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, handleError);
             onError && onError(event)
-        });
-        sound.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function (event:Event):void {
-            onError && onError(event)
-        });
+        }
+        sound.addEventListener(Event.COMPLETE, handleComplete);
+        sound.addEventListener(IOErrorEvent.IO_ERROR, handleError);
+        sound.addEventListener(SecurityErrorEvent.SECURITY_ERROR, handleError);
         sound.load(new URLRequest(url));
     }
 

@@ -13,6 +13,9 @@ public class ColorFilter {
 
     private static const BLUE:Number = 0.082;
 
+    private static var _grayscaleFilter:ColorMatrixFilter;
+    private static var _brightnessFilters:Object = {};
+
 
     public function ColorFilter() {
         super();
@@ -40,8 +43,10 @@ public class ColorFilter {
     }
 
     public static function setGrayscale(param1:DisplayObject):void {
-        var _loc2_:ColorMatrixFilter = new ColorMatrixFilter([ColorFilter.RED, ColorFilter.GREEN, ColorFilter.BLUE, 0, 0, ColorFilter.RED, ColorFilter.GREEN, ColorFilter.BLUE, 0, 0, ColorFilter.RED, ColorFilter.GREEN, ColorFilter.BLUE, 0, 0, 0, 0, 0, 1, 0]);
-        setDisplayObject(param1, _loc2_);
+        if (!_grayscaleFilter) {
+            _grayscaleFilter = new ColorMatrixFilter([ColorFilter.RED, ColorFilter.GREEN, ColorFilter.BLUE, 0, 0, ColorFilter.RED, ColorFilter.GREEN, ColorFilter.BLUE, 0, 0, ColorFilter.RED, ColorFilter.GREEN, ColorFilter.BLUE, 0, 0, 0, 0, 0, 1, 0]);
+        }
+        setDisplayObject(param1, _grayscaleFilter);
     }
 
     private static function cleanValue(param1:Number, param2:Number):Number {
@@ -53,8 +58,12 @@ public class ColorFilter {
         if (param2 == 0 || isNaN(param2)) {
             return;
         }
-        var _loc3_:ColorMatrixFilter = new ColorMatrixFilter([1, 0, 0, 0, param2, 0, 1, 0, 0, param2, 0, 0, 1, 0, param2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]);
-        setDisplayObject(param1, _loc3_);
+        var filter:ColorMatrixFilter = _brightnessFilters[param2];
+        if (!filter) {
+            filter = new ColorMatrixFilter([1, 0, 0, 0, param2, 0, 1, 0, 0, param2, 0, 0, 1, 0, param2, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1]);
+            _brightnessFilters[param2] = filter;
+        }
+        setDisplayObject(param1, filter);
     }
 
     public static function setHue(param1:DisplayObject, param2:Number):void {
@@ -87,9 +96,7 @@ public class ColorFilter {
     }
 
     private static function setDisplayObject(param1:DisplayObject, param2:BitmapFilter):void {
-        var _loc3_:Array = param1.filters;
-        _loc3_.push(param2);
-        param1.filters = _loc3_;
+        param1.filters = [param2];
     }
 }
 }

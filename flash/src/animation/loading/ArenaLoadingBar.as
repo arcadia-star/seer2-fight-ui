@@ -130,6 +130,15 @@ public class ArenaLoadingBar extends Sprite {
         this.updateTip();
         this._tipInterval = setInterval(updateTip, 3000);
         addChild(this._TipTxt);
+        addEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+    }
+
+    private function onRemoved(param1:Event):void {
+        removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+        clearInterval(_tipInterval);
+        if (_animation) {
+            _animation.removeEventListener(Event.ENTER_FRAME, this.onEnterFrame);
+        }
     }
 
     private function RGB(param1:uint, param2:uint, param3:uint):uint {

@@ -31,7 +31,9 @@ public class FightControlPanel extends Sprite {
         super();
         this.x = 246;
         this.y = 513;
-        addChild(new UI_FightBarBack);
+        var barBack:UI_FightBarBack = new UI_FightBarBack();
+barBack.cacheAsBitmap = true;
+addChild(barBack);
         this._fightPointPanel = new FightPointPanel();
         this._fightPointPanel.x -= this.x + 10;
         this._fightPointPanel.y = 27 - 3;

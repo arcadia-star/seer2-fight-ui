@@ -100,7 +100,18 @@ internal class HubButtonPanel extends Sprite {
         _morphBtn.x = 870;
         _morphBtn.y = -50;
         addChild(_morphBtn);
-        _morphBtn.addEventListener(MouseEvent.CLICK, this.onMorphClick)
+        _morphBtn.addEventListener(MouseEvent.CLICK, this.onMorphClick);
+        addEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+    }
+
+    private function onRemoved(param1:Event):void {
+        removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+        _fightBtn.removeEventListener(MouseEvent.CLICK, this.onFightClick);
+        _itemBtn.removeEventListener(MouseEvent.CLICK, this.onItemClick);
+        _petBtn.removeEventListener(MouseEvent.CLICK, this.onPetClick);
+        _escapeBtn.removeEventListener(MouseEvent.CLICK, this.onEscapeClick);
+        _catchBtn.removeEventListener(MouseEvent.CLICK, this.onCatchClick);
+        _morphBtn.removeEventListener(MouseEvent.CLICK, this.onMorphClick);
     }
 
     public function reset():void {

@@ -58,15 +58,15 @@ internal class ShrinkBar extends Sprite {
     }
 
     private function onPlay(param1:Event):void {
-        var _loc2_:int = 0;
-        var _loc3_:int = 0;
-        if (this._bar != null) {
-            _loc2_ = this._bar.currentFrame;
-            _loc3_ = _loc2_ + this._playDirection;
-            this._bar.gotoAndStop(_loc3_);
-            if (_loc3_ == this._targetFrameNum) {
-                this.stopPlayBar();
-            }
+        if (this._bar == null) {
+            this.stopPlayBar();
+            return;
+        }
+        var _loc2_:int = this._bar.currentFrame;
+        var _loc3_:int = _loc2_ + this._playDirection;
+        this._bar.gotoAndStop(_loc3_);
+        if (_loc3_ == this._targetFrameNum) {
+            this.stopPlayBar();
         }
     }
 

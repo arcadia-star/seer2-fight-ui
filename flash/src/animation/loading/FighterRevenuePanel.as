@@ -66,7 +66,14 @@ public class FighterRevenuePanel extends Sprite {
         this._shopBtn.visible = true;
         this.x = 120;
         this.y = 171;
-        this.alpha = 1
+        this.alpha = 1;
+        addEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+    }
+
+    private function onRemoved(param1:Event):void {
+        removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+        _btn.removeEventListener(MouseEvent.CLICK, this.onBtnClick);
+        _shopBtn.removeEventListener(MouseEvent.CLICK, this.onBtnClick);
     }
 
     private function onBtnClick(evt:MouseEvent):void {

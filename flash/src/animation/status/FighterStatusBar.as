@@ -58,6 +58,12 @@ internal class FighterStatusBar extends Sprite {
 
     private var border:MovieClip;
 
+    private var _lastHp:int = -1;
+    private var _lastMaxHp:int = -1;
+    private var _lastAnger:int = -1;
+    private var _lastMaxAnger:int = -1;
+    private var _lastLevel:int = -1;
+
     public function FighterStatusBar(side:int) {
         super();
         DisplayObjectUtil.disableSprite(this);
@@ -83,14 +89,21 @@ internal class FighterStatusBar extends Sprite {
             DisplayObjectUtil.removeFromParent(this.border);
         }
         this.updatePressStatus(pet.rate);
-        if (this._hpSign.numChildren > 0) {
-            this._hpSign.removeChildAt(0);
+        var hp:int = Math.max(pet.hp, 0);
+        if (_hpSign.numChildren === 0 || _lastHp !== hp || _lastMaxHp !== pet.maxHp) {
+            while (_hpSign.numChildren > 0) _hpSign.removeChildAt(0);
+            _hpSign.addChild(UINumberGenerator.generateHpNumber(hp, pet.maxHp));
+            _lastHp = hp;
+            _lastMaxHp = pet.maxHp;
         }
-        this._hpSign.addChild(UINumberGenerator.generateHpNumber(Math.max(pet.hp, 0), pet.maxHp));
-        if (this._angerSign.numChildren > 0) {
-            this._angerSign.removeChildAt(0);
+
+        var anger:int = Math.max(pet.anger, 0);
+        if (_angerSign.numChildren === 0 || _lastAnger !== anger || _lastMaxAnger !== pet.maxAnger) {
+            while (_angerSign.numChildren > 0) _angerSign.removeChildAt(0);
+            _angerSign.addChild(UINumberGenerator.generateAngerNumber(anger, pet.maxAnger));
+            _lastAnger = anger;
+            _lastMaxAnger = pet.maxAnger;
         }
-        this._angerSign.addChild(UINumberGenerator.generateAngerNumber(Math.max(pet.anger, 0), pet.maxAnger));
         var angerPct:Number = Math.max(pet.anger / pet.maxAnger, 0);
         var hpPct:Number = Math.max(pet.hp / pet.maxHp, 0);
         if (smooth !== FrameData.SMOOTH_TRUE) {
@@ -102,12 +115,15 @@ internal class FighterStatusBar extends Sprite {
             this._healthBar.playToPercent(hpPct);
             this._healthShadowBar.playToPercent(hpPct);
         }
-        if (this._levelSprite.numChildren > 1) {
-            this._levelSprite.removeChildAt(1);
+        if (_lastLevel !== pet.level) {
+            if (this._levelSprite.numChildren > 1) {
+                this._levelSprite.removeChildAt(1);
+            }
+            var level:Sprite = UINumberGenerator.generateFighterLevelNumber(pet.level);
+            level.x = 30;
+            this._levelSprite.addChild(level);
+            _lastLevel = pet.level;
         }
-        var level:Sprite = UINumberGenerator.generateFighterLevelNumber(pet.level);
-        level.x = 30;
-        this._levelSprite.addChild(level);
         (this._nameSprite["fighterNameTxt"] as TextField).text = pet.name;
         this._typeIcon.initData(pet.typeIcon);
     }
@@ -131,6 +147,7 @@ internal class FighterStatusBar extends Sprite {
 
     protected function createChildren():void {
         this._back = new UI_FightStatusBarBack;
+        this._back.cacheAsBitmap = true;
         addChild(this._back);
         this._shape = new Shape();
         addChild(this._shape);

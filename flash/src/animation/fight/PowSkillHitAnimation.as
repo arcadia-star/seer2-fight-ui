@@ -40,6 +40,7 @@ public class PowSkillHitAnimation extends Sprite {
 
     public function dispose():void {
         if (this._animationSkillHit != null) {
+            this._animationSkillHit.gotoAndStop(this._animationSkillHit.totalFrames);
             DisplayUtil.removeForParent(this._animationSkillHit);
             this._animationSkillHit = null;
         }

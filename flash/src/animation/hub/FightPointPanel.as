@@ -55,21 +55,19 @@ public class FightPointPanel extends Sprite {
     }
 
     private function updateStatus(param1:Vector.<String>):void {
-        var _loc2_:int = 0;
         this._contentTxt.htmlText = "";
-        if (param1.length < SIZE) {
-            param1.unshift(" ");
-            this.updateStatus(param1);
-        } else {
-            _loc2_ = 0;
-            while (_loc2_ < SIZE) {
-                if (_loc2_ < SIZE - 1) {
-                    this._contentTxt.htmlText += param1[_loc2_] + "\n";
-                } else {
-                    this._contentTxt.htmlText += param1[_loc2_];
-                }
-                _loc2_++;
+        var padded:Vector.<String> = param1.concat();
+        while (padded.length < SIZE) {
+            padded.unshift(" ");
+        }
+        var _loc2_:int = 0;
+        while (_loc2_ < SIZE) {
+            if (_loc2_ < SIZE - 1) {
+                this._contentTxt.htmlText += padded[_loc2_] + "\n";
+            } else {
+                this._contentTxt.htmlText += padded[_loc2_];
             }
+            _loc2_++;
         }
     }
 

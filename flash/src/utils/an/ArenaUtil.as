@@ -8,7 +8,7 @@ import utils.ds.HashMap;
 
 public class ArenaUtil {
 
-    private static var vibrateMap:HashMap = new HashMap();
+    private static var vibrateMap:HashMap = new HashMap(true);
 
     private static var horizontalDrifting:HorizontalDrifting;
 

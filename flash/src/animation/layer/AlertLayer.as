@@ -38,7 +38,7 @@ public class AlertLayer extends Sprite {
     }
 
     private function show(alert:Sprite):void {
-        alert.addEventListener(Events.ALERT_END, function (event:Event):void {
+        Utils.once(alert, Events.ALERT_END, function ():void {
             DisplayObjectUtil.removeFromParent(alert);
             updateMask();
         });

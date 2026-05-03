@@ -62,8 +62,12 @@ public class HPIncreaseAnimation extends Sprite {
     }
 
     public function dispose():void {
+        TweenLite.killTweensOf(this._digitSprite);
+        TweenLite.killTweensOf(this._hpRecoverAnimation);
         DisplayUtil.removeForParent(this._hpRecoverAnimation);
+        DisplayObjectUtil.removeFromParent(this._digitSprite);
         this._hpRecoverAnimation = null;
+        this._digitSprite = null;
     }
 
     private function onAnimationEnd():void {

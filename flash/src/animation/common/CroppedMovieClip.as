@@ -23,8 +23,10 @@ public class CroppedMovieClip extends Sprite {
 
     // 重写width的setter，改变裁切区域的宽度
     override public function set width(value:Number):void {
-        _cropRect.width = value;
-        _content.scrollRect = _cropRect;
+        if (_cropRect.width !== value) {
+            _cropRect.width = value;
+            _content.scrollRect = _cropRect;
+        }
     }
 
     // 重写height的getter，返回裁切区域的高度
@@ -34,15 +36,27 @@ public class CroppedMovieClip extends Sprite {
 
     // 重写height的setter，改变裁切区域的高度
     override public function set height(value:Number):void {
-        _cropRect.height = value;
-        _content.scrollRect = _cropRect;
+        if (_cropRect.height !== value) {
+            _cropRect.height = value;
+            _content.scrollRect = _cropRect;
+        }
     }
 
     // 如果需要，也可以提供改变裁切位置的方法
     public function setCropPosition(x:Number, y:Number):void {
-        _cropRect.x = x;
-        _cropRect.y = y;
-        _content.scrollRect = _cropRect;
+        if (_cropRect.x !== x || _cropRect.y !== y) {
+            _cropRect.x = x;
+            _cropRect.y = y;
+            _content.scrollRect = _cropRect;
+        }
+    }
+
+    public function setCropSize(width:Number, height:Number):void {
+        if (_cropRect.width !== width || _cropRect.height !== height) {
+            _cropRect.width = width;
+            _cropRect.height = height;
+            _content.scrollRect = _cropRect;
+        }
     }
 
     // 获取内部MovieClip的引用

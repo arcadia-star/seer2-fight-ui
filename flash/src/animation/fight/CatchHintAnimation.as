@@ -41,6 +41,7 @@ public class CatchHintAnimation extends Sprite {
 
     public function dispose():void {
         if (this._mc != null) {
+            this._mc.gotoAndStop(this._mc.totalFrames);
             DisplayObjectUtil.removeFromParent(this._mc);
             this._mc = null;
         }

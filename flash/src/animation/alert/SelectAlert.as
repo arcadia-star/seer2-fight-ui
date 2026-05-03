@@ -5,6 +5,7 @@ import animation.event.Events;
 import flash.display.MovieClip;
 import flash.display.SimpleButton;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFormat;
@@ -71,6 +72,19 @@ public class SelectAlert extends Sprite {
         this._confirmBtn.addEventListener(MouseEvent.CLICK, this.okBtn);
         this._cancelBtn.addEventListener(MouseEvent.CLICK, this.onCancelBtnClick);
         addChild(_ui);
+        addEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+    }
+
+    private function onRemoved(param1:Event):void {
+        removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
+        _confirmBtn.removeEventListener(MouseEvent.CLICK, this.okBtn);
+        _cancelBtn.removeEventListener(MouseEvent.CLICK, this.onCancelBtnClick);
+        for (var i:int = 0; i < SIZE; i++) {
+            var cell:MovieClip = _cells[i];
+            cell.removeEventListener(MouseEvent.CLICK, this.onMouseCell);
+            cell.removeEventListener(MouseEvent.MOUSE_OVER, this.onMouseOver);
+            cell.removeEventListener(MouseEvent.MOUSE_OUT, this.onMouseOut);
+        }
     }
 
     private function okBtn(param1:MouseEvent):void {

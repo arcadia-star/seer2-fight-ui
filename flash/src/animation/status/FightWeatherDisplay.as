@@ -21,6 +21,7 @@ internal class FightWeatherDisplay extends Sprite {
     public function FightWeatherDisplay() {
         super();
         this._back = new UI_WeatherIconBack;
+this._back.cacheAsBitmap = true;
         DisplayObjectUtil.disableSprite(this._back);
         addChild(this._back);
         this._icon = new IconDisplay();

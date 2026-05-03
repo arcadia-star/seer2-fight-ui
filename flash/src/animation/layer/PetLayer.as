@@ -20,6 +20,7 @@ import enums.SkillCategoryName;
 import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.utils.clearTimeout;
 import flash.utils.setTimeout;
 
 import utils.CacheUtils;
@@ -86,9 +87,10 @@ public class PetLayer extends Sprite {
                 var atkComplete:Boolean = false;
                 //最多允许10s
                 var hitTimeout:int = Math.min(moveData.hitTimeout, 10000);
+                var hitTimeoutId:uint;
                 if (hitTimeout > 0) {
-                    setTimeout(function ():void {
-                        if (atkComplete) {
+                    hitTimeoutId = setTimeout(function ():void {
+                        if (atkComplete || !atk.parent) {
                             return;
                         }
                         atk.dispatchEvent(new Event("hit"));
@@ -96,6 +98,7 @@ public class PetLayer extends Sprite {
                 }
                 onChild0Complete(atk, function ():void {
                     atkComplete = true;
+                    clearTimeout(hitTimeoutId);
                     if (!checkVersion(version)) {
                         return;
                     }
@@ -441,6 +444,9 @@ public class PetLayer extends Sprite {
         function handleEnterFrame(event:Event):void {
             var mc:MovieClip = pet.getChildAt(0) as MovieClip;
             if (mc && mc.currentFrame == mc.totalFrames) {
+                pet.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
+                cb();
+            } else if (!pet.parent) {
                 pet.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
                 cb();
             }

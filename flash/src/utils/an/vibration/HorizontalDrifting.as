@@ -62,7 +62,7 @@ public class HorizontalDrifting {
     public function dispose():void {
         //todo 影响效果，暂时不修改
         //this._target.x = _targetRecordX;
-        TweenLite.killTweensOf(this);
+        TweenLite.killTweensOf(this._target);
         this._target = null;
         this._targetBoundary = null;
         this._direction = 0;

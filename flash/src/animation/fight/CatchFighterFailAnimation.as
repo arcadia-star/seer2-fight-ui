@@ -42,6 +42,7 @@ public class CatchFighterFailAnimation extends Sprite {
     public function dispose():void {
         if (this._failedAnimation != null) {
             this._failedAnimation.scaleX = 1;
+            this._failedAnimation.gotoAndStop(this._failedAnimation.totalFrames);
             DisplayObjectUtil.removeFromParent(this._failedAnimation);
             this._failedAnimation = null;
         }

@@ -38,6 +38,11 @@ public class BaoJiHitAnimation extends Sprite {
     }
 
     public function dispose():void {
+        if (this._animationBaojiHit) {
+            this._animationBaojiHit.gotoAndStop(this._animationBaojiHit.totalFrames);
+            DisplayObjectUtil.removeFromParent(this._animationBaojiHit);
+            this._animationBaojiHit = null;
+        }
     }
 }
 }
