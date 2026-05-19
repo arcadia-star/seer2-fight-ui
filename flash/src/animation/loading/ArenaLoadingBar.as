@@ -80,9 +80,9 @@ public class ArenaLoadingBar extends Sprite {
     }
 
     public function initData(left:TeamData, right:TeamData, tips:Vector.<String>):void {
-        this.setLeftFighterInfo(left.master, null);
-        this.setRightFighterInfo(right.master, null);
-        this.setFightPress(left.master, null, right.master, null);
+        this.setLeftFighterInfo(left.master, left.slave ? left.slave : null);
+        this.setRightFighterInfo(right.master, right.slave ? right.slave : null);
+        this.setFightPress(left.master, left.slave ? left.slave : null, right.master, right.slave ? right.slave : null);
         this._tipList = tips;
         this._curIndex = -1;
         this.updateTip();

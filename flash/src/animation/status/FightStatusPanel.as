@@ -17,7 +17,7 @@ public class FightStatusPanel extends Sprite {
 
     protected var _arenaData:ArenaData;
 
-    protected var _leftMainFighterBar:FighterStatusBar;
+    protected var _leftMainFighterBar:BaseFighterStatusBar;
 
     protected var _leftBuffIconBar:BuffIconBar;
 
@@ -27,7 +27,7 @@ public class FightStatusPanel extends Sprite {
 
     protected var _leftAngerStatus:AngerStatusPanel;
 
-    protected var _rightMainFighterBar:FighterStatusBar;
+    protected var _rightMainFighterBar:BaseFighterStatusBar;
 
     protected var _rightBuffIconBar:BuffIconBar;
 

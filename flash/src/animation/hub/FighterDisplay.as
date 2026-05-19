@@ -39,44 +39,40 @@ internal class FighterDisplay extends Sprite {
 
     private var _mark:MovieClip;
 
-    private var _shape:Shape;
+    private var _cover:MovieClip;
+
+    private var _preeMc:MovieClip;
+
 
     public function FighterDisplay() {
         super();
         this.mouseChildren = false;
         this.buttonMode = true;
         this._backBtn = new UI_FightPetBtn;
-        this._backBtn.gotoAndStop(1);
         addChild(this._backBtn);
-        this._shape = new Shape();
-        this._shape.x = 45;
-        this._shape.y = 43;
-        addChild(this._shape);
+        this._cover = this._backBtn["cover"];
         this._iconDisplayer = new PetIconDisplay();
-        this._iconDisplayer.x = 20;
-        this._iconDisplayer.y = 10;
-        this._iconDisplayer.setSize(54);
-        DisplayObjectUtil.disableSprite(this._iconDisplayer);
-        addChild(this._iconDisplayer);
-        this._healthBar = new UI_FightPetHealthBar;
-        this._healthBar.x = 12;
-        this._healthBar.y = 63;
-        addChild(this._healthBar);
-        this._infoDisplay = new UI_FightPetInfo;
-        DisplayObjectUtil.disableSprite(this._infoDisplay);
-        this._infoDisplay.x = -15;
-        this._infoDisplay.y = 10;
+        this._iconDisplayer.x = 16.5;
+        this._iconDisplayer.y = 7;
+        this._iconDisplayer.setSize(55);
+        this._iconDisplayer.mask = this._cover;
+        this._backBtn.addChild(this._iconDisplayer);
+        this._healthBar = this._backBtn["healthBar"];
+        this._infoDisplay = this._backBtn["infoMc"];
         this._lvTxt = this._infoDisplay["lvTxt"];
         this._hpTxt = this._infoDisplay["hpTxt"];
         this._nameTxt = this._infoDisplay["nameTxt"];
-        addChild(this._infoDisplay);
+        this._backBtn.setChildIndex(this._infoDisplay, this._backBtn.numChildren - 1);
         this._typeIcon = new IconDisplay();
-        this._typeIcon.x = 75;
+        this._typeIcon.x = 65;
         DisplayObjectUtil.disableSprite(this._typeIcon);
         addChild(this._typeIcon);
-        this._mark = new UI_FightFighterMark;
+        this._mark = this._backBtn["mark"];
         this._mark.visible = false;
-        addChild(this._mark);
+        this._preeMc = this._backBtn["preeMc"];
+        this._preeMc.gotoAndStop(1);
+        this._backBtn.setChildIndex(this._mark, this._backBtn.numChildren - 2);
+        this._backBtn.setChildIndex(this._infoDisplay, this._backBtn.numChildren - 1);
     }
 
     public function initData(param1:PetData):void {
@@ -89,6 +85,7 @@ internal class FighterDisplay extends Sprite {
     }
 
     public function updatePressStatus(rate:uint):void {
+        trace("[FighterDisplay]rate=" + rate + '\n');
         var _loc4_:int = 1;
         if (rate <= 0) {
             _loc4_ = 4;
@@ -99,7 +96,7 @@ internal class FighterDisplay extends Sprite {
         } else if (rate > 100) {
             _loc4_ = 2;
         }
-        this._backBtn.gotoAndStop(_loc4_);
+        this._preeMc.gotoAndStop(_loc4_);
     }
 
     private function showFighter():void {
@@ -109,7 +106,7 @@ internal class FighterDisplay extends Sprite {
         this._typeIcon.initData(this._fighter.typeIcon);
         this._iconDisplayer.initData(this._fighter.petIcon);
         this.updateFightingMark();
-        updatePressStatus(this._fighter.rate);
+        this.updatePressStatus(this._fighter.rate);
     }
 
     private function updateInteraction():void {

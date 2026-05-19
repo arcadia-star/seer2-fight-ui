@@ -60,8 +60,8 @@ internal class ItemPanel extends Sprite {
             showPage(_pageIndex - 1);
         };
         this.mouseEnabled = false;
-        offsetX = 100;
-        offsetY = 57;
+        offsetX = 28;
+        offsetY = 7;
         itemWidth = 73;
         this._itemDisplayVec = new Vector.<ItemDisplay>();
         i = 0;
@@ -77,12 +77,12 @@ internal class ItemPanel extends Sprite {
             i++;
         }
         this._prevBtn = new UI_FightPage;
-        this._prevBtn.x = 72;
-        this._prevBtn.y = 92;
+        this._prevBtn.x = 3;
+        this._prevBtn.y = 60;
         addChild(this._prevBtn);
         this._nextBtn = new UI_FightPage;
-        this._nextBtn.x = 772;
-        this._nextBtn.y = 92;
+        this._nextBtn.x = 693;
+        this._nextBtn.y = 47;
         this._nextBtn.scaleX = -1;
         addChild(this._nextBtn);
         this.disableBtn(this._prevBtn);

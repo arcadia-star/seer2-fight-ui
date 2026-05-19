@@ -45,17 +45,17 @@ internal class SkillPanel extends Sprite {
         };
         this.mouseEnabled = false;
         this._superSkillBtn = new SuperSkillButton();
-        this._superSkillBtn.x = 10;
-        this._superSkillBtn.y = 15;
+        this._superSkillBtn.x = 3;
+        this._superSkillBtn.y = 3;
         this._superSkillBtn.buttonMode = true;
         this._superSkillBtn.useHandCursor = true;
         addChild(this._superSkillBtn);
         this._superSkillBtn.addEventListener(MouseEvent.CLICK, this.onSkillBtnClick);
         this._superSkillBtn.addEventListener(MouseEvent.MOUSE_OVER, onSkillBtnOver);
         this._superSkillBtn.addEventListener(MouseEvent.MOUSE_OUT, onSkillBtnOut);
-        offsetX = 81;
-        offsetY = 16;
-        btnWidth = 175;
+        offsetX = 84;
+        offsetY = 20;
+        btnWidth = 171;
         this._skillBtnVec = new Vector.<SkillButton>();
         i = 0;
         while (i < SKILL_BTN_NUM) {

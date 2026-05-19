@@ -271,9 +271,9 @@ public class DisplayUtil {
         return target;
     }
 
-    public static function setChildPosition(param1:DisplayObject, param2:int, param3:int):void {
-        param1.x = param2;
-        param1.y = param3;
+    public static function setChildPosition(param1:DisplayObject, x:int, y:int):void {
+        param1.x = x;
+        param1.y = y;
     }
 }
 }

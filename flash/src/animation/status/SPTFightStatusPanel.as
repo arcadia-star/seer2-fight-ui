@@ -16,7 +16,8 @@ public class SPTFightStatusPanel extends FightStatusPanel {
 
     override protected function layout():void {
         var setChildPosition:Function = DisplayUtil.setChildPosition;
-        setChildPosition(_rightMainFighterBar, 242, 0);
+        setChildPosition(_leftMainFighterBar, 0, 20);
+        setChildPosition(_rightMainFighterBar, 410, 0);
         setChildPosition(_leftCapsuleBar, 4, 118);
         setChildPosition(_leftBuffIconBar, 106, 89);
 //        setChildPosition(_leftSkillBubble, 0, 140);

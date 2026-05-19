@@ -7,6 +7,8 @@ public class OperateEvent extends Event {
 
     public static const OPERATE_END:String = "operateEnd";
 
+    public static const SUNDRIES:String = "sundries";
+
     public var data:OperateData;
 
     public function OperateEvent(param1:String) {
@@ -47,6 +49,18 @@ public class OperateEvent extends Event {
     public static function changeUI():OperateEvent {
         var event:OperateEvent = new OperateEvent(OPERATE_END);
         event.data.functional = OperateData.FUNCTIONAL_CHANGE_UI;
+        return event;
+    }
+
+    public static function autoFight():OperateEvent {
+        var event:OperateEvent = new OperateEvent(SUNDRIES);
+        event.data.functional = 2;
+        return event;
+    }
+
+    public static function setting():OperateEvent {
+        var event:OperateEvent = new OperateEvent(SUNDRIES);
+        event.data.functional = 3;
         return event;
     }
 }
