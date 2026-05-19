@@ -22,14 +22,17 @@ public class UINumberGenerator {
     }
 
     public static function generateHpNumber(param1:int, param2:int):Sprite {
+        //构造的Sprite,其x在斜杠的中心
         var _loc4_:Sprite = createDisableSprite();
         var _loc5_:Sprite = generateNumberSprite(param1, UI_NumberHpN.find, 11);
+        _loc5_.x = -(_loc5_.width) - 6;
         _loc4_.addChild(_loc5_);
         var _loc6_:Sprite;
-        (_loc6_ = (new UI_NumberHpSlash)).x = _loc5_.width;
+        _loc6_ = new UI_NumberHpSlash;
+        _loc6_.x = -6;
         _loc4_.addChild(_loc6_);
         var _loc7_:Sprite;
-        (_loc7_ = generateNumberSprite(param2, UI_NumberHpN.find, 11)).x = _loc6_.x + _loc6_.width;
+        (_loc7_ = generateNumberSprite(param2, UI_NumberHpN.find, 11)).x = 6;
         _loc4_.addChild(_loc7_);
         return _loc4_;
     }
@@ -37,12 +40,14 @@ public class UINumberGenerator {
     public static function generateAngerNumber(param1:int, param2:int):Sprite {
         var _loc4_:Sprite = createDisableSprite();
         var _loc5_:Sprite = generateNumberSprite(param1, UI_NumberAngerN.find, 11);
+        _loc5_.x = -(_loc5_.width) - 6;
         _loc4_.addChild(_loc5_);
         var _loc6_:Sprite;
-        (_loc6_ = (new UI_NumberAngerSlash)).x = _loc5_.width;
+        _loc6_ = new UI_NumberAngerSlash;
+        _loc6_.x = -6;
         _loc4_.addChild(_loc6_);
         var _loc7_:Sprite;
-        (_loc7_ = generateNumberSprite(param2, UI_NumberAngerN.find, 11)).x = _loc6_.x + _loc6_.width;
+        (_loc7_ = generateNumberSprite(param2, UI_NumberAngerN.find, 11)).x = 6;
         _loc4_.addChild(_loc7_);
         return _loc4_;
     }

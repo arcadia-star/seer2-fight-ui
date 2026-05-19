@@ -43,6 +43,7 @@ internal class SkillButton extends Sprite implements ISkillButton {
         this._btn = new UI_FightSkillBtn;
         addChild(this._btn);
         this._brief = new UI_FightSkillBrief;
+        addChild(this._brief);
         this._brief.mouseChildren = false;
         this._brief.mouseEnabled = false;
         var _loc1_:TextField = this._brief["txtAnger"];
@@ -55,13 +56,11 @@ internal class SkillButton extends Sprite implements ISkillButton {
         this._powerValueTxt = this._brief["txtPowerValue"];
         this._powerValueTxt.text = "0";
         this._categoryTxt = this._brief["txtSkillCategory"];
-        this._brief.y -= 3;
-        addChild(this._brief);
         this._typeIcon = new IconDisplay();
-        this._typeIcon.setSize(32);
+        this._typeIcon.setSize(40);
         DisplayObjectUtil.disableSprite(this._typeIcon);
-        this._typeIcon.x = 18;
-        this._typeIcon.y = 19;
+        this._typeIcon.x = 11;
+        this._typeIcon.y = 13;
         addChild(this._typeIcon);
     }
 
@@ -72,7 +71,6 @@ internal class SkillButton extends Sprite implements ISkillButton {
         this._powerValueTxt.text = this._info.power.toString();
         this._categoryTxt.text = this._info.category;
         this._typeIcon.initData(this._info.typeIcon);
-
         if (param1.enable) {
             DisplayObjectUtil.recoverDisplayObject(this);
         } else {

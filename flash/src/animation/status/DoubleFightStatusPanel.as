@@ -24,15 +24,15 @@ public class DoubleFightStatusPanel extends FightStatusPanel {
 
     override protected function createChildren():void {
         super.createChildren();
+        _leftSubFighterBar = new SubFighterStatusBar(FightSide.LEFT);
+        addChild(_leftSubFighterBar);
+        _rightSubFighterBar = new SubFighterStatusBar(FightSide.RIGHT);
+        addChild(_rightSubFighterBar);
         var replaceChild:Function = DisplayUtil.replaceChild;
         _leftMainFighterBar = replaceChild(_leftMainFighterBar, new DoubleFighterStatusBar(FightSide.LEFT));
         _rightMainFighterBar = replaceChild(_rightMainFighterBar, new DoubleFighterStatusBar(FightSide.RIGHT));
         _leftBuffIconBar = replaceChild(_leftBuffIconBar, new BuffIconBar(FightSide.LEFT, 5));
         _rightBuffIconBar = replaceChild(_rightBuffIconBar, new BuffIconBar(FightSide.RIGHT, 5));
-        _leftSubFighterBar = new SubFighterStatusBar(FightSide.LEFT);
-        addChild(_leftSubFighterBar);
-        _rightSubFighterBar = new SubFighterStatusBar(FightSide.RIGHT);
-        addChild(_rightSubFighterBar);
     }
 
     override protected function layout():void {
@@ -43,8 +43,8 @@ public class DoubleFightStatusPanel extends FightStatusPanel {
         setChildPosition(_leftCapsuleBar, 6, 112);
         setChildPosition(_rightCapsuleBar, 1123, 112);
         //sub
-        setChildPosition(_leftSubFighterBar, 250, 2);
-        setChildPosition(_rightSubFighterBar, 950, 2);
+        setChildPosition(_leftSubFighterBar, 260, 2);
+        setChildPosition(_rightSubFighterBar, 940, 2);
     }
 }
 }

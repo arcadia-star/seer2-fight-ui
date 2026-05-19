@@ -221,7 +221,7 @@ dynamic class UI_FightSPTBossHealthBar extends MovieClip {
 dynamic class UI_FightSPTBossHealthShadowBar extends MovieClip {
 }
 
-[Embed(source="/_assets/UI_Arena.swf", symbol="UI_FightSPTBossStatusBack")]
+[Embed(source="/_assets/UI_Arena.swf", symbol="UI_FightSPTBossStatusBarBack")]
 dynamic class UI_FightSPTBossStatusBack extends MovieClip {
 }
 
@@ -237,7 +237,7 @@ dynamic class UI_FightSPTFighterHealthBar extends MovieClip {
 dynamic class UI_FightSPTFighterHealthShadowBar extends MovieClip {
 }
 
-[Embed(source="/_assets/UI_Arena.swf", symbol="UI_FightSPTFighterStatusBack")]
+[Embed(source="/_assets/UI_Arena.swf", symbol="UI_FightSPTFighterStatusBarBack")]
 dynamic class UI_FightSPTFighterStatusBack extends MovieClip {
 }
 
