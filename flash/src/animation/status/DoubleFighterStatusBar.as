@@ -16,15 +16,17 @@ public class DoubleFighterStatusBar extends BaseFighterStatusBar {
         this._back = new UI_DoubleFightStatusBarBack
         addChild(this._back);
         super.createChildren();
-        this._typeIcon.setSize(16);
-        this._typeIcon.visible = false;
     }
 
     override protected function layout(side:int):void {
         super.layout(side);
         var setChildPosition:Function = DisplayUtil.setChildPosition;
-        setChildPosition(_hpSign, 173, 12);
-        setChildPosition(_angerSign, 173, 32);
+        setChildPosition(this._hpSign, 173, 12);
+        setChildPosition(this._angerSign, 173, 32);
+        this._typeIcon.x = this._iconCover.x + this._iconCover.width - 30;
+        this._typeIcon.y = 0;
+        this._typeIcon.setScale(1,1);
+        if (side == FightSide.RIGHT) {this._typeIcon.x += 40;}
     }
 }
 }

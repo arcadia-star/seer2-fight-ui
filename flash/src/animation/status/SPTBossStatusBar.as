@@ -12,7 +12,6 @@ internal class SPTBossStatusBar extends BaseFighterStatusBar {
         this._back = new UI_FightSPTBossStatusBarBack;
         addChild(this._back);
         super.createChildren();
-        this._typeIcon.setSize(16);
         this._iconDisplayer.scaleX = -1;
     }
 

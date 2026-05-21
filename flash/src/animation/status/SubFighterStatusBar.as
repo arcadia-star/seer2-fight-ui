@@ -14,15 +14,17 @@ public class SubFighterStatusBar extends BaseFighterStatusBar{
         this._back = new UI_SubFightStatusBarBack;
         addChild(this._back);
         super.createChildren();
-        _typeIcon.setSize(16);
-        _healthShadowBar.visible = false;
-        _hpSign.visible = false;
-        _angerSign.visible = false;
-        _typeIcon.visible = false;
+        this._healthShadowBar.visible = false;
+        this._hpSign.visible = false;
+        this._angerSign.visible = false;
     }
 
     override protected function layout(side:int):void {
         super.layout(side);
+        this._typeIcon.x = this._iconCover.x + this._iconCover.width - 23;
+        this._typeIcon.y = 0;
+        this._typeIcon.setScale(30/40,30/40);
+        if (side == FightSide.RIGHT) {this._typeIcon.x += 30;}
     }
 }
 }

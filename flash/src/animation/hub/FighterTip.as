@@ -13,7 +13,7 @@ internal class FighterTip extends Sprite {
 
     private static const ITEM_MAX_NUM:int = 5;
 
-    private static const ITEM_HEIGHT:int = 37;
+    private static const ITEM_HEIGHT:int = 39;
 
     private var _back:Sprite;
 
@@ -43,7 +43,7 @@ internal class FighterTip extends Sprite {
     private function createItemVec():void {
         var _loc3_:MovieClip = null;
         this._itemVec = new Vector.<MovieClip>();
-        var _loc1_:int = 6;
+        var _loc1_:int = 3;
         var _loc2_:int = 0;
         while (_loc2_ < ITEM_MAX_NUM) {
             _loc3_ = new UI_FightPeTipItem;

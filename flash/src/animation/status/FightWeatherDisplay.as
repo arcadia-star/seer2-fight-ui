@@ -23,19 +23,21 @@ internal class FightWeatherDisplay extends Sprite {
         this._back = new UI_WeatherIconBack;
         DisplayObjectUtil.disableSprite(this._back);
         addChild(this._back);
+        this._back.visible = false;
         this._icon = new IconDisplay();
         this._tips = new TipsDisplay(this._icon);
-        _tips.x = 42;
-        _tips.y = 4;
-        _tips.visible = false;
+        this._tips.x = 42;
+        this._tips.y = 4;
+        this._tips.visible = false;
         addChild(this._tips);
     }
 
     public function initData(param1:String, param2:String):void {
         if (param1) {
-            _icon.initData(param1);
-            _tips.visible = true;
-            _tips.initData(param2);
+            this._icon.initData(param1);
+            this._tips.visible = true;
+            this._tips.initData(param2);
+            this._back.visible = true;
         } else {
             _tips.visible = false;
         }

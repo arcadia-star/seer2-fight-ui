@@ -13,7 +13,6 @@ internal class SPTFighterStatusBar extends BaseFighterStatusBar {
         this._back = new UI_FightSPTFighterStatusBarBack;
         addChild(this._back);
         super.createChildren();
-        this._typeIcon.setSize(16);
     }
 
     override protected function layout(side:int):void {

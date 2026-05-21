@@ -14,7 +14,6 @@ public class FighterStatusBar extends BaseFighterStatusBar {
         this._back = new UI_FightStatusBarBack;
         addChild(this._back);
         super.createChildren();
-        this._typeIcon.setSize(16);
     }
 
     override protected function layout(side:int):void {
