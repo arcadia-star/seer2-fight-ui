@@ -4,6 +4,7 @@ import animation.status.Double2v1FightStatusPanel;
 import animation.status.DoubleFightStatusPanel;
 import animation.status.FightStatusPanel;
 import animation.status.SPTFightStatusPanel;
+import animation.status.YuCunFightStatusPanel;
 
 import data.pet.ArenaData;
 import data.pet.MoveData;
@@ -46,6 +47,10 @@ public class UILayer extends Sprite {
         this._controlPanel.appendLogs(logs);
     }
 
+    public function updateAutoFightStatus(show:Boolean):void {
+        this._controlPanel.updateAutoFightStatus(show);
+    }
+
     public function updateUiStyle(uiStyle:int):void {
         if (_uiStyle === uiStyle) {
             return;
@@ -57,6 +62,8 @@ public class UILayer extends Sprite {
             this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new DoubleFightStatusPanel());
         } else if (_uiStyle === 3) {
             this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new Double2v1FightStatusPanel());
+        } else if (_uiStyle === 4) {
+            this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new YuCunFightStatusPanel());
         } else {
             this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new FightStatusPanel());
         }

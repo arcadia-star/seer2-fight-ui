@@ -6,6 +6,10 @@ public class Resource {
     public static const clazz:Object = {};
     public static const MARK:String = "internal://";
 
+    {
+        Resource.init();
+    }
+
     public static function init():void {
         for (var i:int = 0; i <= 23; i++) {
             clazz["UI_PetTypeIcon_" + i] = UI_PetTypeIcon_N.find(i);

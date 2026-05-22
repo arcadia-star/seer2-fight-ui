@@ -56,7 +56,6 @@ public class FightStatusPanel extends Sprite {
         this._rightMainFighterBar.initData(param1.right.master, smooth);
         this._rightBuffIconBar.initData(param1.right.master);
         this._rightCapsuleBar.initData(param1.right.pets);
-        CapsuleBarPet.petShown(param1.right.pets.indexOf(param1.right.master));
         this._rightAngerStatus.setFight(param1.right.master);
         this.updateTitle();
         this._weatherDisplay.initData(param1.weatherIcon, param1.weatherTips);

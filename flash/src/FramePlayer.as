@@ -25,9 +25,6 @@ import utils.Utils;
 import utils.an.DisplayObjectUtil;
 
 public class FramePlayer extends Sprite {
-    {
-        Resource.init();
-    }
 
     private var bgLayer:BackLayer;
     private var petLayer:PetLayer;
@@ -186,7 +183,11 @@ public class FramePlayer extends Sprite {
     }
 
     public function showPetPanel():void {
-        this.uiLayer.showPetPanel();
+        uiLayer.showPetPanel();
+    }
+
+    public function updateAutoFightStatus(show:Boolean):void {
+        uiLayer.updateAutoFightStatus(show);
     }
 }
 }

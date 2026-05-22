@@ -43,6 +43,7 @@ public class FightControlPanel extends Sprite {
         this._depositMc = new New_UI_DepositTxt;
         this._depositMc.x = 445;
         this._depositMc.y = -350;
+        this._depositMc.stop();
         addChild(this._depositMc);
         this._depositMc.visible = this._depositMc.mouseChildren = this._depositMc.mouseEnabled = false;
         this._fightPointPanel = new FightPointPanel(this._back["history"]);
@@ -99,6 +100,19 @@ public class FightControlPanel extends Sprite {
         this._fightPointPanel.entryValue(logs);
     }
 
+    public function updateAutoFightStatus(show:Boolean):void {
+        if (this._depositMc.visible === show) {
+            return;
+        }
+        this._depositMc.visible = show;
+        if (show) {
+            this._depositMc.gotoAndPlay(1);
+        } else {
+            //隐藏时停止播放节约cpu开销
+            this._depositMc.gotoAndStop(1);
+        }
+    }
+
     private function onFightClick(param1:Event):void {
         setCurrentPanel(this._skillPanel);
     }
@@ -120,10 +134,6 @@ public class FightControlPanel extends Sprite {
     }
 
     private function onAutoClick(param1:Event):void {
-        this._depositMc.visible = !this._depositMc.visible;
-        if(this._depositMc.visible) this._depositMc.gotoAndPlay(1);
-        else this._depositMc.gotoAndStop(1);
-        //隐藏时停止播放节约cpu开销
         dispatchEvent(OperateEvent.autoFight());
     }
 
@@ -135,26 +145,26 @@ public class FightControlPanel extends Sprite {
         if (currentPanel === this._currentPanel) {
             return;
         }
-        if(this._currentPanel) {
+        if (this._currentPanel) {
             this._currentPanel.visible = this._currentPanel.mouseEnabled = this._currentPanel.mouseChildren = false;
         }
         this._currentPanel = currentPanel;
-        if(this._currentPanel) {
+        if (this._currentPanel) {
             this._currentPanel.visible = this._currentPanel.mouseEnabled = this._currentPanel.mouseChildren = true;
         }
     }
 
     public function enableFightControlPanel(able:Boolean):void {
         //由于自动按钮和设置按钮也加入了controlPanel,全部disable确实不太合适
-        for(var i:int = 0; i < numChildren; i++) {
+        for (var i:int = 0; i < numChildren; i++) {
             var child:DisplayObject = getChildAt(i);
-            if(child == this._hubButtonPanel) {
+            if (child == this._hubButtonPanel) {
                 this._hubButtonPanel.enableHubPanel(able);
                 continue;
             }
-            if(child == this._back) continue;
+            if (child == this._back) continue;
             //每回合出招阶段会自动切换至技能面板,其他面板是否接受鼠标动作无所谓
-            if(child == this._skillPanel) {
+            if (child == this._skillPanel) {
                 Sprite(child).mouseEnabled = able;
                 Sprite(child).mouseChildren = able;
             }

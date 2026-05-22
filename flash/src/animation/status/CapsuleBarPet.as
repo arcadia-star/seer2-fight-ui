@@ -18,7 +18,6 @@ internal class CapsuleBarPet extends Sprite {
     private var _backVec:Vector.<MovieClip>;
     private var _tipVec:Vector.<MovieClip>;
     private var _petIconVec:Vector.<PetIconDisplay>;
-    private static var _petHasShown:Array = [false, false, false, false, false, false];
     private var _side:int = 0;
     public static const CAPSULE_SIDE_LEFT:int = 0;
     public static const CAPSULE_SIDE_RIGHT:int = 1;
@@ -69,7 +68,7 @@ internal class CapsuleBarPet extends Sprite {
             (_loc4_ = new PetIconDisplay).y = i * CAPSULE_WIDTH + 1;
             _loc4_.x = 1;
             this._petIconVec.push(_loc4_);
-            _loc4_.setScale(30/54, 30/54);
+            _loc4_.setSize(30);
             _loc4_.mask = this._backVec[i]["cover"];
             _loc4_.mouseEnabled = _loc4_.mouseChildren = false;
             _loc4_.visible = false;
@@ -84,8 +83,9 @@ internal class CapsuleBarPet extends Sprite {
         for (var idx:int = 0; idx < CAPSULE_NUM; idx++) {
             var icon:PetIconDisplay = this._petIconVec[idx];
             if (idx < param1.length) {
-                icon.initData(param1[idx].petIcon);
-                if (this._side == CAPSULE_SIDE_LEFT || _petHasShown[idx]) {
+                var pet:PetData = param1[idx];
+                icon.initData(pet.petIcon);
+                if (!pet.ext || pet.ext.showIcon) {
                     icon.visible = true;
                     var mc:MovieClip = this._backVec[idx]["capsule"];
                     if(mc.currentFrame == 1) {
@@ -114,15 +114,15 @@ internal class CapsuleBarPet extends Sprite {
                         })(mc);
                         mc.play();
                     }
-                    this._tipVec[idx]["nameTxt"].text = param1[idx].name;
-                    this._tipVec[idx]["hpTxt"].text = param1[idx].hp + "/" + param1[idx].maxHp;
+                    this._tipVec[idx]["nameTxt"].text = pet.name;
+                    this._tipVec[idx]["hpTxt"].text = pet.hp + "/" + pet.maxHp;
                 }
                 else {
                     icon.visible = false;
                     this._tipVec[idx]["nameTxt"].text = "???";
                     this._tipVec[idx]["hpTxt"].text = "???/???";
                 }
-                if (param1[idx].alive > 0) {
+                if (pet.alive > 0) {
                     setColor(icon,true);
                 } else {
                     setColor(icon,false);
@@ -133,10 +133,6 @@ internal class CapsuleBarPet extends Sprite {
                 icon.visible = false;
             }
         }
-    }
-
-    static public function petShown(idx:int):void {
-        _petHasShown[idx] = true;
     }
 
     private function setColor(mc:DisplayObject, hasColor:Boolean):void {

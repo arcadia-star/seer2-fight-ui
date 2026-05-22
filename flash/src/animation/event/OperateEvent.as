@@ -47,20 +47,20 @@ public class OperateEvent extends Event {
     }
 
     public static function changeUI():OperateEvent {
-        var event:OperateEvent = new OperateEvent(OPERATE_END);
+        var event:OperateEvent = new OperateEvent(SUNDRIES);
         event.data.functional = OperateData.FUNCTIONAL_CHANGE_UI;
         return event;
     }
 
     public static function autoFight():OperateEvent {
         var event:OperateEvent = new OperateEvent(SUNDRIES);
-        event.data.functional = 2;
+        event.data.functional = OperateData.FUNCTIONAL_AUTO_FIGHT;
         return event;
     }
 
     public static function setting():OperateEvent {
         var event:OperateEvent = new OperateEvent(SUNDRIES);
-        event.data.functional = 3;
+        event.data.functional = OperateData.FUNCTIONAL_SETTING;
         return event;
     }
 }
