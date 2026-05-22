@@ -1,6 +1,9 @@
 package animation.hub {
 import animation.event.Events;
 
+import flash.display.DisplayObject;
+import flash.display.InteractiveObject;
+
 import flash.display.MovieClip;
 
 import flash.display.SimpleButton;
@@ -77,7 +80,7 @@ internal class HubButtonPanel extends Sprite {
         this._catchBtn.addEventListener(MouseEvent.CLICK, this.onCatchClick);
         this._autoBtn.addEventListener(MouseEvent.CLICK, this.onAutoClick);
         this._settingBtn.addEventListener(MouseEvent.CLICK, this.onSettingClick);
-        //this._morphBtn = new New_UI_FightPet;
+        //this._morphBtn = new New_UI_DepositTxt;
         //_morphBtn.x = 870;
         //_morphBtn.y = -50;
         //addChild(_morphBtn);
@@ -114,7 +117,6 @@ internal class HubButtonPanel extends Sprite {
     }
 
     private function onAutoClick(event:MouseEvent):void {
-        this.highLight(null);
         dispatchEvent(Events.btnAutoClick());
     }
 
@@ -134,6 +136,20 @@ internal class HubButtonPanel extends Sprite {
             this.currentMc = param1;
             if (this.currentMc) {
                 this.currentMc.gotoAndStop(2);
+            }
+        }
+    }
+
+    public function enableHubPanel(able:Boolean):void {
+        for(var i:int = 0; i < this._hub.numChildren; i++) {
+            var child:DisplayObject = this._hub.getChildAt(i);
+            if(child == this._autoBtn) continue;
+            if(child == this._settingBtn) continue;
+            if(child is InteractiveObject) {
+                InteractiveObject(child).mouseEnabled = able;
+            }
+            if(child is Sprite) {
+                Sprite(child).mouseChildren = able;
             }
         }
     }

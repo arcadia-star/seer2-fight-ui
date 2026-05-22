@@ -68,6 +68,7 @@ public class BaseFighterStatusBar extends MovieClip
         this._iconDisplayer = new PetIconDisplay();
         addChild(this._iconDisplayer);
         this._typeIcon = new IconDisplay();
+        this._typeIcon.setScale(17/40, 17/40);
         addChild(this._typeIcon);
         this._sign = this._back["barSign"];
         this._nameTxt = this._back["nameTxt"];
@@ -93,7 +94,7 @@ public class BaseFighterStatusBar extends MovieClip
     }
 
     protected function layout(side:int):void {
-        //该方法是调整各个元件位置,因为Bar水平翻转的时候会把文字也反向,需要在此调整文字部分翻转,并处理翻转后的位置
+        //该方法是调整各个元件位置,因为Bar水平翻转的时候会把文字也反向,需要在此调整文字部分翻转,并处理翻转后的位置;
         //Boss的Bar逻辑和这个不一样,单独设置且不super
         DisplayUtil.setChildPosition(this._iconDisplayer, this._iconCover.x, this._iconCover.y);
         DisplayUtil.setChildPosition(this._levelSprite, this._levelBg.x + 1, this._levelBg.y + 2);

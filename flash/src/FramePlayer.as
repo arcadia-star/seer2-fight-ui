@@ -67,13 +67,13 @@ public class FramePlayer extends Sprite {
     public function playFrame(frame:FrameData, next:Function):void {
         _version++;
         var version:int = _version;
-        DisplayObjectUtil.disableSprite(uiLayer.controlPanel);
+        uiLayer.controlPanel.enableFightControlPanel(false);
         var next0:Function = next;
         next = function ():void {
             if (!checkVersion(version)) {
                 return;
             }
-            DisplayObjectUtil.enableSprite(uiLayer.controlPanel);
+            uiLayer.controlPanel.enableFightControlPanel(true);
             next0();
         }
 

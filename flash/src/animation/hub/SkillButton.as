@@ -57,7 +57,7 @@ internal class SkillButton extends Sprite implements ISkillButton {
         this._powerValueTxt.text = "0";
         this._categoryTxt = this._brief["txtSkillCategory"];
         this._typeIcon = new IconDisplay();
-        this._typeIcon.setSize(40);
+        this._typeIcon.setScale(40/40, 40/40);
         DisplayObjectUtil.disableSprite(this._typeIcon);
         this._typeIcon.x = 11;
         this._typeIcon.y = 13;
