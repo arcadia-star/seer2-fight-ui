@@ -26,8 +26,8 @@ internal class FightWeatherDisplay extends Sprite {
         this._back.visible = false;
         this._icon = new IconDisplay();
         this._tips = new TipsDisplay(this._icon);
-        this._tips.x = 42;
-        this._tips.y = 4;
+        this._tips.x = 45;
+        this._tips.y = 5;
         this._tips.visible = false;
         addChild(this._tips);
     }

@@ -36,12 +36,13 @@ public class DoubleFightStatusPanel extends FightStatusPanel {
     }
 
     override protected function layout():void {
+        _rightCapsuleBar.scaleX *= -1;
         var setChildPosition:Function = DisplayUtil.setChildPosition;
         setChildPosition(_rightMainFighterBar, 1200, 0);
-        setChildPosition(_leftBuffIconBar, 85, 52);
-        setChildPosition(_rightBuffIconBar, 1083, 52);
-        setChildPosition(_leftCapsuleBar, 6, 112);
-        setChildPosition(_rightCapsuleBar, 1123, 112);
+        setChildPosition(_leftBuffIconBar, 85, 55);
+        setChildPosition(_rightBuffIconBar, 1083, 55);
+        setChildPosition(_leftCapsuleBar, 6, 125);
+        setChildPosition(_rightCapsuleBar, 1194, 125);
         //sub
         setChildPosition(_leftSubFighterBar, 260, 2);
         setChildPosition(_rightSubFighterBar, 940, 2);
