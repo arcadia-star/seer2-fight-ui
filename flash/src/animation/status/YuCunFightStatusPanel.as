@@ -5,7 +5,6 @@ import utils.an.DisplayUtil;
 
 public class YuCunFightStatusPanel extends SPTFightStatusPanel {
 
-    private var _petBar:PetIconBar;
     private var _itemBar:PetItemBar
 
     public function YuCunFightStatusPanel() {
@@ -13,14 +12,11 @@ public class YuCunFightStatusPanel extends SPTFightStatusPanel {
 
     override public function initData(param1:ArenaData, param2:int):void {
         super.initData(param1, param2);
-        this._petBar.initData(param1.left.pets);
         this._itemBar.initData(param1.left.master.ext);
     }
 
     override protected function createChildren():void {
         super.createChildren();
-        _petBar = new PetIconBar();
-        addChild(_petBar);
         _itemBar = new PetItemBar();
         addChild(_itemBar);
     }
@@ -28,7 +24,6 @@ public class YuCunFightStatusPanel extends SPTFightStatusPanel {
     override protected function layout():void {
         super.layout();
         var setChildPosition:Function = DisplayUtil.setChildPosition;
-        setChildPosition(_petBar, 10, 54 * 3);
         setChildPosition(_itemBar, 170, 15);
     }
 }
@@ -161,46 +156,6 @@ class PetItemBar extends Sprite {
             tips.x = x;
             tips.initData(data.morphTips);
             addChild(tips);
-        }
-    }
-}
-class PetIconBar extends Sprite {
-    [Embed(source="/_assets/yucun/头像框.swf", symbol="item")]
-    public static var petIcon0:Class;
-    [Embed(source="/_assets/yucun/问号.swf", symbol="item")]
-    public static var petIcon1:Class;
-    {
-        Resource.clazz["UI_ext_petIcon0"] = petIcon0;
-        Resource.clazz["UI_ext_petIcon1"] = petIcon1;
-    }
-
-    private var _petsIcons:Vector.<IconDisplay>;
-
-    public function PetIconBar() {
-        _petsIcons = new Vector.<IconDisplay>();
-        for (var i:int = 0; i < 6; i++) {
-            var petIconDisplay:IconDisplay = new IconDisplay();
-            petIconDisplay.setSize(32);
-            petIconDisplay.x = 0;
-            petIconDisplay.y = i * 32;
-            addChild(petIconDisplay);
-            _petsIcons[i] = petIconDisplay;
-        }
-    }
-
-    public function initData(pets:Vector.<PetData>):void {
-        for (var i:int = 0; i < _petsIcons.length; i++) {
-            var iconDisplay:IconDisplay = _petsIcons[i];
-            if (i < pets.length) {
-                var pet:PetData = pets[i];
-                if (pet.ext && pet.ext.showIcon) {
-                    iconDisplay.initData(pet.petIcon);
-                } else {
-                    iconDisplay.initData("internal://UI_ext_petIcon1");
-                }
-            } else {
-                iconDisplay.initData("internal://UI_ext_petIcon0");
-            }
         }
     }
 }

@@ -192,7 +192,9 @@ public class DemoPlayer extends Sprite {
                         ]);
                     });
                 }
-                if (event.data.functional === OperateData.FUNCTIONAL_CHANGE_UI) {
+            });
+            framePlayer.addEventListener(OperateEvent.SUNDRIES, function (event:OperateEvent):void {
+                if (event.data.functional === OperateData.FUNCTIONAL_SETTING) {
                     framePlayer.updateUiStyle(framesData.uiStyle = (framesData.uiStyle + 1) % 5);
                 }
             });

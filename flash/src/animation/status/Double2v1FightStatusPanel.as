@@ -40,7 +40,7 @@ public class Double2v1FightStatusPanel extends FightStatusPanel {
         setChildPosition(_leftCapsuleBar, 6, 125);
         setChildPosition(_rightCapsuleBar, 1194, 125);
         //sub
-        setChildPosition(_leftSubFighterBar, 250, 2);
+        setChildPosition(_leftSubFighterBar, 260, 2);
     }
 }
 }
