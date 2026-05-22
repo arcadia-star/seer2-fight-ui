@@ -183,7 +183,11 @@ public class FramePlayer extends Sprite {
     }
 
     public function showPetPanel():void {
-        this.uiLayer.showPetPanel();
+        uiLayer.showPetPanel();
+    }
+
+    public function updateAutoFightStatus(show:Boolean):void {
+        uiLayer.updateAutoFightStatus(show);
     }
 }
 }

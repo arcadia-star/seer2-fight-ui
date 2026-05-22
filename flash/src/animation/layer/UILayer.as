@@ -47,6 +47,10 @@ public class UILayer extends Sprite {
         this._controlPanel.appendLogs(logs);
     }
 
+    public function updateAutoFightStatus(show:Boolean):void {
+        this._controlPanel.updateAutoFightStatus(show);
+    }
+
     public function updateUiStyle(uiStyle:int):void {
         if (_uiStyle === uiStyle) {
             return;
