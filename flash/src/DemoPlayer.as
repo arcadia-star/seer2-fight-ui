@@ -4,6 +4,7 @@ import animation.event.OperateEvent;
 import animation.layer.AlertLayer;
 
 import data.Config;
+import data.operate.OperateData;
 import data.pet.ChangeData;
 import data.pet.EndData;
 import data.pet.EventData;
@@ -31,8 +32,6 @@ public class DemoPlayer extends Sprite {
     private var alertLayer:AlertLayer;
 
     public function DemoPlayer() {
-        Resource.init();
-
         this.config = Config.from(this);
         Config.redirectRes = true;
 
@@ -192,6 +191,9 @@ public class DemoPlayer extends Sprite {
                             {name: 'Second', url: 'http://seer2.61.com/res/item/medal/icon/500005.swf'}
                         ]);
                     });
+                }
+                if (event.data.functional === OperateData.FUNCTIONAL_CHANGE_UI) {
+                    framePlayer.updateUiStyle(framesData.uiStyle = (framesData.uiStyle + 1) % 5);
                 }
             });
 

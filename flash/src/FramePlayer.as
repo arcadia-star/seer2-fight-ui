@@ -25,9 +25,6 @@ import utils.Utils;
 import utils.an.DisplayObjectUtil;
 
 public class FramePlayer extends Sprite {
-    {
-        Resource.init();
-    }
 
     private var bgLayer:BackLayer;
     private var petLayer:PetLayer;

@@ -16,7 +16,6 @@ public class FightPlayer extends Sprite {
     private var framePlayer:FramePlayer;
 
     public function FightPlayer() {
-        Resource.init();
         this.config = Config.from(this);
         this.framePlayer = new FramePlayer();
         addChild(framePlayer);
