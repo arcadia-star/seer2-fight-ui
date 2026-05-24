@@ -12,6 +12,8 @@ internal class ShrinkBar extends Sprite {
 
     protected var _playDirection:int;
 
+    private var _playing:Boolean = false;
+
     public function ShrinkBar(param1:MovieClip, isOnStage:Boolean = false) {
         super();
         this.mouseEnabled = false;
@@ -23,6 +25,7 @@ internal class ShrinkBar extends Sprite {
             addChild(this._bar);
         }
         this.initAtPercent(0);
+        addEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
     }
 
     public function initAtPercent(param1:Number):void {
@@ -53,11 +56,20 @@ internal class ShrinkBar extends Sprite {
     }
 
     protected function playBar():void {
+        if (_playing) {
+            return;
+        }
+        _playing = true;
         addEventListener(Event.ENTER_FRAME, this.onPlay);
     }
 
     protected function stopPlayBar():void {
+        _playing = false;
         removeEventListener(Event.ENTER_FRAME, this.onPlay);
+    }
+
+    private function onRemoved(param1:Event):void {
+        this.stopPlayBar();
     }
 
     private function onPlay(param1:Event):void {

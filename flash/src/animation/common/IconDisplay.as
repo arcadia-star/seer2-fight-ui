@@ -1,6 +1,7 @@
 package animation.common {
 
 import flash.display.DisplayObject;
+import flash.display.DisplayObjectContainer;
 import flash.display.MovieClip;
 import flash.display.Sprite;
 
@@ -35,7 +36,10 @@ public class IconDisplay extends Sprite {
         }
         _url = url;
         CacheUtils.loadItem(url, function (obj:DisplayObject):void {
-            if (_url === url && parent) {
+            if (_url !== url || !parent) {
+                disposeDisplayObject(obj);
+                return;
+            }
                 DisplayObjectUtil.removeFromParent(_icon);
                 _icon = mayWrapIcon(url, obj);
                 if(_useScale) {
@@ -50,7 +54,6 @@ public class IconDisplay extends Sprite {
                     }
                 }
                 addChild(_icon);
-            }
         })
     }
 
@@ -74,7 +77,7 @@ public class IconDisplay extends Sprite {
         非常不希望你设置缩放0倍,不想让他显示的话建议直接设置visible*/
         this._useScale = true;
         if(scaleX){this._scaleX = scaleX;}
-        if(scaleX){this._scaleY = scaleY;}
+        if(scaleY){this._scaleY = scaleY;}
         if(_icon) {
             _icon.scaleX = scaleX;
             _icon.scaleY = scaleY;
@@ -95,6 +98,22 @@ public class IconDisplay extends Sprite {
         }
 
         return obj;
+    }
+
+    private static function disposeDisplayObject(obj:DisplayObject):void {
+        if (!obj) {
+            return;
+        }
+        if ("dispose" in obj) {
+            (obj as Object).dispose();
+        }
+        DisplayObjectUtil.removeFromParent(obj);
+        var container:DisplayObjectContainer = obj as DisplayObjectContainer;
+        if (container) {
+            while (container.numChildren > 0) {
+                container.removeChildAt(0);
+            }
+        }
     }
 }
 }

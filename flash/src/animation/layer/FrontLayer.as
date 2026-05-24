@@ -232,6 +232,7 @@ public class FrontLayer extends Sprite {
         currentSkillEffectUrl = url;
         CacheUtils.loadEffect(url, function (sprite:MovieClip):void {
             if (currentSkillEffectUrl !== url) {
+                disposeSprite(sprite);
                 return
             }
             addChild(sprite);
@@ -243,12 +244,19 @@ public class FrontLayer extends Sprite {
                 sprite.scaleX *= -1;
             }
             Utils.onComplete(sprite, function ():void {
-                if ("dispose" in sprite) {
-                (sprite as Object).dispose();
-            }
-            DisplayObjectUtil.removeFromParent(sprite);
+                disposeSprite(sprite);
             })
         })
+    }
+
+    private function disposeSprite(sprite:MovieClip):void {
+        if (!sprite) {
+            return;
+        }
+        if ("dispose" in sprite) {
+            (sprite as Object).dispose();
+        }
+        DisplayObjectUtil.removeFromParent(sprite);
     }
 
     public function playCatchHit():void {

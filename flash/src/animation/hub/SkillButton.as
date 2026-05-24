@@ -33,6 +33,11 @@ internal class SkillButton extends Sprite implements ISkillButton {
     private var _categoryTxt:TextField;
 
     private var _info:SkillData;
+    private var _lastName:String = null;
+    private var _lastAnger:int = int.MIN_VALUE;
+    private var _lastPower:int = int.MIN_VALUE;
+    private var _lastCategory:String = null;
+    private var _lastEnable:int = int.MIN_VALUE;
 
     public function SkillButton() {
         super();
@@ -66,15 +71,31 @@ internal class SkillButton extends Sprite implements ISkillButton {
 
     public function initData(param1:SkillData):void {
         this._info = param1;
-        this._nameTxt.text = this._info.name;
-        this._angerValueTxt.text = this._info.anger.toString();
-        this._powerValueTxt.text = this._info.power.toString();
-        this._categoryTxt.text = this._info.category;
+        if (this._lastName !== this._info.name) {
+            this._nameTxt.text = this._info.name;
+            this._lastName = this._info.name;
+        }
+        if (this._lastAnger !== this._info.anger) {
+            this._angerValueTxt.text = this._info.anger.toString();
+            this._lastAnger = this._info.anger;
+        }
+        if (this._lastPower !== this._info.power) {
+            this._powerValueTxt.text = this._info.power.toString();
+            this._lastPower = this._info.power;
+        }
+        if (this._lastCategory !== this._info.category) {
+            this._categoryTxt.text = this._info.category;
+            this._lastCategory = this._info.category;
+        }
         this._typeIcon.initData(this._info.typeIcon);
-        if (param1.enable) {
-            DisplayObjectUtil.recoverDisplayObject(this);
-        } else {
-            DisplayObjectUtil.darkenDisplayObject(this);
+        var enableValue:int = param1.enable ? 1 : 0;
+        if (this._lastEnable !== enableValue) {
+            if (param1.enable) {
+                DisplayObjectUtil.recoverDisplayObject(this);
+            } else {
+                DisplayObjectUtil.darkenDisplayObject(this);
+            }
+            this._lastEnable = enableValue;
         }
     }
 

@@ -19,6 +19,10 @@ internal class BuffIcon extends Sprite {
 
     private var _numDisplay:NumDisplay;
     private var _showNumMin:int;
+    private var _lastIcon:String = null;
+    private var _lastTips:String = null;
+    private var _lastCount:int = int.MIN_VALUE;
+    private var _lastShowNum:Boolean = false;
 
     public function BuffIcon() {
         super();
@@ -39,18 +43,32 @@ internal class BuffIcon extends Sprite {
 
     public function initData(buff:BuffData):void {
         this._buff = buff;
-        this._icon.initData(buff.icon)
-        this._tips.initData(buff.tips || '无');
-        if (buff.count >= _showNumMin) {
+        if (this._lastIcon !== buff.icon) {
+            this._icon.initData(buff.icon);
+            this._lastIcon = buff.icon;
+        }
+        var tips:String = buff.tips || "无";
+        if (this._lastTips !== tips) {
+            this._tips.initData(tips);
+            this._lastTips = tips;
+        }
+        var showNum:Boolean = buff.count >= _showNumMin;
+        if (showNum && this._lastCount !== buff.count) {
             this._numDisplay.initData(buff.count);
-            this._numDisplay.visible = true;
-        } else {
-            this._numDisplay.visible = false;
+            this._lastCount = buff.count;
+        }
+        if (this._lastShowNum !== showNum) {
+            this._numDisplay.visible = showNum;
+            this._lastShowNum = showNum;
         }
     }
 
     public function setShowNumMin(showNumMin:int):void {
+        if (this._showNumMin === showNumMin) {
+            return;
+        }
         this._showNumMin = showNumMin;
+        this._lastShowNum = !this._lastShowNum;
     }
 }
 }

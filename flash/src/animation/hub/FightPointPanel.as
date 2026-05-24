@@ -27,6 +27,7 @@ public class FightPointPanel extends Sprite {
     private var _currIndex:int;
 
     private static const SIZE:int = 5;
+    private static const MAX_LOGS:int = 200;
 
     public function FightPointPanel(mc:MovieClip) {
         super();
@@ -44,20 +45,17 @@ public class FightPointPanel extends Sprite {
     }
 
     private function updateStatus(param1:Vector.<String>):void {
-        this._contentTxt.htmlText = "";
         var padded:Vector.<String> = param1.concat();
         while (padded.length < SIZE) {
             padded.unshift(" ");
         }
+        var lines:Array = [];
         var _loc2_:int = 0;
         while (_loc2_ < SIZE) {
-            if (_loc2_ < SIZE - 1) {
-                this._contentTxt.htmlText += padded[_loc2_] + "\n";
-            } else {
-                this._contentTxt.htmlText += padded[_loc2_];
-            }
+            lines.push(padded[_loc2_]);
             _loc2_++;
         }
+        this._contentTxt.htmlText = lines.join("\n");
     }
 
     private function onPrev(param1:MouseEvent):void {
@@ -84,6 +82,9 @@ public class FightPointPanel extends Sprite {
         }
         for (var i:int = 0; i < param1.length; i++) {
             this._statusList.push(param1[i]);
+        }
+        while (this._statusList.length > MAX_LOGS) {
+            this._statusList.shift();
         }
         this._currIndex = 0;
         if (this._statusList.length < SIZE) {

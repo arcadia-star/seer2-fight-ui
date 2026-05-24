@@ -439,18 +439,37 @@ public class PetLayer extends Sprite {
     }
 
     private function onChild0Complete(pet:MovieClip, cb:Function):void {
+        var done:Boolean = false;
         pet.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+
+        function cleanup():void {
+            pet.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
+            pet.removeEventListener(Event.REMOVED_FROM_STAGE, handleRemoved);
+        }
+
+        function complete():void {
+            if (done) {
+                return;
+            }
+            done = true;
+            cleanup();
+            cb();
+        }
 
         function handleEnterFrame(event:Event):void {
             var mc:MovieClip = pet.getChildAt(0) as MovieClip;
             if (mc && mc.currentFrame == mc.totalFrames) {
-                pet.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
-                cb();
+                complete();
             } else if (!pet.parent) {
-                pet.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
-                cb();
+                complete();
             }
         }
+
+        function handleRemoved(event:Event):void {
+            complete();
+        }
+
+        pet.addEventListener(Event.REMOVED_FROM_STAGE, handleRemoved);
     }
 }
 }

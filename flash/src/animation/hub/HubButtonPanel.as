@@ -50,6 +50,7 @@ internal class HubButtonPanel extends Sprite {
     private var currentMc:MovieClip;
 
     private var _hub:UI_FightHub;
+    private var _hubEnabled:Boolean = true;
 
     //private var _morphBtn:SimpleButton;
 
@@ -141,6 +142,10 @@ internal class HubButtonPanel extends Sprite {
     }
 
     public function enableHubPanel(able:Boolean):void {
+        if (this._hubEnabled === able) {
+            return;
+        }
+        this._hubEnabled = able;
         for(var i:int = 0; i < this._hub.numChildren; i++) {
             var child:DisplayObject = this._hub.getChildAt(i);
             if(child == this._autoBtn) continue;

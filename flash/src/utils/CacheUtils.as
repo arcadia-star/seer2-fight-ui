@@ -107,26 +107,32 @@ import utils.Utils;
 
 class CacheUtils0 {
 
+    private static const MAX_RESOURCE_LOADING:int = 8;
+    private static const CONTENT_CACHE_SIZE:int = 80;
+    private static const CLASS_CACHE_SIZE:int = 200;
+    private static const SOUND_CACHE_SIZE:int = 80;
+
     private static const waiting:Array = [];
     private static var loading:int = 0;
 
     private static function loadResourceNext():void {
         var next:* = waiting.shift();
         if (next) {
-            loadResource(next.url, next.cb, next.onError);
+            loadResource(next.url, next.cb, next.onError, next.max);
         }
     }
 
     /**
      * 指定时间内未触发加载时快速失败
      */
-    public static function loadResource(url:String, cb:Function, onError:Function = null, max:int = 100):void {
-        if (loading > max) {
-            waiting.push({url: url, cb: cb, onError: onError});
+    public static function loadResource(url:String, cb:Function, onError:Function = null, max:int = MAX_RESOURCE_LOADING):void {
+        if (loading >= max) {
+            waiting.push({url: url, cb: cb, onError: onError, max: max});
             return;
         }
         loading++;
         var flag:Boolean = false;
+        var loader:Loader;
 
         function next():void {
             if (flag) {
@@ -138,7 +144,23 @@ class CacheUtils0 {
             clearTimeout(timeout);
         }
 
-        var loader:Loader = Utils.load(proxyHttp2Https(url), function (loaderInfo:LoaderInfo):void {
+        function closeLoader():void {
+            if (!loader) {
+                return;
+            }
+            try {
+                loader.close();
+            } catch (e:*) {
+                // ignore
+            }
+            try {
+                loader.unloadAndStop(true);
+            } catch (e2:*) {
+                // ignore
+            }
+        }
+
+        loader = Utils.load(proxyHttp2Https(url), function (loaderInfo:LoaderInfo):void {
             if (flag) {
                 return;
             }
@@ -148,21 +170,23 @@ class CacheUtils0 {
             if (flag) {
                 return;
             }
+            closeLoader();
             next();
-            onError(event);
+            onError && onError(event);
         });
         var timeout:uint = setTimeout(function ():void {
             if (flag) {
                 return;
             }
             if (!loader.contentLoaderInfo.bytesLoaded) {
+                closeLoader();
                 next();
-                onError(new Event("timeout"))
+                onError && onError(new Event("timeout"))
             }
         }, 3000);
     }
 
-    private static const CONTENT_CACHE:LRUCache = new LRUCache(1000);
+    private static const CONTENT_CACHE:LRUCache = new LRUCache(CONTENT_CACHE_SIZE);
 
     public static function loadContent(url:String, cb:Function, fallback:Class):void {
         if (!url) {
@@ -182,7 +206,7 @@ class CacheUtils0 {
         });
     }
 
-    private static const CLASS_CACHE:LRUCache = new LRUCache(1000);
+    private static const CLASS_CACHE:LRUCache = new LRUCache(CLASS_CACHE_SIZE);
 
     public static function loadClass(url:String, cb:Function, name:String, fallback:Class):void {
         if (!url) {
@@ -215,7 +239,7 @@ class CacheUtils0 {
         });
     }
 
-    private static const SOUND_CACHE:LRUCache = new LRUCache(1000);
+    private static const SOUND_CACHE:LRUCache = new LRUCache(SOUND_CACHE_SIZE);
 
     public static function loadSound(url:String, cb:Function, fallback:Class):void {
         if (!url) {

@@ -20,6 +20,7 @@ internal class SkillTip extends Sprite {
     private var _back:MovieClip;
 
     private var _descriptionTxt:TextField;
+    private var _lastTips:String = null;
 
     public function SkillTip() {
         super();
@@ -43,7 +44,12 @@ internal class SkillTip extends Sprite {
     }
 
     public function initData(param1:SkillData):void {
-        this._descriptionTxt.htmlText = param1.tips || '';
+        var tips:String = param1.tips || '';
+        if (this._lastTips === tips) {
+            return;
+        }
+        this._lastTips = tips;
+        this._descriptionTxt.htmlText = tips;
         _back.height = Math.max(110.55, _descriptionTxt.height + 20);
         _descriptionTxt.y = 5 - _back.height;
     }

@@ -6,6 +6,7 @@ import enums.FightSide;
 
 import flash.display.MovieClip;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.text.TextField;
 import flash.utils.clearTimeout;
 import flash.utils.setTimeout;
@@ -36,6 +37,7 @@ internal class SkillBubble extends Sprite {
         this.alpha = 0;
         this.x = this._side == FightSide.LEFT ? 292 : 909;
         this.y = 125;
+        addEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
     }
 
     public function setSkillName(param1:String):void {
@@ -75,6 +77,11 @@ internal class SkillBubble extends Sprite {
         if (this) {
             this.visible = false;
         }
+    }
+
+    private function onRemoved(param1:Event):void {
+        clearTimeout(_shrinkTimeout);
+        TweenLite.killTweensOf(this);
     }
 }
 }

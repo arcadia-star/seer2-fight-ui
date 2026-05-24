@@ -77,22 +77,22 @@ internal class SkillPanel extends Sprite {
     }
 
     private function showNormalSkillBtn(param1:Vector.<SkillData>):void {
-        var skills:Vector.<SkillData> = new Vector.<SkillData>();
         var i:int;
+        var count:int = 0;
         for (i = 0; i < param1.length; i++) {
             var skill:SkillData = param1[i];
             if (SkillCategoryName.pow().indexOf(skill.category) >= 0) {
                 continue;
             }
-            skills.push(skill);
-        }
-        var count:Number = Math.min(skills.length, SKILL_BTN_NUM);
-        for (i = 0; i < count; i++) {
-            var button:SkillButton = this._skillBtnVec[i];
-            button.initData(skills[i]);
+            if (count >= SKILL_BTN_NUM) {
+                break;
+            }
+            var button:SkillButton = this._skillBtnVec[count];
+            button.initData(skill);
             if (!button.parent) {
                 addChild(button);
             }
+            count++;
         }
         for (i = count; i < SKILL_BTN_NUM; i++) {
             button = this._skillBtnVec[i];
@@ -102,16 +102,16 @@ internal class SkillPanel extends Sprite {
 
     private function showSuperSkillBtn(param1:Vector.<SkillData>):void {
         var button:SuperSkillButton = this._superSkillBtn;
-        var powSkills:Vector.<SkillData> = new Vector.<SkillData>();
-        var i:int;
-        for (i = 0; i < param1.length; i++) {
+        var powSkill:SkillData = null;
+        for (var i:int = 0; i < param1.length; i++) {
             var skill:SkillData = param1[i];
             if (SkillCategoryName.pow().indexOf(skill.category) >= 0) {
-                powSkills.push(skill);
+                powSkill = skill;
+                break;
             }
         }
-        if (powSkills.length > 0) {
-            button.initData(powSkills[0]);
+        if (powSkill) {
+            button.initData(powSkill);
             if (!button.parent) {
                 addChild(button);
             }

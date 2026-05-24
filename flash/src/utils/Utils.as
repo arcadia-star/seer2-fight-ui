@@ -128,13 +128,32 @@ public class Utils {
     }
 
     public static function onComplete(mc:MovieClip, cb:Function):void {
+        var done:Boolean = false;
         mc.addEventListener(Event.ENTER_FRAME, handleEnterFrame);
+        mc.addEventListener(Event.REMOVED_FROM_STAGE, handleRemoved);
+
+        function cleanup():void {
+            mc.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
+            mc.removeEventListener(Event.REMOVED_FROM_STAGE, handleRemoved);
+        }
+
+        function complete():void {
+            if (done) {
+                return;
+            }
+            done = true;
+            cleanup();
+            cb();
+        }
 
         function handleEnterFrame(event:Event):void {
             if (mc.currentFrame == mc.totalFrames) {
-                mc.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
-                cb();
+                complete();
             }
+        }
+
+        function handleRemoved(event:Event):void {
+            complete();
         }
     }
 

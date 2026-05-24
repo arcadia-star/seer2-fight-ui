@@ -18,6 +18,8 @@ internal class ItemTip extends Sprite {
     private var _nameText:TextField;
 
     private var _desText:TextField;
+    private var _lastName:String = null;
+    private var _lastTips:String = null;
 
     private const TXT_WIDTH:int = 46;
 
@@ -43,8 +45,14 @@ internal class ItemTip extends Sprite {
     }
 
     public function initData(param1:ItemData):void {
+        var tips:String = param1.tips || '';
+        if (this._lastName === param1.name && this._lastTips === tips) {
+            return;
+        }
+        this._lastName = param1.name;
+        this._lastTips = tips;
         this._nameText.text = param1.name;
-        this._desText.htmlText = param1.tips || '';
+        this._desText.htmlText = tips;
         this._desText.height = this._desText.textHeight + 5;
         this._back.height = this._desText.height + 35;
         this._nameText.y = -1 * this._back.height + 5;

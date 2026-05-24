@@ -25,8 +25,6 @@ public class ImgPet extends MovieClip {
         addChild(_origin);
 
         PetFallback.addHitEvent(_origin);
-
-        addChild(PetFallback.showPetFrames(_origin));
     }
 
     override public function get currentLabels():Array {

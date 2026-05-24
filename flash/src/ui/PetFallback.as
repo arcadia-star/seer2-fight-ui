@@ -15,8 +15,6 @@ public class PetFallback extends MovieClip {
         addChild(_origin);
 
         addHitEvent(_origin);
-
-        addChild(showPetFrames(_origin));
     }
 
     override public function get currentLabels():Array {

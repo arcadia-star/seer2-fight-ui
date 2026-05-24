@@ -50,7 +50,7 @@ public class TipsDisplay extends Sprite {
     }
 
     private function onTargetOver(param1:MouseEvent):void {
-        if (!_tips) {
+        if (!_tips || !stage) {
             return;
         }
         this._tipTxt.htmlText = _tips || '';

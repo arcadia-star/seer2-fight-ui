@@ -10,16 +10,17 @@ import ui.PetFallback;
 public class S1Pet extends MovieClip {
     private var _origin:MovieClip;
     private var _enterFrameHandler:Function;
+    private var _childEnterFrameHandler:Function;
+    private var _child:MovieClip;
 
     public function S1Pet(origin:MovieClip) {
         this._origin = origin;
         _origin.x = 180;
         _origin.y = 250;
         addChild(_origin);
+        addEventListener(Event.REMOVED_FROM_STAGE, onRemoved);
 
         gotoAndStop(FighterActionType.IDLE);
-
-        addChild(PetFallback.showPetFrames(_origin));
     }
 
     override public function get currentLabels():Array {
@@ -56,6 +57,7 @@ public class S1Pet extends MovieClip {
             _origin.removeEventListener(Event.ENTER_FRAME, _enterFrameHandler);
             _enterFrameHandler = null;
         }
+        clearChildHandler();
 
         var self:S1Pet = this;
         _enterFrameHandler = function handleEnterFrame(event:Event):void {
@@ -67,6 +69,8 @@ public class S1Pet extends MovieClip {
                     child0.gotoAndStop(0);
                 } else {
                     child0.gotoAndPlay(1);
+                    self._child = child0;
+                    self._childEnterFrameHandler = handleEnterFrame1;
                     child0.addEventListener(Event.ENTER_FRAME, handleEnterFrame1);
 
                     function handleEnterFrame1(event:Event):void {
@@ -75,7 +79,7 @@ public class S1Pet extends MovieClip {
                             dispatchEvent(new Event("hit"));
                         }
                         if (child0.currentFrame == child0.totalFrames) {
-                            child0.removeEventListener(Event.ENTER_FRAME, handleEnterFrame1);
+                            self.clearChildHandler();
                             child0.gotoAndStop(0);
                         }
                     }
@@ -84,6 +88,22 @@ public class S1Pet extends MovieClip {
         };
 
         _origin.addEventListener(Event.ENTER_FRAME, _enterFrameHandler);
+    }
+
+    private function clearChildHandler():void {
+        if (_child && _childEnterFrameHandler != null) {
+            _child.removeEventListener(Event.ENTER_FRAME, _childEnterFrameHandler);
+        }
+        _child = null;
+        _childEnterFrameHandler = null;
+    }
+
+    private function onRemoved(event:Event):void {
+        if (_enterFrameHandler != null) {
+            _origin.removeEventListener(Event.ENTER_FRAME, _enterFrameHandler);
+            _enterFrameHandler = null;
+        }
+        clearChildHandler();
     }
 }
 }

@@ -40,6 +40,7 @@ public class FightStatusPanel extends Sprite {
     protected var _title:MovieClip;
 
     protected var _weatherDisplay:FightWeatherDisplay;
+    private var _lastRound:int = int.MIN_VALUE;
 
     public function FightStatusPanel() {
         super();
@@ -64,6 +65,10 @@ public class FightStatusPanel extends Sprite {
 
     private function updateTitle():void {
         var _loc1_:int = _arenaData.round;
+        if (this._lastRound === _loc1_) {
+            return;
+        }
+        this._lastRound = _loc1_;
         if (_loc1_ / 100 >= 1) {
             this._title.gotoAndStop(3);
             this._title["count0"].gotoAndStop(int(_loc1_ / 100) + 1);

@@ -106,14 +106,10 @@ internal class ItemPanel extends Sprite {
         this._pageIndex = param1;
         var start:int = param1 * ITEM_NUM_PAGE;
         var end:Number = Math.min((param1 + 1) * ITEM_NUM_PAGE, _petItemVec.length);
-        var items:Vector.<ItemData> = new Vector.<ItemData>();
-        for (var i:int = start; i < end; i++) {
-            items.push(_petItemVec[i]);
-        }
-        var count:Number = Math.min(items.length, ITEM_NUM_PAGE);
-        for (i = 0; i < count; i++) {
+        var count:Number = Math.min(end - start, ITEM_NUM_PAGE);
+        for (var i:int = 0; i < count; i++) {
             var display:ItemDisplay = this._itemDisplayVec[i];
-            display.initData(items[i]);
+            display.initData(_petItemVec[start + i]);
         }
         for (i = count; i < ITEM_NUM_PAGE; i++) {
             display = this._itemDisplayVec[i];

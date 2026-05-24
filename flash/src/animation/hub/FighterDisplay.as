@@ -43,6 +43,14 @@ internal class FighterDisplay extends Sprite {
 
     private var _preeMc:MovieClip;
 
+    private var _lastRate:uint = uint.MAX_VALUE;
+    private var _lastAlive:int = int.MIN_VALUE;
+    private var _lastPosition:int = int.MIN_VALUE;
+    private var _lastLevel:int = int.MIN_VALUE;
+    private var _lastHp:int = int.MIN_VALUE;
+    private var _lastMaxHp:int = int.MIN_VALUE;
+    private var _lastName:String = null;
+
 
     public function FighterDisplay() {
         super();
@@ -85,7 +93,10 @@ internal class FighterDisplay extends Sprite {
     }
 
     public function updatePressStatus(rate:uint):void {
-        trace("[FighterDisplay]rate=" + rate + '\n');
+        if (this._lastRate === rate) {
+            return;
+        }
+        this._lastRate = rate;
         var _loc4_:int = 1;
         if (rate <= 0) {
             _loc4_ = 4;
@@ -110,6 +121,11 @@ internal class FighterDisplay extends Sprite {
     }
 
     private function updateInteraction():void {
+        if (this._lastAlive === this._fighter.alive && this._lastPosition === this._fighter.position) {
+            return;
+        }
+        this._lastAlive = this._fighter.alive;
+        this._lastPosition = this._fighter.position;
         if (this._fighter.alive <= 0) {
             this.mouseEnabled = false;
             DisplayObjectUtil.darkenDisplayObject(this);
@@ -126,9 +142,19 @@ internal class FighterDisplay extends Sprite {
 
     private function updateInfoDisplay():void {
         var _loc1_:PetData = this._fighter;
-        this._lvTxt.text = _loc1_.level.toString();
-        this._hpTxt.text = Math.max(_loc1_.hp, 0) + "/" + _loc1_.maxHp;
-        this._nameTxt.text = _loc1_.name;
+        if (this._lastLevel !== _loc1_.level) {
+            this._lvTxt.text = _loc1_.level.toString();
+            this._lastLevel = _loc1_.level;
+        }
+        if (this._lastHp !== _loc1_.hp || this._lastMaxHp !== _loc1_.maxHp) {
+            this._hpTxt.text = Math.max(_loc1_.hp, 0) + "/" + _loc1_.maxHp;
+            this._lastHp = _loc1_.hp;
+            this._lastMaxHp = _loc1_.maxHp;
+        }
+        if (this._lastName !== _loc1_.name) {
+            this._nameTxt.text = _loc1_.name;
+            this._lastName = _loc1_.name;
+        }
     }
 
     private function updateHealthBar():void {

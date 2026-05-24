@@ -46,6 +46,9 @@ internal class BuffIconBar extends Sprite {
             var child:BuffIcon = getChildAt(ci) as BuffIcon;
             if (child) child.visible = false;
         }
+        var usedLvIds:Array = [];
+        var usedItemIds:Array = [];
+        var usedBuffIds:Array = [];
         var buffs:Vector.<BuffData> = param1.buffs;
         var itemBuffs:Vector.<BuffData> = buildItemBuffs(param1.items);
         var lvBuffs:Vector.<BuffData> = buildLvBuffs(param1);
@@ -59,18 +62,21 @@ internal class BuffIconBar extends Sprite {
                 }
                 buffIcon = _iconMap2.getValue(buff.id);
                 buffIcon.setShowNumMin(1);
+                usedLvIds.push(buff.id);
             } else if (idx < itemBuffs.length + lvBuffs.length) {
                 buff = itemBuffs[idx - lvBuffs.length];
                 if (!_iconMap3.containsKey(buff.id)) {
                     _iconMap3.add(buff.id, new BuffIcon());
                 }
                 buffIcon = _iconMap3.getValue(buff.id);
+                usedItemIds.push(buff.id);
             } else {
                 buff = buffs[idx - itemBuffs.length - lvBuffs.length];
                 if (!_iconMap.containsKey(buff.id)) {
                     _iconMap.add(buff.id, new BuffIcon());
                 }
                 buffIcon = _iconMap.getValue(buff.id);
+                usedBuffIds.push(buff.id);
             }
             if (idx >= this._maxLine) {
                 buffIcon.x = (idx % this._maxLine) * this._direction * ICON_WIDTH;
@@ -89,6 +95,20 @@ internal class BuffIconBar extends Sprite {
             var remain:BuffIcon = getChildAt(ri) as BuffIcon;
             if (remain && !remain.visible) {
                 removeChildAt(ri);
+            }
+        }
+        clearUnusedIcons(_iconMap2, usedLvIds);
+        clearUnusedIcons(_iconMap3, usedItemIds);
+        clearUnusedIcons(_iconMap, usedBuffIds);
+    }
+
+    private function clearUnusedIcons(map:HashMap, usedIds:Array):void {
+        var keys:Array = map.getKeys();
+        for (var i:int = 0; i < keys.length; i++) {
+            var id:* = keys[i];
+            if (usedIds.indexOf(id) < 0) {
+                var icon:BuffIcon = map.remove(id) as BuffIcon;
+                DisplayObjectUtil.removeFromParent(icon);
             }
         }
     }

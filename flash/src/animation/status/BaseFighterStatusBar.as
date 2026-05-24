@@ -20,6 +20,8 @@ import utils.an.DisplayUtil;
 
 public class BaseFighterStatusBar extends MovieClip
 {
+    private static const INVALID_INT:int = -2147483648;
+
     //当前显示的精灵的数据,initData()时输入
     protected var _fighter:PetData;
     //Bar的总图形,需要在子类createChildren中最先new,且必须定义
@@ -50,6 +52,13 @@ public class BaseFighterStatusBar extends MovieClip
     protected var _preeMc:MovieClip;
     //等级的黑色背景,Bar中自带,用于辅助定位_levelSprite
     protected var _levelBg:MovieClip;
+    private var _lastHp:int = INVALID_INT;
+    private var _lastMaxHp:int = INVALID_INT;
+    private var _lastAnger:int = INVALID_INT;
+    private var _lastMaxAnger:int = INVALID_INT;
+    private var _lastLevel:int = INVALID_INT;
+    private var _lastRate:uint = uint.MAX_VALUE;
+    private var _lastName:String = null;
     public function BaseFighterStatusBar(side:int)
     {
         super();
@@ -120,20 +129,32 @@ public class BaseFighterStatusBar extends MovieClip
         if(!pet) {
             this.visible = false;
             this._fighter = null;
+            this.resetLastValues();
             return;
         }
         this.visible = true;
         this._fighter = pet;
         this._iconDisplayer.initData(pet.petIcon);
-        this.updatePressStatus(pet.rate);
-        if (this._hpSign.numChildren > 0) {
-            this._hpSign.removeChildAt(0);
+        if (this._lastRate !== pet.rate) {
+            this.updatePressStatus(pet.rate);
+            this._lastRate = pet.rate;
         }
-        this._hpSign.addChild(UINumberGenerator.generateHpNumber(Math.max(pet.hp, 0), pet.maxHp));
-        if (this._angerSign.numChildren > 0) {
-            this._angerSign.removeChildAt(0);
+        if (this._lastHp !== pet.hp || this._lastMaxHp !== pet.maxHp) {
+            if (this._hpSign.numChildren > 0) {
+                this._hpSign.removeChildAt(0);
+            }
+            this._hpSign.addChild(UINumberGenerator.generateHpNumber(Math.max(pet.hp, 0), pet.maxHp));
+            this._lastHp = pet.hp;
+            this._lastMaxHp = pet.maxHp;
         }
-        this._angerSign.addChild(UINumberGenerator.generateAngerNumber(Math.max(pet.anger, 0), pet.maxAnger));
+        if (this._lastAnger !== pet.anger || this._lastMaxAnger !== pet.maxAnger) {
+            if (this._angerSign.numChildren > 0) {
+                this._angerSign.removeChildAt(0);
+            }
+            this._angerSign.addChild(UINumberGenerator.generateAngerNumber(Math.max(pet.anger, 0), pet.maxAnger));
+            this._lastAnger = pet.anger;
+            this._lastMaxAnger = pet.maxAnger;
+        }
         var angerPct:Number = Math.max(pet.anger / pet.maxAnger, 0);
         var hpPct:Number = Math.max(pet.hp / pet.maxHp, 0);
         if (smooth !== FrameData.SMOOTH_TRUE) {
@@ -145,14 +166,30 @@ public class BaseFighterStatusBar extends MovieClip
             this._healthBar.playToPercent(hpPct);
             this._healthShadowBar.playToPercent(hpPct);
         }
-        if (this._levelSprite.numChildren > 1) {
-            this._levelSprite.removeChildAt(1);
+        if (this._lastLevel !== pet.level) {
+            if (this._levelSprite.numChildren > 1) {
+                this._levelSprite.removeChildAt(1);
+            }
+            var level:Sprite = UINumberGenerator.generateFighterLevelNumber(pet.level);
+            level.x = 30;
+            this._levelSprite.addChild(level);
+            this._lastLevel = pet.level;
         }
-        var level:Sprite = UINumberGenerator.generateFighterLevelNumber(pet.level);
-        level.x = 30;
-        this._levelSprite.addChild(level);
-        this._nameTxt.text = pet.name;
+        if (this._lastName !== pet.name) {
+            this._nameTxt.text = pet.name;
+            this._lastName = pet.name;
+        }
         this._typeIcon.initData(pet.typeIcon);
+    }
+
+    private function resetLastValues():void {
+        this._lastHp = INVALID_INT;
+        this._lastMaxHp = INVALID_INT;
+        this._lastAnger = INVALID_INT;
+        this._lastMaxAnger = INVALID_INT;
+        this._lastLevel = INVALID_INT;
+        this._lastRate = uint.MAX_VALUE;
+        this._lastName = null;
     }
 
     private function updatePressStatus(rate:uint):void {

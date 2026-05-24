@@ -8,6 +8,7 @@ import enums.FightSide;
 
 import flash.display.MovieClip;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.utils.clearTimeout;
 import flash.utils.setTimeout;
 
@@ -31,6 +32,7 @@ internal class AngerStatusPanel extends Sprite {
     public function AngerStatusPanel(param1:uint) {
         super();
         this._side = param1;
+        addEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
     }
 
     public function setFight(param1:PetData):void {
@@ -84,6 +86,10 @@ internal class AngerStatusPanel extends Sprite {
         clearTimeout(this._setTimeout);
         DisplayObjectUtil.removeFromParent(this._bubble);
         this._bubble = null;
+    }
+
+    private function onRemoved(param1:Event):void {
+        this.dispose();
     }
 }
 }

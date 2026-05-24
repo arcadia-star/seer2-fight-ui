@@ -18,6 +18,11 @@ internal class CapsuleBarPet extends Sprite {
     private var _backVec:Vector.<MovieClip>;
     private var _tipVec:Vector.<MovieClip>;
     private var _petIconVec:Vector.<PetIconDisplay>;
+    private var _lastIconUrls:Array;
+    private var _lastShown:Array;
+    private var _lastAlive:Array;
+    private var _lastNames:Array;
+    private var _lastHpText:Array;
     private static var _petHasShown:Array = [false, false, false, false, false, false];
     private var _side:int = 0;
     public static const CAPSULE_SIDE_LEFT:int = 0;
@@ -63,6 +68,11 @@ internal class CapsuleBarPet extends Sprite {
         }
 
         this._petIconVec = new Vector.<PetIconDisplay>();
+        this._lastIconUrls = [];
+        this._lastShown = [];
+        this._lastAlive = [];
+        this._lastNames = [];
+        this._lastHpText = [];
         var _loc4_:PetIconDisplay = null;
         i = 0;
         while (i < CAPSULE_NUM) {
@@ -84,9 +94,20 @@ internal class CapsuleBarPet extends Sprite {
         for (var idx:int = 0; idx < CAPSULE_NUM; idx++) {
             var icon:PetIconDisplay = this._petIconVec[idx];
             if (idx < param1.length) {
-                icon.initData(param1[idx].petIcon);
-                if (this._side == CAPSULE_SIDE_LEFT || _petHasShown[idx]) {
-                    icon.visible = true;
+                var pet:PetData = param1[idx];
+                if (!this._backVec[idx].visible) {
+                    this._backVec[idx].visible = true;
+                }
+                if (this._lastIconUrls[idx] !== pet.petIcon) {
+                    icon.initData(pet.petIcon);
+                    this._lastIconUrls[idx] = pet.petIcon;
+                }
+                var shown:Boolean = this._side == CAPSULE_SIDE_LEFT || _petHasShown[idx];
+                if (shown) {
+                    if (this._lastShown[idx] !== true) {
+                        icon.visible = true;
+                        this._lastShown[idx] = true;
+                    }
                     var mc:MovieClip = this._backVec[idx]["capsule"];
                     if(mc.currentFrame == 1) {
                         (function(m:MovieClip):void {
@@ -114,23 +135,43 @@ internal class CapsuleBarPet extends Sprite {
                         })(mc);
                         mc.play();
                     }
-                    this._tipVec[idx]["nameTxt"].text = param1[idx].name;
-                    this._tipVec[idx]["hpTxt"].text = param1[idx].hp + "/" + param1[idx].maxHp;
+                    if (this._lastNames[idx] !== pet.name) {
+                        this._tipVec[idx]["nameTxt"].text = pet.name;
+                        this._lastNames[idx] = pet.name;
+                    }
+                    var hpText:String = pet.hp + "/" + pet.maxHp;
+                    if (this._lastHpText[idx] !== hpText) {
+                        this._tipVec[idx]["hpTxt"].text = hpText;
+                        this._lastHpText[idx] = hpText;
+                    }
                 }
                 else {
-                    icon.visible = false;
-                    this._tipVec[idx]["nameTxt"].text = "???";
-                    this._tipVec[idx]["hpTxt"].text = "???/???";
+                    if (this._lastShown[idx] !== false) {
+                        icon.visible = false;
+                        this._tipVec[idx]["nameTxt"].text = "???";
+                        this._tipVec[idx]["hpTxt"].text = "???/???";
+                        this._lastShown[idx] = false;
+                        this._lastNames[idx] = null;
+                        this._lastHpText[idx] = null;
+                    }
                 }
-                if (param1[idx].alive > 0) {
-                    setColor(icon,true);
-                } else {
-                    setColor(icon,false);
+                var alive:Boolean = pet.alive > 0;
+                if (this._lastAlive[idx] !== alive) {
+                    setColor(icon, alive);
+                    this._lastAlive[idx] = alive;
                 }
             }
             else {
-                this._backVec[idx].visible = false;
-                icon.visible = false;
+                if (this._lastShown[idx] !== null) {
+                    this._backVec[idx].visible = false;
+                    icon.visible = false;
+                    icon.initData(null);
+                    this._lastIconUrls[idx] = null;
+                    this._lastShown[idx] = null;
+                    this._lastAlive[idx] = null;
+                    this._lastNames[idx] = null;
+                    this._lastHpText[idx] = null;
+                }
             }
         }
     }

@@ -17,6 +17,8 @@ internal class FightWeatherDisplay extends Sprite {
     private var _icon:IconDisplay;
 
     private var _tips:TipsDisplay;
+    private var _lastIcon:String = null;
+    private var _lastTips:String = null;
 
     public function FightWeatherDisplay() {
         super();
@@ -35,12 +37,22 @@ this._back.cacheAsBitmap = true;
 
     public function initData(param1:String, param2:String):void {
         if (param1) {
-            this._icon.initData(param1);
+            if (this._lastIcon !== param1) {
+                this._icon.initData(param1);
+                this._lastIcon = param1;
+            }
             this._tips.visible = true;
-            this._tips.initData(param2);
+            if (this._lastTips !== param2) {
+                this._tips.initData(param2);
+                this._lastTips = param2;
+            }
             this._back.visible = true;
         } else {
-            _tips.visible = false;
+            this._icon.initData(null);
+            this._lastIcon = null;
+            this._lastTips = null;
+            this._tips.visible = false;
+            this._back.visible = false;
         }
     }
 }

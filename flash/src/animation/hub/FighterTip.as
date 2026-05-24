@@ -18,6 +18,7 @@ internal class FighterTip extends Sprite {
     private var _back:Sprite;
 
     private var _itemVec:Vector.<MovieClip>;
+    private var _lastSkills:Vector.<SkillData>;
 
     public function FighterTip() {
         super();
@@ -55,6 +56,10 @@ internal class FighterTip extends Sprite {
     }
 
     public function initData(param1:Vector.<SkillData>):void {
+        if (this._lastSkills === param1) {
+            return;
+        }
+        this._lastSkills = param1;
         this.resetSkillContent();
         var _loc2_:int = int(param1.length);
         _loc2_ = _loc2_ <= this._itemVec.length ? _loc2_ : int(this._itemVec.length);

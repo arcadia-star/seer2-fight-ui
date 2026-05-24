@@ -12,6 +12,7 @@ internal class SuperSkillButton extends Sprite implements ISkillButton {
     private var _mc:MovieClip;
 
     private var _skillInfo:SkillData;
+    private var _lastFrame:int = int.MIN_VALUE;
 
     public function SuperSkillButton() {
         super();
@@ -25,10 +26,10 @@ internal class SuperSkillButton extends Sprite implements ISkillButton {
 
     public function initData(param1:SkillData):void {
         this._skillInfo = param1;
-        if (param1.enable) {
-            this._mc.gotoAndStop(2);
-        } else {
-            this._mc.gotoAndStop(1);
+        var targetFrame:int = param1.enable ? 2 : 1;
+        if (this._lastFrame !== targetFrame) {
+            this._mc.gotoAndStop(targetFrame);
+            this._lastFrame = targetFrame;
         }
     }
 

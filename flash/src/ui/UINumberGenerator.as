@@ -8,7 +8,6 @@ import ui.number.UI_NumberHpSlash;
 import ui.number.UI_NumberItemN;
 import ui.number.UI_NumberPetLevelN;
 
-import utils.NumberUtil;
 import utils.an.DisplayObjectUtil;
 
 public class UINumberGenerator {
@@ -54,14 +53,12 @@ public class UINumberGenerator {
 
     private static function generateNumberSprite(param1:int, param2:Function, param3:int):Sprite {
         var _loc7_:Sprite = null;
-        var _loc10_:int = 0;
         var _loc5_:Sprite = createDisableSprite();
-        var _loc6_:Vector.<int>;
-        var _loc8_:int = int((_loc6_ = NumberUtil.parseNumberToDigitVec(param1)).length);
+        var digits:String = Math.max(param1, 0).toString();
+        var _loc8_:int = digits.length;
         var _loc9_:int = 0;
         while (_loc9_ < _loc8_) {
-            _loc10_ = _loc6_[_loc9_];
-            (_loc7_ = new (param2(_loc10_))).x = _loc9_ * param3;
+            (_loc7_ = new (param2(int(digits.charAt(_loc9_))))).x = _loc9_ * param3;
             _loc5_.addChild(_loc7_);
             _loc9_++;
         }
