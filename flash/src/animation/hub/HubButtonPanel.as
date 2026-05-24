@@ -1,22 +1,17 @@
 package animation.hub {
 import animation.event.Events;
 
+import flash.display.DisplayObject;
+import flash.display.InteractiveObject;
+
+import flash.display.MovieClip;
+
 import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
-import ui.hub.New_UI_FightPet;
-import ui.hub.UI_FightCatch;
-import ui.hub.UI_FightEscape;
-import ui.hub.UI_FightFight;
-import ui.hub.UI_FightHighCatch;
-import ui.hub.UI_FightHighEscape;
-import ui.hub.UI_FightHighFight;
-import ui.hub.UI_FightHighItem;
-import ui.hub.UI_FightHighPet;
-import ui.hub.UI_FightItem;
-import ui.hub.UI_FightPet;
+import ui.hub.UI_FightHub;
 
 internal class HubButtonPanel extends Sprite {
 
@@ -32,6 +27,10 @@ internal class HubButtonPanel extends Sprite {
 
     private var _fightBtn:SimpleButton;
 
+    private var _autoBtn:SimpleButton;
+
+    private var _settingBtn:SimpleButton;
+
     private var _itemBtn:SimpleButton;
 
     private var _petBtn:SimpleButton;
@@ -40,130 +39,117 @@ internal class HubButtonPanel extends Sprite {
 
     private var _catchBtn:SimpleButton;
 
-    private var _fightHighlight:Sprite;
+    private var _itemMc:MovieClip;
 
-    private var _itemHighlight:Sprite;
+    private var _petMc:MovieClip;
 
-    private var _petHighlight:Sprite;
+    private var _escapeMc:MovieClip;
 
-    private var _escapeHighlight:Sprite;
+    private var _catchMc:MovieClip;
 
-    private var _catchHighlight:Sprite;
+    private var currentMc:MovieClip;
 
-    private var currentBtn:SimpleButton;
-    private var currentHighLight:Sprite;
+    private var _hub:UI_FightHub;
 
-    private var _morphBtn:SimpleButton;
+    //private var _morphBtn:SimpleButton;
 
     public function HubButtonPanel() {
         super();
         this.mouseEnabled = false;
-        this._fightBtn = new UI_FightFight;
-        this._fightHighlight = new UI_FightHighFight;
-        this._fightHighlight.x = this._fightBtn.x = 780;
-        this._fightHighlight.y = this._fightBtn.y = 74;
-        this._fightHighlight.mouseChildren = false;
-        this._fightHighlight.mouseEnabled = false;
-        addChild(this._fightBtn);
-        this._itemBtn = new UI_FightItem;
-        this._itemHighlight = new UI_FightHighItem;
-        this._itemHighlight.mouseChildren = false;
-        this._itemHighlight.mouseEnabled = false;
-        this._itemHighlight.x = this._itemBtn.x = 778;
-        this._itemHighlight.y = this._itemBtn.y = 114;
-        addChild(this._itemBtn);
-        this._petBtn = new UI_FightPet;
-        this._petHighlight = new UI_FightHighPet;
-        this._petHighlight.x = this._petBtn.x = 778;
-        this._petHighlight.y = this._petBtn.y = 41;
-        this._petHighlight.mouseChildren = false;
-        this._petHighlight.mouseEnabled = false;
-        addChild(this._petBtn);
-        this._escapeBtn = new UI_FightEscape;
-        this._escapeHighlight = new UI_FightHighEscape;
-        this._escapeHighlight.x = this._escapeBtn.x = 871;
-        this._escapeHighlight.y = this._escapeBtn.y = 114;
-        this._escapeHighlight.mouseChildren = false;
-        this._escapeHighlight.mouseEnabled = false;
-        addChild(this._escapeBtn);
-        this._catchBtn = new UI_FightCatch;
-        this._catchHighlight = new UI_FightHighCatch;
-        this._catchHighlight.x = this._catchBtn.x = 871;
-        this._catchHighlight.y = this._catchBtn.y = 41;
-        addChild(this._catchBtn);
+        this._hub = new UI_FightHub;
+        addChild(this._hub);
+        this._fightBtn = this._hub["fightBtn"];
+        this._autoBtn = this._hub["autoBtn"];
+        this._settingBtn = this._hub["settingBtn"];
+        this._itemMc = this._hub["itemMc"];
+        this._itemMc.gotoAndStop(1);
+        this._itemBtn = this._itemMc["btn"];
+        this._petMc = this._hub["petMc"];
+        this._petMc.gotoAndStop(1);
+        this._petBtn = this._petMc["btn"];
+        this._escapeMc = this._hub["escapeMc"];
+        this._escapeMc.gotoAndStop(1);
+        this._escapeBtn = this._escapeMc["btn"];
+        this._catchMc = this._hub["catchMc"];
+        this._catchMc.gotoAndStop(1);
+        this._catchBtn = this._catchMc["btn"];
         this._fightBtn.addEventListener(MouseEvent.CLICK, this.onFightClick);
         this._itemBtn.addEventListener(MouseEvent.CLICK, this.onItemClick);
         this._petBtn.addEventListener(MouseEvent.CLICK, this.onPetClick);
         this._escapeBtn.addEventListener(MouseEvent.CLICK, this.onEscapeClick);
         this._catchBtn.addEventListener(MouseEvent.CLICK, this.onCatchClick);
-        this._morphBtn = new New_UI_FightPet;
-        _morphBtn.x = 870;
-        _morphBtn.y = -50;
-        addChild(_morphBtn);
-        _morphBtn.addEventListener(MouseEvent.CLICK, this.onMorphClick);
-        addEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
-    }
-
-    private function onRemoved(param1:Event):void {
-        removeEventListener(Event.REMOVED_FROM_STAGE, this.onRemoved);
-        _fightBtn.removeEventListener(MouseEvent.CLICK, this.onFightClick);
-        _itemBtn.removeEventListener(MouseEvent.CLICK, this.onItemClick);
-        _petBtn.removeEventListener(MouseEvent.CLICK, this.onPetClick);
-        _escapeBtn.removeEventListener(MouseEvent.CLICK, this.onEscapeClick);
-        _catchBtn.removeEventListener(MouseEvent.CLICK, this.onCatchClick);
-        _morphBtn.removeEventListener(MouseEvent.CLICK, this.onMorphClick);
+        this._autoBtn.addEventListener(MouseEvent.CLICK, this.onAutoClick);
+        this._settingBtn.addEventListener(MouseEvent.CLICK, this.onSettingClick);
+        //this._morphBtn = new New_UI_DepositTxt;
+        //_morphBtn.x = 870;
+        //_morphBtn.y = -50;
+        //addChild(_morphBtn);
+        //_morphBtn.addEventListener(MouseEvent.CLICK, this.onMorphClick)
     }
 
     public function reset():void {
-        this.highLight(null, null);
+        this.highLight(null);
     }
 
     private function onFightClick(param1:MouseEvent):void {
-        this.highLight(null, null);
+        this.highLight(null);
         dispatchEvent(new Event(EVT_FIGHT));
     }
 
     private function onItemClick(param1:MouseEvent):void {
-        this.highLight(this._itemBtn, this._itemHighlight);
+        this.highLight(this._itemMc);
         dispatchEvent(new Event(EVT_ITEM));
     }
 
     private function onPetClick(param1:MouseEvent):void {
-        this.highLight(this._petBtn, this._petHighlight);
+        this.highLight(this._petMc);
         dispatchEvent(new Event(EVT_PET));
     }
 
     private function onEscapeClick(param1:MouseEvent):void {
-        this.highLight(this._escapeBtn, _escapeHighlight);
+        this.highLight(this._escapeMc);
         dispatchEvent(new Event(EVT_ESCAPE));
     }
 
     private function onCatchClick(param1:MouseEvent):void {
-        this.highLight(this._catchBtn, this._catchHighlight);
+        this.highLight(this._catchMc);
         dispatchEvent(new Event(EVT_CATCH));
+    }
+
+    private function onAutoClick(event:MouseEvent):void {
+        dispatchEvent(Events.btnAutoClick());
+    }
+
+    private function onSettingClick(event:MouseEvent):void {
+        dispatchEvent(Events.btnSettingClick());
     }
 
     private function onMorphClick(event:MouseEvent):void {
         dispatchEvent(Events.btnMorphClick());
     }
 
-    private function highLight(param1:SimpleButton, param2:Sprite):void {
-        if (currentBtn !== param1) {
-            if (currentBtn) {
-                currentBtn.scaleX = currentBtn.scaleY = 1;
+    private function highLight(param1:MovieClip):void {
+        if (this.currentMc !== param1) {
+            if (this.currentMc) {
+                this.currentMc.gotoAndStop(1);
             }
-            currentBtn = param1;
-            if (currentBtn) {
-                currentBtn.scaleX = currentBtn.scaleY = 0;
+            this.currentMc = param1;
+            if (this.currentMc) {
+                this.currentMc.gotoAndStop(2);
             }
         }
-        if (currentHighLight !== param2) {
-            if (currentHighLight && currentHighLight.parent) {
-                removeChild(currentHighLight);
+    }
+
+    public function enableHubPanel(able:Boolean):void {
+        for(var i:int = 0; i < this._hub.numChildren; i++) {
+            var child:DisplayObject = this._hub.getChildAt(i);
+            if(child == this._autoBtn) continue;
+            if(child == this._settingBtn) continue;
+            if(child is InteractiveObject) {
+                InteractiveObject(child).mouseEnabled = able;
             }
-            currentHighLight = param2;
-            if (currentHighLight && currentHighLight) {
-                addChild(currentHighLight);
+            if(child is Sprite) {
+                Sprite(child).mouseChildren = able;
             }
         }
     }

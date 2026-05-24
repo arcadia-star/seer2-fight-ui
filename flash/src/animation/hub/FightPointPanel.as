@@ -9,13 +9,10 @@ import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFormat;
 
-import ui.hub.New_UI_Fight_Poing;
 
 public class FightPointPanel extends Sprite {
 
     private var _mc:MovieClip;
-
-    private var _changFightUIBtn:SimpleButton;
 
     private var _prevBtn:SimpleButton;
 
@@ -31,27 +28,19 @@ public class FightPointPanel extends Sprite {
 
     private static const SIZE:int = 5;
 
-    public function FightPointPanel() {
+    public function FightPointPanel(mc:MovieClip) {
         super();
-        this._mc = new New_UI_Fight_Poing;
-        this._changFightUIBtn = this._mc["changFightUIBtn"];
+        this._mc = mc;
         this._prevBtn = this._mc["prevBtn"];
         this._nextBtn = this._mc["nextBtn"];
-        this._contentTxt = new TextField();
-        this._contentTxt.x = 22;
-        this._contentTxt.y = 25;
-        this._mc.addChild(this._contentTxt);
-        this._contentTxt.width = 200;
+        this._contentTxt = this._mc["contentTxt"];
         this._contentTxt.mouseEnabled = false;
         this._contentTxt.multiline = true;
         this._contentTxt.htmlText = "";
-        this._contentTxt.defaultTextFormat = new TextFormat("_sans", 14);
-        this._changFightUIBtn.addEventListener(MouseEvent.CLICK, this.onChangFightUI);
         this._prevBtn.addEventListener(MouseEvent.CLICK, this.onPrev);
         this._nextBtn.addEventListener(MouseEvent.CLICK, this.onNext);
         this._statusList = Vector.<String>([]);
         this._currIndex = 0;
-        addChild(this._mc);
     }
 
     private function updateStatus(param1:Vector.<String>):void {
@@ -69,10 +58,6 @@ public class FightPointPanel extends Sprite {
             }
             _loc2_++;
         }
-    }
-
-    private function onChangFightUI(param1:MouseEvent):void {
-        dispatchEvent(OperateEvent.changeUI())
     }
 
     private function onPrev(param1:MouseEvent):void {

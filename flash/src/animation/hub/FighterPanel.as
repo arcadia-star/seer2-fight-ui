@@ -43,9 +43,9 @@ internal class FighterPanel extends Sprite {
         };
         super();
         this.mouseEnabled = false;
-        offsetX = 90;
-        offsetY = 52;
-        itemWidth = 116;
+        offsetX = 11;
+        offsetY = 3;
+        itemWidth = 118;
         this._fighterDisplayVec = new Vector.<FighterDisplay>();
         i = 0;
         while (i < MAX_NUM_FIGHTER) {

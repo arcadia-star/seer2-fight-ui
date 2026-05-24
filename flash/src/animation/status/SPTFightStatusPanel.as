@@ -15,14 +15,18 @@ public class SPTFightStatusPanel extends FightStatusPanel {
     }
 
     override protected function layout():void {
+        _rightCapsuleBar.scaleX *= -1;
+        this._title.y = 35;
+        this._weatherDisplay.y = 74;
         var setChildPosition:Function = DisplayUtil.setChildPosition;
-        setChildPosition(_rightMainFighterBar, 242, 0);
-        setChildPosition(_leftCapsuleBar, 4, 118);
-        setChildPosition(_leftBuffIconBar, 106, 89);
+        setChildPosition(_leftMainFighterBar, 0, 20);
+        setChildPosition(_rightMainFighterBar, 410, 0);
+        setChildPosition(_leftCapsuleBar, 4, 130);
+        setChildPosition(_leftBuffIconBar, 106, 92);
 //        setChildPosition(_leftSkillBubble, 0, 140);
 //        setChildPosition(_rightSkillBubble, 1200, 150);
-        setChildPosition(_rightCapsuleBar, 1125, 130);
-        setChildPosition(_rightBuffIconBar, 978, 52);
+        setChildPosition(_rightCapsuleBar, 1194, 130);
+        setChildPosition(_rightBuffIconBar, 978, 54);
     }
 }
 }

@@ -12,20 +12,23 @@ internal class ShrinkBar extends Sprite {
 
     protected var _playDirection:int;
 
-    public function ShrinkBar(param1:MovieClip) {
+    public function ShrinkBar(param1:MovieClip, isOnStage:Boolean = false) {
         super();
         this.mouseEnabled = false;
         this.mouseChildren = false;
         this._bar = param1;
         this._bar.stop();
-        addChild(this._bar);
+        if(!isOnStage)//如果BarBack里包含了血条,那么就不需要addChild,重置后的barBack都包含血条
+        {
+            addChild(this._bar);
+        }
         this.initAtPercent(0);
     }
 
     public function initAtPercent(param1:Number):void {
         this._targetFrameNum = int(this._bar.totalFrames - param1 * (this._bar.totalFrames - 1));
-        if (this._targetFrameNum >= this._bar.totalFrames) {
-            this._targetFrameNum = this._bar.totalFrames - 1;
+        if (this._targetFrameNum > this._bar.totalFrames) {
+            this._targetFrameNum = this._bar.totalFrames;
         }
         this._bar.gotoAndStop(this._targetFrameNum);
     }

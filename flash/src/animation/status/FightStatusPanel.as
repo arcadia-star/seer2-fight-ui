@@ -17,29 +17,29 @@ public class FightStatusPanel extends Sprite {
 
     protected var _arenaData:ArenaData;
 
-    protected var _leftMainFighterBar:FighterStatusBar;
+    protected var _leftMainFighterBar:BaseFighterStatusBar;
 
     protected var _leftBuffIconBar:BuffIconBar;
 
-    protected var _leftCapsuleBar:CapsuleBar;
+    protected var _leftCapsuleBar:CapsuleBarPet;
 
     protected var _leftSkillBubble:SkillBubble;
 
     protected var _leftAngerStatus:AngerStatusPanel;
 
-    protected var _rightMainFighterBar:FighterStatusBar;
+    protected var _rightMainFighterBar:BaseFighterStatusBar;
 
     protected var _rightBuffIconBar:BuffIconBar;
 
-    protected var _rightCapsuleBar:CapsuleBar;
+    protected var _rightCapsuleBar:CapsuleBarPet;
 
     protected var _rightSkillBubble:SkillBubble;
 
     protected var _rightAngerStatus:AngerStatusPanel;
 
-    private var _title:MovieClip;
+    protected var _title:MovieClip;
 
-    private var _weatherDisplay:FightWeatherDisplay;
+    protected var _weatherDisplay:FightWeatherDisplay;
 
     public function FightStatusPanel() {
         super();
@@ -56,6 +56,7 @@ public class FightStatusPanel extends Sprite {
         this._rightMainFighterBar.initData(param1.right.master, smooth);
         this._rightBuffIconBar.initData(param1.right.master);
         this._rightCapsuleBar.initData(param1.right.pets);
+        CapsuleBarPet.petShown(param1.right.pets.indexOf(param1.right.master));
         this._rightAngerStatus.setFight(param1.right.master);
         this.updateTitle();
         this._weatherDisplay.initData(param1.weatherIcon, param1.weatherTips);
@@ -87,9 +88,9 @@ public class FightStatusPanel extends Sprite {
     }
 
     protected function createChildren():void {
-        this._leftCapsuleBar = new CapsuleBar();
+        this._leftCapsuleBar = new CapsuleBarPet(CapsuleBarPet.CAPSULE_SIDE_LEFT);
         addChild(this._leftCapsuleBar);
-        this._rightCapsuleBar = new CapsuleBar();
+        this._rightCapsuleBar = new CapsuleBarPet(CapsuleBarPet.CAPSULE_SIDE_RIGHT);
         addChild(this._rightCapsuleBar);
         _leftMainFighterBar = new FighterStatusBar(FightSide.LEFT);
         addChild(_leftMainFighterBar);
@@ -108,23 +109,24 @@ public class FightStatusPanel extends Sprite {
         this._rightAngerStatus = new AngerStatusPanel(FightSide.RIGHT);
         addChild(this._rightAngerStatus);
         this._title = new New_UI_FighterTitle;
-        this._title.x = 532;
+        this._title.x = 520;
         this._title.gotoAndStop(0);
         this._title["count0"].gotoAndStop(0);
         addChild(this._title);
         this._weatherDisplay = new FightWeatherDisplay();
-        _weatherDisplay.x = 551;
+        _weatherDisplay.x = 540;
         _weatherDisplay.y = 40;
         addChild(_weatherDisplay);
     }
 
     protected function layout():void {
+        _rightCapsuleBar.scaleX *= -1;
         var setChildPosition:Function = DisplayUtil.setChildPosition;
         setChildPosition(_rightMainFighterBar, 1200, 0);
-        setChildPosition(_leftBuffIconBar, 174, 52);
-        setChildPosition(_rightBuffIconBar, 994, 52);
-        setChildPosition(_leftCapsuleBar, 6, 112);
-        setChildPosition(_rightCapsuleBar, 1123, 112);
+        setChildPosition(_leftBuffIconBar, 174, 55);
+        setChildPosition(_rightBuffIconBar, 994, 55);
+        setChildPosition(_leftCapsuleBar, 6, 125);
+        setChildPosition(_rightCapsuleBar, 1194, 125);
     }
 
 }

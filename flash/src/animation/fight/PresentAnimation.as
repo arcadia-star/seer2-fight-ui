@@ -46,7 +46,7 @@ public class PresentAnimation extends Sprite {
     }
 
     public function play():void {
-        addChild(this._animation);
+        //addChild(this._animation);
         this._animation.play();
         Utils.once(this._animation, "present", onPresent);
         Utils.once(this._animation, "end", onAnimationEnd);
