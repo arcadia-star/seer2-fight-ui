@@ -10,6 +10,7 @@ public class MoveData {
     public var soundUrl:String;
     public var effectUrl:String;
     public var hitTimeout:int;
+    public var hitEventTime:int;//使用监听hit事件触发打击帧时所需数据，手动配置这段动画共有几次hit事件，便于监听的设置销毁与伤害的计算
 
     public static function from(obj:Object):MoveData {
         if (!obj) {
@@ -26,6 +27,7 @@ public class MoveData {
         target.soundUrl = obj.soundUrl;
         target.effectUrl = obj.effectUrl;
         target.hitTimeout = obj.hitTimeout;
+        target.hitEventTime = obj.hitEventTime;
         return target;
     }
 
@@ -44,6 +46,7 @@ public class MoveData {
         target.soundUrl = obj.soundUrl;
         target.effectUrl = obj.effectUrl;
         target.hitTimeout = obj.hitTimeout;
+        target.hitEventTime = obj.hitEventTime;
         return target;
     }
 }

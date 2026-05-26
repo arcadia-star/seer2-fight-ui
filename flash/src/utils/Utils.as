@@ -26,6 +26,19 @@ public class Utils {
         }
     }
 
+    public static function repeat(dispatcher:IEventDispatcher, name:String, times:int, cb:Function):void {
+        //重复触发器，设置监听dispatcher，若其派发了name事件，则执行cb，累计触发times次后销毁该监听
+        dispatcher.addEventListener(name, handle);
+        var count:int = 0;
+        function handle(event:Event):void {
+            count++;
+            cb();
+            if(count >= times) {
+                dispatcher.removeEventListener(name, handle);
+            }
+        }
+    }
+
     public static function load(url:String, cb:Function, onError:Function = null):Loader {
         var loader:Loader = new Loader();
         var contentLoaderInfo:LoaderInfo = loader.contentLoaderInfo;
