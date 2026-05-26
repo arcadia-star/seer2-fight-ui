@@ -91,14 +91,17 @@ public class FrontLayer extends Sprite {
         })
     }
 
-    public function playLeftPresent(cb:Function):void {
+    public function playLeftPresent(pcb:Function, ecb:Function):void {
         var sprite:PresentAnimation = new PresentAnimation;
         addChild(sprite);
         sprite.initData({
-            "onFighterPresentFun": cb
+            "onFighterPresentFun": pcb
         });
         sprite.play();
         Utils.once(sprite, Events.ANIMATION_END, function ():void {
+            if(ecb != null) {
+                ecb();
+            }
             DisplayObjectUtil.removeFromParent(sprite);
         })
     }

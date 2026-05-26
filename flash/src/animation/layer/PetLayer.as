@@ -72,6 +72,10 @@ public class PetLayer extends Sprite {
         setChildIndex(def, 2);
         setChildIndex(atk, 3);
         var moveLabel:String = SkillCategoryName.atkLabel(moveData.category);
+        var hitEventTime:int = moveData.hitEventTime;
+        if (FighterActionType.ATK_BUF === moveLabel) {//属性攻击理论上只应该有一段来着？有好的想法可以改这里，当然记得看看后面的hit逻辑
+            hitEventTime = hitEventTime > 0 ? 1 : hitEventTime;
+        }
         var hitLabel:String = buildHurtLabel(moveData.miss, moveData.critical);
         var pets:Vector.<PetData> = Vector.<PetData>([null, frame.data.left.master, frame.data.right.master]);
 
@@ -81,18 +85,22 @@ public class PetLayer extends Sprite {
             soundLayer.playSkillSound(moveData.soundUrl);
         }
         updateStatus(atk, moveLabel, version);
+
+        var hitCount:int = 0;
         Utils.promiseAll([
             function (resolve:Function):void {
                 var atkComplete:Boolean = false;
-                //最多允许10s
-                var hitTimeout:int = Math.min(moveData.hitTimeout, 10000);
-                if (hitTimeout > 0) {
-                    setTimeout(function ():void {
-                        if (atkComplete) {
-                            return;
-                        }
-                        atk.dispatchEvent(new Event("hit"));
-                    }, hitTimeout);
+                if(hitEventTime == 0) {//这段是打击帧表+计时器的逻辑，如果选择监听hit就不应该有这段
+                    //最多允许10s
+                    var hitTimeout:int = Math.min(moveData.hitTimeout, 10000);
+                    if (hitTimeout > 0) {
+                        setTimeout(function ():void {
+                            if (atkComplete) {
+                                return;
+                            }
+                            atk.dispatchEvent(new Event("hit"));
+                        }, hitTimeout);
+                    }
                 }
                 onChild0Complete(atk, function ():void {
                     atkComplete = true;
@@ -102,33 +110,41 @@ public class PetLayer extends Sprite {
                     //todo 是否切换petSwf
                     updateStatus(atk, buildIdleLabel(pets[atkSide]), version);
                     resolve();
-                    atk.dispatchEvent(new Event("hit"))
+                    while (hitCount < hitEventTime) {
+                        atk.dispatchEvent(new Event("hit"));
+                        hitCount++;
+                    }//疑似是兜底措施防止到动画结束都没打出来
                 })
             },
             function (resolve:Function):void {
-                Utils.once(atk, "hit", function ():void {
+                var curHitEventTime:int = hitEventTime != 0 ? hitEventTime : 1;//防止除0
+                Utils.repeat(atk, "hit", curHitEventTime, function ():void {
+                    hitCount += 1;
                     if (!checkVersion(version)) {
                         return;
                     }
-                    cb && cb(Events.frameMoveHit());
-                    if (FighterActionType.superAtk().indexOf(moveLabel) < 0) {
-                        soundLayer.playSkillSound(moveData.soundUrl);
-                    }
-                    fgLayer.playSkillEffect(moveData.effectUrl, atkSide);
-                    if (FighterActionType.ATK_BUF === moveLabel) {
-                        updateStatus(def, buildIdleLabel(pets[defSide]), version);
-                        resolve();
-                        return;
+                    if(hitCount == 1) {//只有第一段伤害播放打击音效。如果是属性技能也在第一段处理
+                        cb && cb(Events.frameMoveHit());
+                        if (FighterActionType.superAtk().indexOf(moveLabel) < 0) {
+                            soundLayer.playSkillSound(moveData.soundUrl);
+                        }
+                        if (FighterActionType.ATK_BUF === moveLabel) {
+                            updateStatus(def, buildIdleLabel(pets[defSide]), version);
+                            resolve();
+                            return;
+                        }
                     }
                     if (FighterActionType.damage().indexOf(moveLabel) >= 0) {
-                        if (moveData.damage > 0) {
-                            fgLayer.playHpReduceSplash(defSide, moveData.damage, moveData.critical, moveData.rate);
+                        if (moveData.damage > 0) {//平分伤害并处理余数，防止加起来和实际伤害不等
+                            var curDmg:int = moveData.damage / curHitEventTime;
+                            var remainder:int = moveData.damage % curHitEventTime;
+                            fgLayer.playHpReduceSplash(defSide, curDmg + ((curHitEventTime - hitCount) < remainder ? 1 : 0), moveData.critical, moveData.rate);
                         } else if (moveData.miss > 0) {
                             fgLayer.playMiss(defSide);
                         } else {
                             fgLayer.playAbsorb(defSide);
                         }
-                        if (moveData.miss <= 0) {
+                        if (moveData.miss <= 0 && curHitEventTime <= 1) {//多段攻击如果播放暴击或必杀特效会闪瞎眼
                             if (FighterActionType.superAtk().indexOf(moveLabel) >= 0) {
                                 fgLayer.playSuperAtkHit();
                             }
@@ -150,8 +166,11 @@ public class PetLayer extends Sprite {
                         }
                         //todo 是否切换petSwf
                         updateStatus(def, buildIdleLabel(pets[defSide]), version);
-                        resolve();
-                    })
+                        if(hitCount >= curHitEventTime) resolve();//最后一段受击动画结束后才resolve
+                    });
+                    if(hitCount >= curHitEventTime) {//希望在最后一段伤害后再播放技能特效
+                        fgLayer.playSkillEffect(moveData.effectUrl, atkSide);
+                    }
                 });
             }
         ], function ():void {
@@ -355,11 +374,11 @@ public class PetLayer extends Sprite {
                             return;
                         }
                         updateStatus(pet, status, version);
-                        resolve();
+                        //resolve();//胶囊动画时resolve应该在动画结束后调用，为适配这个，改变了resolve位置
                     });
                 } else {
                     updateStatus(pet, status, version);
-                    resolve();
+                    //resolve();
                 }
             }
 
@@ -374,6 +393,7 @@ public class PetLayer extends Sprite {
                     }
                     twiceWillRemove(exist);
                     applyPet(exist, false);
+                    resolve();
                 })
             }
             //replace
@@ -390,16 +410,18 @@ public class PetLayer extends Sprite {
                         }
                         soundLayer.playPetSound(petSound);
                         applyPet(exist, false);
-                    });
+                    }, resolve);
                 } else {
                     petDisappear(exist);
                     applyPet(exist, true);
+                    resolve();
                 }
             }
             //fallback
             else {
                 twiceWillRemove(exist);
                 applyPet(exist, false);
+                resolve();
             }
         });
     }
