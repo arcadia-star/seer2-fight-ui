@@ -12,6 +12,7 @@ import data.pet.FrameData;
 import data.pet.FramesData;
 import data.pet.MoveData;
 import data.pet.PetData;
+import data.pet.PetExtData;
 import data.pet.SkillData;
 import data.pet.TeamData;
 
@@ -79,20 +80,26 @@ public class DemoPlayer extends Sprite {
             var seedPet:PetData = frame.data.left.master;
 
             function randomPet(pid:int):PetData {
-                var pet:PetData = PetData.clone(seedPet);
                 var number:Number = NumberUtil.random(1, 1000);
+                return onePet(pid, number);
+            }
+
+            function onePet(pid:int, number:int):PetData {
+                var pet:PetData = PetData.clone(seedPet);
                 pet.pid = pid;
                 pet.name = "R" + number;
                 pet.position = 0;
                 pet.petIcon = "http://seer2.61.com/res/pet/icon/" + number + ".swf";
                 pet.petSwf = "http://seer2.61.com/res/pet/fight/" + number + ".swf";
+                pet.ext = new PetExtData();
+                pet.ext.monster = number;
                 return pet;
             }
 
             frame.data.left.pets = new Vector.<PetData>();
             frame.data.left.pets.push(seedPet);
             frame.data.left.pets.push(randomPet(101));
-            frame.data.left.pets.push(randomPet(102));
+            frame.data.left.pets.push(onePet(102, 1000));
             frame.data.left.pets.push(randomPet(103));
             frame.data.left.pets.push(randomPet(104));
             frame.data.left.pets[0].position = 1;
@@ -115,7 +122,8 @@ public class DemoPlayer extends Sprite {
             framePlayer.addEventListener(OperateEvent.OPERATE_END, function (event:OperateEvent):void {
                 if (event.data.skill > 0) {
                     frame.data.round++;
-                    var skills:Vector.<SkillData> = frame.data.left.master.skills;
+                    var master:PetData = frame.data.left.master;
+                    var skills:Vector.<SkillData> = master.skills;
                     var skill:SkillData = skills.filter(function (e:SkillData, a:uint, b:uint):Boolean {
                         return e.id === event.data.skill;
                     })[0];
@@ -129,6 +137,20 @@ public class DemoPlayer extends Sprite {
                     moveData.rate = Math.random() > 0.5 ? 200 : 100;
                     moveData.soundUrl = "http://seer2.61.com/res/skill/sound/12_3_002.mp3";
                     moveData.effectUrl = "http://seer2.61.com/res/skill/effect/12_1_003.swf";
+                    if (master.ext && master.ext.monster === 1000) {
+                        if (moveData.category === "物理") {
+                            moveData.hits = Vector.<int>([27, 37, 46, 55]);
+                        }
+                        if (moveData.category === "属性") {
+                            moveData.hits = Vector.<int>([47]);
+                        }
+                        if (moveData.category === "特殊") {
+                            moveData.hits = Vector.<int>([42, 46, 50, 54, 58]);
+                        }
+                        if (moveData.category === "必杀") {
+                            moveData.hits = Vector.<int>([135, 151, 160, 169, 178, 211, 289]);
+                        }
+                    }
 
                     frameClear();
                     frame.move = moveData;
@@ -139,6 +161,7 @@ public class DemoPlayer extends Sprite {
                     frameData.logs.push("<font color=\'#ffffff\'>[" + frame.data.round + "]</font><font color=\'#00ffff\'>" + frame.data.left.master.name + "</font><font color=\'#ffffff\'>使用技能</font><font color=\'#ffff00\'>" + skill.name + "</font>");
                     framePlayer.playFrame(frameData, function ():void {
                         frame.move.side = 2;
+                        frame.move.hits = null;
                         frame.data.left.master.hp -= 100;
                         frame.data.left.master.anger += 20;
                         var frameData:FrameData = FrameData.clone(frame);
