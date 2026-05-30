@@ -72,10 +72,6 @@ public class PetLayer extends Sprite {
         setChildIndex(def, 2);
         setChildIndex(atk, 3);
         var moveLabel:String = SkillCategoryName.atkLabel(moveData.category);
-        var hitEventTime:int = moveData.hitEventTime;
-        if (FighterActionType.ATK_BUF === moveLabel) {//属性攻击理论上只应该有一段来着？有好的想法可以改这里，当然记得看看后面的hit逻辑
-            hitEventTime = hitEventTime > 0 ? 1 : hitEventTime;
-        }
         var hitLabel:String = buildHurtLabel(moveData.miss, moveData.critical);
         var pets:Vector.<PetData> = Vector.<PetData>([null, frame.data.left.master, frame.data.right.master]);
 
@@ -84,67 +80,101 @@ public class PetLayer extends Sprite {
             bgLayer.vibrate();
             soundLayer.playSkillSound(moveData.soundUrl);
         }
+        //播放攻击动画
         updateStatus(atk, moveLabel, version);
-
-        var hitCount:int = 0;
+        //攻击、受击完成时回调
         Utils.promiseAll([
             function (resolve:Function):void {
-                var atkComplete:Boolean = false;
-                if(hitEventTime == 0) {//这段是打击帧表+计时器的逻辑，如果选择监听hit就不应该有这段
-                    //最多允许10s
-                    var hitTimeout:int = Math.min(moveData.hitTimeout, 10000);
-                    if (hitTimeout > 0) {
-                        setTimeout(function ():void {
-                            if (atkComplete) {
-                                return;
-                            }
-                            atk.dispatchEvent(new Event("hit"));
-                        }, hitTimeout);
-                    }
-                }
                 onChild0Complete(atk, function ():void {
-                    atkComplete = true;
                     if (!checkVersion(version)) {
                         return;
                     }
                     //todo 是否切换petSwf
                     updateStatus(atk, buildIdleLabel(pets[atkSide]), version);
                     resolve();
-                    while (hitCount < hitEventTime) {
-                        atk.dispatchEvent(new Event("hit"));
-                        hitCount++;
-                    }//疑似是兜底措施防止到动画结束都没打出来
+                    //兜底事件
+                    atk.dispatchEvent(new Event("hit"));
                 })
             },
             function (resolve:Function):void {
-                var curHitEventTime:int = hitEventTime != 0 ? hitEventTime : 1;//防止除0
-                Utils.repeat(atk, "hit", curHitEventTime, function ():void {
-                    hitCount += 1;
+                var hits:Vector.<int> = moveData.hits;
+                var totalDamage:int = moveData.damage;
+
+                var currentHit:int = 0;
+                var expectHitMax:int = 1;
+                var hitDamages:Array = [totalDamage];
+
+                //优先使用hit数据
+                if (hits && hits.length) {
+                    expectHitMax = hits.length;
+                    hitDamages = [];
+                    //平分伤害并处理余数，防止加起来和实际伤害不等
+                    var eachDamage:Number = totalDamage / expectHitMax;
+                    for (var i:int = 0; i < expectHitMax - 1; i++) {
+                        hitDamages.push(eachDamage);
+                    }
+
+                    hitDamages.push(eachDamage + totalDamage % expectHitMax);
+
+                    atk.addEventListener(Event.ENTER_FRAME, handleEachFrame);
+
+                    function handleEachFrame(event:Event):void {
+                        var mc:MovieClip = atk.getChildAt(0) as MovieClip;
+                        if (mc) {
+                            var currentFrame:int = mc.currentFrame;
+                            if (hits.indexOf(currentFrame) !== -1) {
+                                playHit();
+                            }
+                            //往前数一帧，防止和前面的onChild0Complete冲突
+                            if (currentFrame == mc.totalFrames - 1) {
+                                //如果并没播放完，兜底播放完
+                                for (var i:int = currentHit; i < expectHitMax; i++) {
+                                    playHit();
+                                }
+                                atk.removeEventListener(Event.ENTER_FRAME, handleEachFrame);
+                            }
+                        }
+                    }
+                } else {
+                    Utils.once(atk, "hit", playHit);
+                }
+
+                function playHit():void {
                     if (!checkVersion(version)) {
                         return;
                     }
-                    if(hitCount == 1) {//只有第一段伤害播放打击音效。如果是属性技能也在第一段处理
-                        cb && cb(Events.frameMoveHit());
-                        if (FighterActionType.superAtk().indexOf(moveLabel) < 0) {
-                            soundLayer.playSkillSound(moveData.soundUrl);
-                        }
-                        if (FighterActionType.ATK_BUF === moveLabel) {
-                            updateStatus(def, buildIdleLabel(pets[defSide]), version);
+                    currentHit++;
+                    var hitSnapshot:int = currentHit;
+                    var isFirstHit:Boolean = hitSnapshot === 1;
+                    var isLastHit:Boolean = hitSnapshot === expectHitMax;
+                    var hitDamage:int = hitDamages[hitSnapshot - 1];
+
+                    cb && cb(Events.frameMoveHit());
+                    //声音放在第一段打中的时候播放
+                    if (isFirstHit && FighterActionType.superAtk().indexOf(moveLabel) < 0) {
+                        soundLayer.playSkillSound(moveData.soundUrl);
+                    }
+                    //特效放在最后一段打中的时候播放
+                    if (isLastHit) {
+                        fgLayer.playSkillEffect(moveData.effectUrl, atkSide);
+                    }
+                    if (FighterActionType.ATK_BUF === moveLabel) {
+                        updateStatus(def, buildIdleLabel(pets[defSide]), version);
+                        if (isLastHit) {
                             resolve();
-                            return;
                         }
+                        return;
                     }
                     if (FighterActionType.damage().indexOf(moveLabel) >= 0) {
-                        if (moveData.damage > 0) {//平分伤害并处理余数，防止加起来和实际伤害不等
-                            var curDmg:int = moveData.damage / curHitEventTime;
-                            var remainder:int = moveData.damage % curHitEventTime;
-                            fgLayer.playHpReduceSplash(defSide, curDmg + ((curHitEventTime - hitCount) < remainder ? 1 : 0), moveData.critical, moveData.rate);
+                        if (hitDamage > 0) {
+                            fgLayer.playHpReduceSplash(defSide, hitDamage, moveData.critical, moveData.rate);
                         } else if (moveData.miss > 0) {
                             fgLayer.playMiss(defSide);
                         } else {
                             fgLayer.playAbsorb(defSide);
                         }
-                        if (moveData.miss <= 0 && curHitEventTime <= 1) {//多段攻击如果播放暴击或必杀特效会闪瞎眼
+                        //多段攻击如果播放暴击或必杀特效会闪瞎眼，只第一帧触发
+                        if (isFirstHit && moveData.miss <= 0) {
                             if (FighterActionType.superAtk().indexOf(moveLabel) >= 0) {
                                 fgLayer.playSuperAtkHit();
                             }
@@ -155,7 +185,7 @@ public class PetLayer extends Sprite {
                                 }
                             }
                         }
-                        if (moveData.damage / pets[atkSide].maxHp > 0.33) {
+                        if (isFirstHit && moveData.damage / pets[atkSide].maxHp > 0.33) {
                             bgLayer.vibrate();
                         }
                     }
@@ -164,14 +194,16 @@ public class PetLayer extends Sprite {
                         if (!checkVersion(version)) {
                             return;
                         }
+                        if (currentHit !== hitSnapshot) {
+                            return;
+                        }
                         //todo 是否切换petSwf
                         updateStatus(def, buildIdleLabel(pets[defSide]), version);
-                        if(hitCount >= curHitEventTime) resolve();//最后一段受击动画结束后才resolve
-                    });
-                    if(hitCount >= curHitEventTime) {//希望在最后一段伤害后再播放技能特效
-                        fgLayer.playSkillEffect(moveData.effectUrl, atkSide);
-                    }
-                });
+                        if (isLastHit) {
+                            resolve();
+                        }
+                    })
+                }
             }
         ], function ():void {
             cb && cb(Events.framePlayEnd());

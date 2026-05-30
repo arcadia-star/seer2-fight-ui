@@ -85,7 +85,6 @@ internal class FighterDisplay extends Sprite {
     }
 
     public function updatePressStatus(rate:uint):void {
-        trace("[FighterDisplay]rate=" + rate + '\n');
         var _loc4_:int = 1;
         if (rate <= 0) {
             _loc4_ = 4;
