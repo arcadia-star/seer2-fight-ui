@@ -125,7 +125,8 @@ public class PetLayer extends Sprite {
                             if (hits.indexOf(currentFrame) !== -1) {
                                 playHit();
                             }
-                            if (currentFrame == mc.totalFrames) {
+                            //往前数一帧，防止和前面的onChild0Complete冲突
+                            if (currentFrame == mc.totalFrames - 1) {
                                 //如果并没播放完，兜底播放完
                                 for (var i:int = currentHit; i < expectHitMax; i++) {
                                     playHit();
