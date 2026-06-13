@@ -30,10 +30,11 @@ public class Utils {
         //重复触发器，设置监听dispatcher，若其派发了name事件，则执行cb，累计触发times次后销毁该监听
         dispatcher.addEventListener(name, handle);
         var count:int = 0;
+
         function handle(event:Event):void {
             count++;
             cb();
-            if(count >= times) {
+            if (count >= times) {
                 dispatcher.removeEventListener(name, handle);
             }
         }
@@ -148,6 +149,17 @@ public class Utils {
 
     public static function async(fn:Function):void {
         setTimeout(fn, 0);
+    }
+
+    public static function gotoAndStop(mc:MovieClip, frame:Object, cb:Function):void {
+        // 否则正常监听 FRAME_CONSTRUCTED
+        function onFrameReady(e:Event):void {
+            mc.removeEventListener(Event.FRAME_CONSTRUCTED, onFrameReady);
+            cb();
+        }
+
+        mc.addEventListener(Event.FRAME_CONSTRUCTED, onFrameReady);
+        mc.gotoAndStop(frame);
     }
 }
 }

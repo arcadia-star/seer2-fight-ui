@@ -7,6 +7,8 @@ import flash.events.Event;
 
 import ui.PetFallback;
 
+import utils.Utils;
+
 public class S1Pet extends MovieClip {
     private var _origin:MovieClip;
 
@@ -49,33 +51,27 @@ public class S1Pet extends MovieClip {
         } else {
             label = "attack";
         }
-        _origin.gotoAndStop(label);
-
-        function handleEnterFrame(event:Event):void {
+        Utils.gotoAndStop(_origin, label, function ():void {
             var child0:MovieClip = _origin.getChildAt(0) as MovieClip;
-            if (child0) {
-                _origin.removeEventListener(Event.ENTER_FRAME, handleEnterFrame);
-                if (frame === FighterActionType.IDLE) {
-                    child0.gotoAndStop(0);
-                } else {
-                    child0.gotoAndPlay(1);
-                    child0.addEventListener(Event.ENTER_FRAME, handleEnterFrame1);
 
-                    function handleEnterFrame1(event:Event):void {
-                        if (child0.hit) {
-                            child0.hit = false;
-                            dispatchEvent(new Event("hit"));
-                        }
-                        if (child0.currentFrame == child0.totalFrames) {
-                            child0.removeEventListener(Event.ENTER_FRAME, handleEnterFrame1);
-                            child0.gotoAndStop(0);
-                        }
+            if (frame === FighterActionType.IDLE) {
+                child0.gotoAndStop(0);
+            } else {
+                child0.gotoAndPlay(1);
+                child0.addEventListener(Event.ENTER_FRAME, handleEnterFrame1);
+
+                function handleEnterFrame1(event:Event):void {
+                    if (child0.hit) {
+                        child0.hit = false;
+                        dispatchEvent(new Event("hit"));
+                    }
+                    if (child0.currentFrame == child0.totalFrames) {
+                        child0.removeEventListener(Event.ENTER_FRAME, handleEnterFrame1);
+                        child0.gotoAndStop(0);
                     }
                 }
             }
-        }
-
-        _origin.addEventListener(Event.ENTER_FRAME, handleEnterFrame)
+        });
     }
 }
 }

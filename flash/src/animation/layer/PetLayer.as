@@ -1,5 +1,6 @@
 package animation.layer {
 import animation.event.Events;
+import animation.ext.TimeDrivenPet;
 
 import com.greensock.TweenLite;
 import com.greensock.easing.Strong;
@@ -357,6 +358,7 @@ public class PetLayer extends Sprite {
             return;
         }
         CacheUtils.loadPet(url, function (pet:MovieClip):void {
+            pet = new TimeDrivenPet(pet);
             if (!checkVersion(version)) {
                 return;
             }
