@@ -13,6 +13,7 @@ import flash.media.Sound;
 import flash.net.URLLoader;
 import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
+import flash.system.Security;
 import flash.utils.setTimeout;
 
 public class Utils {
@@ -42,13 +43,16 @@ public class Utils {
     public static function load(url:String, cb:Function, onError:Function = null):Loader {
         var loader:Loader = new Loader();
         var contentLoaderInfo:LoaderInfo = loader.contentLoaderInfo;
-        contentLoaderInfo.addEventListener(Event.COMPLETE, function (event:Event):void {
+        contentLoaderInfo.addEventListener(Event.COMPLETE, function onComplete(event:Event):void {
+            contentLoaderInfo.removeEventListener(Event.COMPLETE, onComplete);
             cb(contentLoaderInfo)
         });
-        contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, function (event:Event):void {
+        contentLoaderInfo.addEventListener(IOErrorEvent.IO_ERROR, function onIOError(event:Event):void {
+            contentLoaderInfo.removeEventListener(IOErrorEvent.IO_ERROR, onIOError);
             onError && onError(event)
         });
-        contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function (event:Event):void {
+        contentLoaderInfo.addEventListener(SecurityErrorEvent.SECURITY_ERROR, function onSecurityError(event:Event):void {
+            contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
             onError && onError(event)
         });
         loader.load(new URLRequest(url));

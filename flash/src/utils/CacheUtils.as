@@ -29,14 +29,14 @@ public class CacheUtils extends Sprite {
         CacheUtils0.loadClass(url, cb, "effect", SkillEffect0);
     }
 
-    public static function loadPet(url:String, cb:Function):void {
+    public static function loadPet(url:String, cb:Function, maxTimeout:uint = 3000):void {
         if (mayLoadAsExtImg(url, cb, PetFallback, ImgPet)) {
             return;
         }
         if (mayLoadAsExtPet(url, cb, PetFallback, S1Pet)) {
             return;
         }
-        CacheUtils0.loadClass(url, cb, "pet", PetFallback);
+        CacheUtils0.loadClass(url, cb, "pet", PetFallback, maxTimeout);
     }
 
     public static function loadMapContent(url:String, cb:Function):void {
@@ -98,6 +98,7 @@ import flash.display.LoaderInfo;
 import flash.events.Event;
 import flash.media.Sound;
 import flash.utils.clearTimeout;
+import flash.utils.getTimer;
 import flash.utils.setTimeout;
 
 import ui.Resource;
@@ -120,7 +121,7 @@ class CacheUtils0 {
     /**
      * 指定时间内未触发加载时快速失败
      */
-    public static function loadResource(url:String, cb:Function, onError:Function = null, max:int = 100):void {
+    public static function loadResource(url:String, cb:Function, onError:Function = null, max:int = 100, maxTimeout:uint = 3000):void {
         if (loading > max) {
             waiting.push({url: url, cb: cb, onError: onError});
             return;
@@ -159,7 +160,7 @@ class CacheUtils0 {
                 next();
                 onError(new Event("timeout"))
             }
-        }, 3000);
+        }, maxTimeout);
     }
 
     private static const CONTENT_CACHE:LRUCache = new LRUCache(1000);
@@ -184,7 +185,7 @@ class CacheUtils0 {
 
     private static const CLASS_CACHE:LRUCache = new LRUCache(1000);
 
-    public static function loadClass(url:String, cb:Function, name:String, fallback:Class):void {
+    public static function loadClass(url:String, cb:Function, name:String, fallback:Class, maxTimeout:uint = 3000):void {
         if (!url) {
             cb(new fallback);
             return;
@@ -212,7 +213,7 @@ class CacheUtils0 {
             }
         }, function ():void {
             cb(new fallback);
-        });
+        }, 100,maxTimeout);
     }
 
     private static const SOUND_CACHE:LRUCache = new LRUCache(1000);
