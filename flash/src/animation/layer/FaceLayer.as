@@ -7,6 +7,7 @@ import data.pet.FrameData;
 import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.utils.getTimer;
 import flash.utils.setTimeout;
 
 import ui.end.UI_ScreenCover;
@@ -16,17 +17,30 @@ import utils.an.DisplayObjectUtil;
 
 public class FaceLayer extends Sprite {
 
+    private var _loadingBar:ArenaLoadingBar;
+
     public function playStart(frame:FrameData, cb:Function):void {
-        var arenaLoadingBar:ArenaLoadingBar = new ArenaLoadingBar();
-        arenaLoadingBar.initData(frame.data.left, frame.data.right, frame.start.tips);
-        addChild(arenaLoadingBar);
-        Utils.once(arenaLoadingBar, Event.CLOSE, function ():void {
-            arenaLoadingBar.dispose();
+        _loadingBar = new ArenaLoadingBar();
+        _loadingBar.initData(frame.data.left, frame.data.right, frame.start.tips);
+        addChild(_loadingBar);
+        Utils.once(_loadingBar, Event.CLOSE, function ():void {
+            _loadingBar.dispose();
+            _loadingBar = null;
             cb();
-        })
+        });
         setTimeout(function ():void {
-            arenaLoadingBar.updateProgress(100);
-        }, 2500);
+            if(_loadingBar) {
+                _loadingBar.updateProgress(100);
+            }
+        }, 33000);//加载界面最多等待30秒吧，20太少40超时了
+    }
+
+    public function setLoadingBarProgress(val:uint) : void {
+        if(val >= 0 || val <= 100) {
+            if (_loadingBar) {
+                _loadingBar.updateProgress(val);
+            }
+        }
     }
 
     public function playEnd(side:int, cb:Function):void {

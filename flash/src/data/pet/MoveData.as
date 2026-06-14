@@ -53,7 +53,7 @@ public class MoveData {
             return res;
         }
         for (var i:int = 0; i < array.length; i++) {
-            res.push(array[i]);
+            res.push(array[i] == 0 ? 1 : array[i]);//防止传入数据有0
         }
         return res;
     }

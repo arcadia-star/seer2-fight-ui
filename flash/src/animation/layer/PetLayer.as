@@ -175,9 +175,10 @@ public class PetLayer extends Sprite {
                         }
                         //多段攻击如果播放暴击或必杀特效会闪瞎眼，只第一帧触发
                         if (isFirstHit && moveData.miss <= 0) {
+                            /*必杀白光怪怪的，效果感觉不是很好，先去掉
                             if (FighterActionType.superAtk().indexOf(moveLabel) >= 0) {
                                 fgLayer.playSuperAtkHit();
-                            }
+                            }*/
                             if (moveData.critical > 0) {
                                 fgLayer.playCriticalHit();
                                 if (moveLabel === FighterActionType.ATK_PHY) {
