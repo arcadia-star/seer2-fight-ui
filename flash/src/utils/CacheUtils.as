@@ -1,4 +1,5 @@
 package utils {
+import animation.ext.BitmapCachedPet;
 import animation.ext.ImgPet;
 import animation.ext.S1Pet;
 
@@ -29,7 +30,25 @@ public class CacheUtils extends Sprite {
         CacheUtils0.loadClass(url, cb, "effect", SkillEffect0);
     }
 
+    /**
+     * 加载宠物动画；若该 url 已在 FrameBitmapCache 中预渲染过帧位图，
+     * 则用 BitmapCachedPet 包裹后返回，否则返回原始 MovieClip。
+     */
     public static function loadPet(url:String, cb:Function, maxTimeout:uint = 3000):void {
+        loadPetRaw(url, function (pet:*):void {
+            if (pet is MovieClip && FrameBitmapCache.has(url)) {
+                cb(new BitmapCachedPet(pet as MovieClip, url));
+                return;
+            }
+            cb(pet);
+        }, maxTimeout);
+    }
+
+    /**
+     * 加载宠物动画的"原始"实例，不做 BitmapCachedPet 包裹。
+     * 专供预渲染管线（AnimationPreloadUtils 等）使用，避免在预渲染阶段就触发包裹逻辑。
+     */
+    public static function loadPetRaw(url:String, cb:Function, maxTimeout:uint = 3000):void {
         if (mayLoadAsExtImg(url, cb, PetFallback, ImgPet)) {
             return;
         }

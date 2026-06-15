@@ -118,7 +118,8 @@ public class FramePlayer extends Sprite {
             var loadedAnCount:int = 0;
             //这时候加载器最多加载12只精灵动画，小于loader并发上限100，是同时开始加载，不是队列，设置相同的超时时间即可
             AnimationPreloadUtils.preloadPetAnimation(frame.start.urls,30000,function (param:* = null):void {
-                faceLayer.setLoadingBarProgress(((++loadedAnCount) / frame.start.urls.length) * 100);
+                var persent:int = (++loadedAnCount / frame.start.urls.length) * 100;
+                faceLayer.setLoadingBarProgress(persent > 100 ? 100 : persent);//DS干的，我也不知道为什么有的时候会超过100，有空你看看
             });
         } else if (frame.end) {
             loadFrame(function ():void {
