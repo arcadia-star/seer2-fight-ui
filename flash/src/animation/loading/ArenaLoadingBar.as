@@ -14,7 +14,6 @@ import flash.text.TextField;
 import flash.text.TextFormat;
 import flash.utils.clearInterval;
 import flash.utils.setInterval;
-import flash.utils.setTimeout;
 
 import ui.splash.UI_FightLoading;
 import ui.splash.UI_FightLoading_An;
@@ -72,14 +71,9 @@ public class ArenaLoadingBar extends Sprite {
     private var _format:TextFormat;
 
     private var _tipList:Vector.<String>;
-
     private var _tipInterval:int;
 
     private var _curIndex:int = -1;
-
-    private var _isLoading:Boolean;//判断加载动画是否播放至中间等待部分，初始false
-
-    private var _loadingPresentTemp:uint;//当没播放到等待部分时用这个临时储存加载进度，播放到等待部分后再加载，防止开始时直接加载到100跳过前半段动画
 
     public function ArenaLoadingBar() {
         super();
@@ -98,8 +92,6 @@ public class ArenaLoadingBar extends Sprite {
     private function initialize():void {
         DisplayObjectUtil.disableSprite(this);
         this._isLoaded = false;
-        this._isLoading = false;
-        this._loadingPresentTemp = 0;
         this.createChildren();
         this.addAnimationEventListener();
     }
@@ -253,12 +245,6 @@ public class ArenaLoadingBar extends Sprite {
             dispatchEvent(new Event(Event.CLOSE));
         } else if (this._animation.currentFrame == 40) {
             this._infoHolder.visible = true;
-            setTimeout(function () : void {
-                _isLoading = true;
-                if(_loadingPresentTemp > 0) {
-                    updateProgress(_loadingPresentTemp);
-                }
-            },1000);
         }
     }
 
@@ -281,10 +267,6 @@ public class ArenaLoadingBar extends Sprite {
     }
 
     public function updateProgress(param1:int):void {
-        if (!this._isLoading) {
-            this._loadingPresentTemp = param1;
-            return;
-        }
         this.updateDigitalVec(this._digitalVec, param1);
         if (param1 == 100 && !this._isLoaded) {
             this._isLoaded = true;

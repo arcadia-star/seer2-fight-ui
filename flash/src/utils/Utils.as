@@ -14,6 +14,7 @@ import flash.net.URLLoader;
 import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
 import flash.system.Security;
+import flash.utils.clearTimeout;
 import flash.utils.setTimeout;
 
 public class Utils {
@@ -31,10 +32,11 @@ public class Utils {
         //重复触发器，设置监听dispatcher，若其派发了name事件，则执行cb，累计触发times次后销毁该监听
         dispatcher.addEventListener(name, handle);
         var count:int = 0;
+
         function handle(event:Event):void {
             count++;
             cb();
-            if(count >= times) {
+            if (count >= times) {
                 dispatcher.removeEventListener(name, handle);
             }
         }
@@ -100,11 +102,21 @@ public class Utils {
         }
     }
 
-    public static function promiseAll(array:Array, cb:Function):void {
+    public static function promiseAll(array:Array, cb:Function, timeout:int = 0):void {
+        var timeoutKey:uint = timeout > 0 ? setTimeout(function ():void {
+            //时间结束，还有没完成的，视为完成
+            if (cnt > 0) {
+                cnt = -1;
+                async(cb);
+            }
+        }, timeout) : 0;
 
         function mayCb():void {
             if (cnt == 0) {
-                cnt -= 1;
+                if (timeoutKey > 0) {
+                    clearTimeout(timeoutKey);
+                }
+                cnt -= 1;//cnt=0时一定还没调用，用这个条件就可以保证只调用一次
                 async(cb)
             }
         }
