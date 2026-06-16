@@ -8,7 +8,7 @@ public class FighterLocation {
     public var targetScaleX:Number = 1;
     public var targetScaleY:Number = 1;
 
-    public static var MAIN_FIGHTER_Y:int = 90;
+    public static var MAIN_FIGHTER_Y:int = 90 - 40;//和原版相比，22主位上移40
     public static var SUB_FIGHTER_Y:int = -5;
     public static var FIX_SCALE:Number = 0.55;
 
