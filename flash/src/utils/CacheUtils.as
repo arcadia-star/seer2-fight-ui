@@ -213,7 +213,7 @@ class CacheUtils0 {
             }
         }, function ():void {
             cb(new fallback);
-        }, 100,maxTimeout);
+        }, 100, maxTimeout);
     }
 
     private static const SOUND_CACHE:LRUCache = new LRUCache(1000);

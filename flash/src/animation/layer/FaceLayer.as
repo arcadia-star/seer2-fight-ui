@@ -7,10 +7,11 @@ import data.pet.FrameData;
 import flash.display.Shape;
 import flash.display.Sprite;
 import flash.events.Event;
-import flash.utils.getTimer;
 import flash.utils.setTimeout;
 
 import ui.end.UI_ScreenCover;
+
+import utils.CacheUtils;
 
 import utils.Utils;
 import utils.an.DisplayObjectUtil;
@@ -19,28 +20,72 @@ public class FaceLayer extends Sprite {
 
     private var _loadingBar:ArenaLoadingBar;
 
+    private var _version:int;
+
     public function playStart(frame:FrameData, cb:Function):void {
+        _version++;
+        var version:int = _version;
+
+        //重复播放时，丢弃上次的动画，然后重新加载新的动画
+        removeLoadingBar();
         _loadingBar = new ArenaLoadingBar();
         _loadingBar.initData(frame.data.left, frame.data.right, frame.start.tips);
         addChild(_loadingBar);
+
+        //加载完成后，回调上游
         Utils.once(_loadingBar, Event.CLOSE, function ():void {
-            _loadingBar.dispose();
-            _loadingBar = null;
+            if (!checkVersion(version)) {
+                return;
+            }
+            removeLoadingBar();
             cb();
         });
-        setTimeout(function ():void {
-            if(_loadingBar) {
-                _loadingBar.updateProgress(100);
-            }
-        }, 33000);//加载界面最多等待30秒吧，20太少40超时了
-    }
 
-    public function setLoadingBarProgress(val:uint) : void {
-        if(val >= 0 || val <= 100) {
-            if (_loadingBar) {
-                _loadingBar.updateProgress(val);
+        //预加载url资源
+        var loadUrls:Vector.<String> = frame.start.urls;
+        var loadTasks:Array = [];
+        for each (var url:String in loadUrls) {
+            loadTasks.push(createLoadTask(url));
+        }
+        var loadedCount:int = 0;
+
+        function createLoadTask(url:String):Function {
+            return function (cb:Function):void {
+                function ready():void {
+                    loadedCount++;
+                    //最多99，100由最终函数完成
+                    updateProgress(Math.min(100 * loadedCount / loadUrls.length, 99));
+                    cb();
+                }
+
+                if (url.indexOf("res/pet/fight/") != -1) {
+                    CacheUtils.loadPet(url, function (pet:*):void {
+                        ready()
+                    });
+                } else {
+                    ready();
+                }
+            };
+        }
+
+        Utils.promiseAll(loadTasks, function ():void {
+            updateProgress(100);
+        }, 20000);//加载界面最多等待20秒，太多了体验不是很好
+
+        function updateProgress(progress:int):void {
+            readyProgress = Math.max(progress, readyProgress);
+            if (ready && _loadingBar) {
+                _loadingBar.updateProgress(progress);
             }
         }
+
+        //动画连续性，必须等待2.5s
+        var ready:Boolean = false;
+        var readyProgress:int = 0;
+        setTimeout(function ():void {
+            ready = true;
+            updateProgress(readyProgress);
+        }, 2500);
     }
 
     public function playEnd(side:int, cb:Function):void {
@@ -65,6 +110,17 @@ public class FaceLayer extends Sprite {
             DisplayObjectUtil.removeFromParent(sprite);
             cb();
         });
+    }
+
+    private function checkVersion(version:int):Boolean {
+        return this._version === version;
+    }
+
+    private function removeLoadingBar():void {
+        if (_loadingBar) {
+            _loadingBar.dispose();
+            _loadingBar = null;
+        }
     }
 }
 }
