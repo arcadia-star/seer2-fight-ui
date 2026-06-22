@@ -121,7 +121,7 @@ class CacheUtils0 {
     /**
      * 指定时间内未触发加载时快速失败
      */
-    public static function loadResource(url:String, cb:Function, onError:Function = null, max:int = 100, maxTimeout:uint = 3000):void {
+    public static function loadResource(url:String, cb:Function, onError:Function = null, max:int = 6, maxTimeout:uint = 3000):void {
         if (loading > max) {
             waiting.push({url: url, cb: cb, onError: onError});
             return;
@@ -213,7 +213,7 @@ class CacheUtils0 {
             }
         }, function ():void {
             cb(new fallback);
-        }, 100, maxTimeout);
+        }, 6, maxTimeout);
     }
 
     private static const SOUND_CACHE:LRUCache = new LRUCache(1000);
