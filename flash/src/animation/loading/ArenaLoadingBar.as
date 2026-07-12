@@ -32,7 +32,7 @@ public class ArenaLoadingBar extends Sprite {
 
     private var _infoHolder:MovieClip;
 
-    private var _animation:UI_FightLoading_An;
+    private var _animation:MovieClip;
 
     private var _leftFighterNameTxt:TextField;
 

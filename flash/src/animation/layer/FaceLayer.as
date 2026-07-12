@@ -61,7 +61,7 @@ public class FaceLayer extends Sprite {
                 if (url.indexOf("res/pet/fight/") != -1) {
                     CacheUtils.loadPet(url, function (pet:*):void {
                         ready()
-                    });
+                    }, 20000);
                 } else {
                     ready();
                 }
