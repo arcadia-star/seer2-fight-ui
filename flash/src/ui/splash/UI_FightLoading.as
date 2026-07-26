@@ -4,8 +4,6 @@ import flash.display.MovieClip;
 [Embed(source="/_assets/assets.swf", symbol="UI_FightLoading")]
 public dynamic class UI_FightLoading extends MovieClip {
 
-    public var animation:UI_FightLoading_An;
-
     public var digital0:MovieClip;
 
     public var digital1:MovieClip;

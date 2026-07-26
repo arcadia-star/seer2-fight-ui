@@ -32,7 +32,7 @@ public class ArenaLoadingBar extends Sprite {
 
     private var _infoHolder:MovieClip;
 
-    private var _animation:MovieClip;
+    private var _animation:UI_FightLoading_An;
 
     private var _leftFighterNameTxt:TextField;
 
@@ -98,7 +98,10 @@ public class ArenaLoadingBar extends Sprite {
 
     private function createChildren():void {
         this._loadingBar = new UI_FightLoading;
-        this._animation = this._loadingBar["animation"];
+        this._animation = new UI_FightLoading_An;
+        this._animation.x = 116;
+        this._animation.y = 56;
+        this._loadingBar.addChildAt(this._animation,1);
         this._infoHolder = this._loadingBar["fighterInfoHolder"];
         this._infoHolder.visible = false;
         this._digitalVec = Vector.<MovieClip>([this._loadingBar["digital0"], this._loadingBar["digital1"], this._loadingBar["digital2"]]);
@@ -114,7 +117,7 @@ public class ArenaLoadingBar extends Sprite {
         this._rightSubIconHolder.scaleX = -1;
         this._lHolder = this._infoHolder["lHolder"];
         this._rHolder = this._infoHolder["rHolder"];
-        addChild(this._loadingBar);
+        this.addChild(this._loadingBar);
         this.updateDigitalVec(this._digitalVec, 0);
         this._TipTxt = new TextField();
         this._format = new TextFormat("_sans");
@@ -124,9 +127,9 @@ public class ArenaLoadingBar extends Sprite {
         this._TipTxt.selectable = true;
         this._TipTxt.wordWrap = true;
         this._TipTxt.multiline = true;
-        this._TipTxt.x = 228 + 110;
-        this._TipTxt.y = 56;
-        this._TipTxt.width = 488;
+        this._TipTxt.x = 355;
+        this._TipTxt.y = 54;
+        this._TipTxt.width = 490;
         this._tipList = new Vector.<String>();
         this.updateTip();
         this._tipInterval = setInterval(updateTip, 3000);
