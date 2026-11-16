@@ -26,6 +26,7 @@ internal class ShrinkBar extends Sprite {
     }
 
     public function initAtPercent(param1:Number):void {
+        this.stopPlayBar();
         this._targetFrameNum = int(this._bar.totalFrames - param1 * (this._bar.totalFrames - 1));
         if (this._targetFrameNum > this._bar.totalFrames) {
             this._targetFrameNum = this._bar.totalFrames;
@@ -56,8 +57,21 @@ internal class ShrinkBar extends Sprite {
         addEventListener(Event.ENTER_FRAME, this.onPlay);
     }
 
+    public function whenSettled(done:Function):void {
+        if (!hasEventListener(Event.ENTER_FRAME)) {
+            done();
+        } else {
+            addEventListener(Event.COMPLETE, complete);
+            function complete(event:Event):void {
+                removeEventListener(Event.COMPLETE, complete);
+                done();
+            }
+        }
+    }
+
     protected function stopPlayBar():void {
         removeEventListener(Event.ENTER_FRAME, this.onPlay);
+        dispatchEvent(new Event(Event.COMPLETE));
     }
 
     private function onPlay(param1:Event):void {

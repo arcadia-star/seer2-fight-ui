@@ -2,8 +2,10 @@ package animation.hub {
 
 import animation.event.Events;
 import animation.event.OperateEvent;
+import ui.hub.UI_FightControlLayout;
 
 import data.pet.TeamData;
+import data.pet.ItemData;
 
 import flash.display.DisplayObject;
 
@@ -12,10 +14,9 @@ import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.events.Event;
 
-import ui.hub.New_UI_DepositTxt;
-import ui.hub.UI_FightBarBack;
+public class FightControlPanel extends UI_FightControlLayout {
 
-public class FightControlPanel extends Sprite {
+    private var _view:MovieClip;
 
     private var _back:MovieClip;
 
@@ -34,39 +35,26 @@ public class FightControlPanel extends Sprite {
     private var _currentPanel:Sprite;
 
     private var _depositMc:MovieClip;
+    private var _teamData:TeamData;
 
     public function FightControlPanel() {
         super();
-        this.y = 550;
-        this._back = new UI_FightBarBack;
-        addChild(this._back);
-        this._depositMc = new New_UI_DepositTxt;
-        this._depositMc.x = 445;
-        this._depositMc.y = -350;
+        this._view = getChildByName("controlPanel") as MovieClip;
+        this._back = _view.getChildByName("back") as MovieClip;
+        this._depositMc = _view.getChildByName("deposit") as MovieClip;
         this._depositMc.stop();
-        addChild(this._depositMc);
         this._depositMc.visible = this._depositMc.mouseChildren = this._depositMc.mouseEnabled = false;
         this._fightPointPanel = new FightPointPanel(this._back["history"]);
-        this._skillPanel = new SkillPanel();
-        this._skillPanel.x = 242;
-        addChild(this._skillPanel);
-        this._skillPanel.visible = this._skillPanel.mouseChildren = this._skillPanel.mouseEnabled = false;
-        this._fighterPanel = new FighterPanel();
-        this._fighterPanel.x = 311;
-        this._fighterPanel.y = 13;
-        addChild(this._fighterPanel);
-        this._fighterPanel.visible = this._fighterPanel.mouseChildren = this._fighterPanel.mouseEnabled = false;
-        this._itemPanel = new ItemPanel(false);
-        this._capsulePanel = new ItemPanel(true);
-        this._capsulePanel.x = this._itemPanel.x = 311;
-        this._capsulePanel.y = this._itemPanel.y = 13;
-        addChild(this._itemPanel);
-        addChild(this._capsulePanel);
-        this._itemPanel.visible = this._itemPanel.mouseChildren = this._itemPanel.mouseEnabled = false;
-        this._capsulePanel.visible = this._capsulePanel.mouseChildren = this._capsulePanel.mouseEnabled = false;
-        this._hubButtonPanel = new HubButtonPanel();
-        addChild(this._hubButtonPanel);
-        this._hubButtonPanel.x = 1010;
+        this._skillPanel = new SkillPanel(_view.getChildByName("skills") as MovieClip);
+        this._skillPanel.view.visible = this._skillPanel.view.mouseChildren = this._skillPanel.view.mouseEnabled = false;
+        this._fighterPanel = new FighterPanel(_view.getChildByName("fighters") as MovieClip);
+        this._fighterPanel.view.visible = this._fighterPanel.view.mouseChildren = this._fighterPanel.view.mouseEnabled = false;
+        this._itemPanel = new ItemPanel(false, _view.getChildByName("items") as MovieClip);
+        this._itemPanel.view.addEventListener(OperateEvent.OPERATE_END, this.onItemSelected);
+        this._capsulePanel = new ItemPanel(true, _view.getChildByName("capsules") as MovieClip);
+        this._itemPanel.view.visible = this._itemPanel.view.mouseChildren = this._itemPanel.view.mouseEnabled = false;
+        this._capsulePanel.view.visible = this._capsulePanel.view.mouseChildren = this._capsulePanel.view.mouseEnabled = false;
+        this._hubButtonPanel = new HubButtonPanel(_view.getChildByName("hub") as MovieClip);
         this._hubButtonPanel.addEventListener(HubButtonPanel.EVT_FIGHT, this.onFightClick);
         this._hubButtonPanel.addEventListener(HubButtonPanel.EVT_ITEM, this.onItemClick);
         this._hubButtonPanel.addEventListener(HubButtonPanel.EVT_PET, this.onPetClick);
@@ -74,12 +62,10 @@ public class FightControlPanel extends Sprite {
         this._hubButtonPanel.addEventListener(HubButtonPanel.EVT_CATCH, this.onCatchClick);
         this._hubButtonPanel.addEventListener(Events.BTN_AUTO_CLICK, this.onAutoClick);
         this._hubButtonPanel.addEventListener(Events.BTN_SETTING_CLICK, this.onSettingClick);
-        this.addEventListener(OperateEvent.OPERATE_END, function (event:OperateEvent):void {
-            reset()
-        });
     }
 
     public function initData(teamData:TeamData):void {
+        this._teamData = teamData;
         this._skillPanel.initData(teamData.master.skills);
         this._fighterPanel.initData(teamData.pets);
         this._itemPanel.initData(teamData.items);
@@ -88,12 +74,12 @@ public class FightControlPanel extends Sprite {
     }
 
     public function reset():void {
-        setCurrentPanel(this._skillPanel);
+        setCurrentPanel(this._skillPanel.view);
         this._hubButtonPanel.reset();
     }
 
     public function showPetPanel():void {
-        setCurrentPanel(this._fighterPanel);
+        setCurrentPanel(this._fighterPanel.view);
     }
 
     public function appendLogs(logs:Vector.<String>):void {
@@ -114,19 +100,35 @@ public class FightControlPanel extends Sprite {
     }
 
     private function onFightClick(param1:Event):void {
-        setCurrentPanel(this._skillPanel);
+        setCurrentPanel(this._skillPanel.view);
     }
 
     private function onItemClick(param1:Event):void {
-        setCurrentPanel(this._itemPanel);
+        setCurrentPanel(this._itemPanel.view);
+    }
+
+    private function onItemSelected(event:OperateEvent):void {
+        for each (var item:ItemData in this._teamData.items) {
+            if (item.id != event.data.item) continue;
+            if (item.type === 17) {
+                // 与 Flash 客户端一致：选药只打开精灵面板，选定目标才提交操作。
+                event.stopImmediatePropagation();
+                setCurrentPanel(this._fighterPanel.view);
+                this._fighterPanel.setReviveItem(item.id);
+            } else {
+                event.data.target = this._teamData.master.pid;
+            }
+            return;
+        }
+        throw new Error("选中的药水不在当前道具列表中：" + event.data.item);
     }
 
     private function onPetClick(param1:Event):void {
-        setCurrentPanel(this._fighterPanel);
+        setCurrentPanel(this._fighterPanel.view);
     }
 
     private function onCatchClick(param1:Event):void {
-        setCurrentPanel(this._capsulePanel);
+        setCurrentPanel(this._capsulePanel.view);
     }
 
     private function onEscapeClick(param1:Event):void {
@@ -142,10 +144,12 @@ public class FightControlPanel extends Sprite {
     }
 
     private function setCurrentPanel(currentPanel:Sprite):void {
+        this._fighterPanel.setReviveItem(0);
         if (currentPanel === this._currentPanel) {
             return;
         }
         if (this._currentPanel) {
+            if (this._currentPanel === this._skillPanel.view) this._skillPanel.hideTip();
             this._currentPanel.visible = this._currentPanel.mouseEnabled = this._currentPanel.mouseChildren = false;
         }
         this._currentPanel = currentPanel;
@@ -155,16 +159,17 @@ public class FightControlPanel extends Sprite {
     }
 
     public function enableFightControlPanel(able:Boolean):void {
+        if (!able) this._skillPanel.hideTip();
         //由于自动按钮和设置按钮也加入了controlPanel,全部disable确实不太合适
-        for (var i:int = 0; i < numChildren; i++) {
-            var child:DisplayObject = getChildAt(i);
-            if (child == this._hubButtonPanel) {
+        for (var i:int = 0; i < _view.numChildren; i++) {
+            var child:DisplayObject = _view.getChildAt(i);
+            if (child == this._hubButtonPanel.view) {
                 this._hubButtonPanel.enableHubPanel(able);
                 continue;
             }
             if (child == this._back) continue;
             //每回合出招阶段会自动切换至技能面板,其他面板是否接受鼠标动作无所谓
-            if (child == this._skillPanel) {
+            if (child == this._skillPanel.view) {
                 Sprite(child).mouseEnabled = able;
                 Sprite(child).mouseChildren = able;
             }

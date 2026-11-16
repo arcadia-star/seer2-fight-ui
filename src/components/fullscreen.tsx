@@ -1,5 +1,5 @@
-import {ReactNode, useCallback, useEffect, useRef, useState} from 'react';
-import {Maximize, Maximize2, X} from 'lucide-react';
+import { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import { Maximize, Maximize2, X } from 'lucide-react';
 
 interface FullscreenProps {
     children: ReactNode;
@@ -7,7 +7,7 @@ interface FullscreenProps {
     originalHeight: number;
 }
 
-export function Fullscreen({children, originalWidth, originalHeight,}: FullscreenProps) {
+export function Fullscreen({ children, originalWidth, originalHeight }: FullscreenProps) {
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [scale, setScale] = useState(1);
 
@@ -18,7 +18,9 @@ export function Fullscreen({children, originalWidth, originalHeight,}: Fullscree
 
     // 计算缩放比例
     const updateScaling = useCallback(() => {
-        if (!isFullscreen) return;
+        if (!isFullscreen) {
+            return;
+        }
 
         const containerWidth = window.innerWidth;
         const containerHeight = window.innerHeight;
@@ -83,22 +85,19 @@ export function Fullscreen({children, originalWidth, originalHeight,}: Fullscree
                 <div
                     ref={scalingRef}
                     className={`transition-all duration-400 ${
-                        isFullscreen
-                            ? 'fixed inset-0 z-50 flex items-center justify-center'
-                            : 'relative'
+                        isFullscreen ? 'fixed inset-0 z-50 flex items-center justify-center' : 'relative'
                     }`}
                     style={{
                         backgroundColor: isFullscreen ? 'rgba(0, 0, 0, 0.95)' : 'transparent',
                         // 确保全屏时有足够空间显示缩放内容
-                        overflow: isFullscreen ? 'visible' : 'visible'
+
+                        overflow: isFullscreen ? 'visible' : 'visible',
                     }}
                 >
                     {/* children容器 - 只渲染一次 */}
                     <div
                         className={`transition-all duration-300 ${
-                            isFullscreen
-                                ? 'rounded-lg shadow-xl'
-                                : ''
+                            isFullscreen ? 'rounded-lg shadow-xl' : ''
                         }`}
                         style={{
                             width: originalWidth,
@@ -106,7 +105,8 @@ export function Fullscreen({children, originalWidth, originalHeight,}: Fullscree
                             transform: isFullscreen ? `scale(${scale})` : 'scale(1)',
                             transformOrigin: 'center center',
                             // 确保内容不被裁剪
-                            overflow: 'visible'
+
+                            overflow: 'visible',
                         }}
                     >
                         {children}
@@ -120,7 +120,7 @@ export function Fullscreen({children, originalWidth, originalHeight,}: Fullscree
                         className="absolute top-2 right-2 w-10 h-10 bg-black/20 hover:bg-black/30 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:scale-110 z-10"
                         title="进入全屏模式"
                     >
-                        <Maximize2 size={20}/>
+                        <Maximize2 size={20} />
                     </button>
                 )}
             </div>
@@ -133,7 +133,7 @@ export function Fullscreen({children, originalWidth, originalHeight,}: Fullscree
                         onClick={exitFullscreen}
                         className="absolute top-5 right-5 w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl transition-all duration-300 hover:rotate-90 z-10 pointer-events-auto"
                     >
-                        <X size={24}/>
+                        <X size={24} />
                     </button>
                     {/* 全屏按钮 */}
                     <button
@@ -146,7 +146,7 @@ export function Fullscreen({children, originalWidth, originalHeight,}: Fullscree
                         }}
                         className="absolute top-20 right-5 w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white text-xl transition-all duration-300 hover:rotate-90 z-10 pointer-events-auto"
                     >
-                        <Maximize size={24}/>
+                        <Maximize size={24} />
                     </button>
 
                     {/* 缩放比例显示 */}

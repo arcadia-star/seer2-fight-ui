@@ -4,36 +4,34 @@ import animation.common.IconDisplay;
 
 import data.pet.ItemData;
 
-import flash.display.SimpleButton;
 import flash.display.Sprite;
+import flash.display.MovieClip;
 
 import ui.UINumberGenerator;
-import ui.hub.UI_FightItemBtn;
-
 import utils.an.DisplayObjectUtil;
 
-internal class ItemDisplay extends Sprite {
+internal class ItemDisplay {
+
+    private var _view:MovieClip;
+
+    public function get view():MovieClip { return _view; }
 
 
     private var _info:ItemData;
-
-    private var _backBtn:SimpleButton;
 
     private var _iconDisplay:IconDisplay;
 
     private var _numSprite:Sprite;
 
-    public function ItemDisplay() {
-        super();
-        this.mouseChildren = false;
-        this.buttonMode = true;
-        this._backBtn = new UI_FightItemBtn;
-        addChild(this._backBtn);
+    public function ItemDisplay(view:MovieClip) {
+        this._view = view;
+        this._view.mouseChildren = false;
+        this._view.buttonMode = true;
         this._iconDisplay = new IconDisplay();
+        MovieClip(_view["icon"]).addChild(this._iconDisplay);
         _iconDisplay.setSize(60);
         DisplayObjectUtil.disableSprite(this._iconDisplay);
-        addChild(this._iconDisplay);
-        DisplayObjectUtil.disableSprite(this);
+        DisplayObjectUtil.disableSprite(this._view);
     }
 
     public function initData(param1:ItemData):void {
@@ -41,7 +39,7 @@ internal class ItemDisplay extends Sprite {
             return;
         }
         if (!param1) {
-            DisplayObjectUtil.disableSprite(this);
+            DisplayObjectUtil.disableSprite(this._view);
             DisplayObjectUtil.removeFromParent(_numSprite);
             this._numSprite = null;
             this._iconDisplay.initData(null);
@@ -49,18 +47,17 @@ internal class ItemDisplay extends Sprite {
             return;
         }
 
-        DisplayObjectUtil.enableSprite(this);
+        DisplayObjectUtil.enableSprite(this._view);
         if (param1.count <= 1) {
             DisplayObjectUtil.removeFromParent(_numSprite);
             this._numSprite = null;
         } else if (!_info || _info.count !== param1.count) {
             DisplayObjectUtil.removeFromParent(_numSprite);
             this._numSprite = UINumberGenerator.generateItemNumber(param1.count);
-            _numSprite.x = 63 - _numSprite.width;
-            _numSprite.y = 44;
+            _numSprite.x = -_numSprite.width;
             _numSprite.mouseChildren = false;
             _numSprite.mouseEnabled = false;
-            addChild(_numSprite);
+            MovieClip(_view["count"]).addChild(_numSprite);
         }
         this._iconDisplay.initData(param1.icon);
         this._info = param1;

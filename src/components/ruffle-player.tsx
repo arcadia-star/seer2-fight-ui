@@ -1,90 +1,88 @@
-import {Ref, useEffect, useImperativeHandle, useRef} from "react";
+import { type Ref, useEffect, useImperativeHandle, useRef } from 'react';
 
 export interface FlashEvent {
-    func: string,
-    type: string,
-    data: never
-    version: number,
+    func: string;
+    type: string;
+    data: unknown;
+    version: number | null;
 }
-
 type FlashEventHandler = (event: FlashEvent) => void;
-
+interface RuffleElement extends HTMLElement {
+    config: Record<string, unknown>;
+    load(url: string): Promise<void>;
+}
 export interface RufflePlayerEl {
-    // eslint-disable-next-line
-    // @ts-expect-error
-    callFlash: (name: string, ...args) => void,
-    updateCallback: (cb: FlashEventHandler) => void,
-    requestFullscreen: () => void,
+    callFlash: (name: string, ...args: unknown[]) => unknown;
+    updateCallback: (callback: FlashEventHandler) => void;
+    requestFullscreen: () => void;
 }
-
 interface RufflePlayerProps {
-    ref: Ref<RufflePlayerEl>,
+    ref: Ref<RufflePlayerEl>;
     url: string;
+    onError?: (message: string) => void;
 }
 
-export function RufflePlayer({ref, url}: RufflePlayerProps) {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const playerRef = useRef(null);
-    const onFlashEventRef = useRef<FlashEventHandler>(null);
-
+export function RufflePlayer({ ref, url, onError }: RufflePlayerProps) {
+    const container = useRef<HTMLDivElement>(null);
+    const player = useRef<RuffleElement | null>(null);
+    const callback = useRef<FlashEventHandler | null>(null);
+    const errorHandler = useRef(onError);
+    errorHandler.current = onError;
     useImperativeHandle(ref, () => ({
-        // eslint-disable-next-line
-        // @ts-ignore
-        callFlash: (name: string, ...args: never[]) => {
-            console.debug("callFlash", name, args);
-            // eslint-disable-next-line
-            // @ts-ignore
-            playerRef.current?.[name]?.(...args);
+        callFlash(name, ...args) {
+            const method = (player.current as unknown as Record<string, unknown>)[name];
+            if (typeof method !== 'function') {
+                throw new Error(`Flash接口尚未就绪：${name}`);
+            }
+            return method.apply(player.current, args);
         },
-        updateCallback: (cb: FlashEventHandler) => onFlashEventRef.current = cb,
-        // eslint-disable-next-line
-        // @ts-ignore
-        requestFullscreen: () => playerRef.current?.requestFullscreen(),
+        updateCallback: (handler) => {
+            callback.current = handler;
+        },
+        requestFullscreen: () => {
+            void player.current!.requestFullscreen();
+        },
     }));
-
     useEffect(() => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error
-        const Ruffle = window.RufflePlayer;
-        if (!Ruffle) {
-            console.error("RufflePlayer not exist");
-            return;
-        }
-        const ruffle = Ruffle.newest();
-        const player = ruffle.createPlayer();
-
-        player.style.width = "100%";
-        player.style.height = "100%";
-        player.config = {
-            autoplay: "on",
-            unmuteOverlay: "hidden",
+        const globals = window as unknown as Record<string, unknown>;
+        const ruffle = globals.RufflePlayer as { newest(): { createPlayer(): RuffleElement } };
+        const element = ruffle.newest().createPlayer();
+        const name = `flash_cb_${crypto.randomUUID().replace(/-/g, '')}`;
+        globals[name] = (event: FlashEvent) => {
+            console.debug('Flash event', event);
+            if (event.type === 'error') {
+                errorHandler.current?.(String(event.data));
+            }
+            callback.current?.(event);
+        };
+        element.style.width = '100%';
+        element.style.height = '100%';
+        element.config = {
+            autoplay: 'on',
+            unmuteOverlay: 'hidden',
             splashScreen: false,
-            contextMenu: "rightClickOnly",
-            backgroundColor: "#00000000",
-            wmode: "transparent",
+            contextMenu: 'rightClickOnly',
+            backgroundColor: '#00000000',
+            wmode: 'transparent',
             allowScriptAccess: true,
         };
-        containerRef.current?.appendChild(player);
-
-        const flashCb: string = "flash_cb_" + Math.floor(Math.random() * 100000000);
-        // eslint-disable-next-line
-        // @ts-ignore
-        window[flashCb] = function (event: FlashEvent) {
-            console.debug("flashEvent", event);
-            onFlashEventRef.current?.(event);
-        };
-        console.log("add:" + flashCb);
-        player.load(url + "?&cb=" + flashCb);
-        playerRef.current = player;
-
+        container.current!.appendChild(element);
+        player.current = element;
+        const source = new URL(url, document.baseURI);
+        source.searchParams.set('cb', name);
+        let disposed = false;
+        void element.load(source.href).catch((error) => {
+            if (!disposed) {
+                console.error(error);
+                errorHandler.current?.(`战斗播放器加载失败：${(error as Error).message}`);
+            }
+        });
         return () => {
-            console.log("remove:" + flashCb);
-            player.remove();
-            // eslint-disable-next-line
-            // @ts-ignore
-            delete window[flashCb];
+            disposed = true;
+            element.remove();
+            delete globals[name];
+            player.current = null;
         };
     }, [url]);
-
-    return <div ref={containerRef} className="w-full h-full"/>;
+    return <div ref={container} className="w-full h-full" />;
 }

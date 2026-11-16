@@ -5,8 +5,9 @@ public class OperateData {
     public static const FUNCTIONAL_SETTING:int = 3;
 
     public var skill:int;
-    public var pet:int;
+    public var pet:uint;
     public var item:int;
+    public var target:uint;
     public var capsule:int;
     public var escape:int;
     public var functional:int;
@@ -16,6 +17,7 @@ public class OperateData {
             skill: this.skill,
             pet: this.pet,
             item: this.item,
+            target: this.target,
             capsule: this.capsule,
             escape: this.escape,
             functional: this.functional

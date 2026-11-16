@@ -1,128 +1,81 @@
 package animation.hub {
-
 import animation.event.OperateEvent;
-
 import data.pet.SkillData;
-
 import enums.SkillCategoryName;
-
-import flash.display.Sprite;
+import flash.display.MovieClip;
 import flash.events.MouseEvent;
-
+import flash.utils.Dictionary;
 import utils.an.DisplayObjectUtil;
 
-internal class SkillPanel extends Sprite {
-
+internal class SkillPanel {
     private static const SKILL_BTN_NUM:int = 4;
-
-    private var _tip:SkillTip;
-
-    private var _skillBtnVec:Vector.<SkillButton>;
-
+    private var _view:MovieClip;
+    private var _tip:SkillTip = new SkillTip();
+    private var _skillBtnVec:Vector.<SkillButton> = new Vector.<SkillButton>();
     private var _superSkillBtn:SuperSkillButton;
+    private var _buttons:Dictionary = new Dictionary();
 
-    public function SkillPanel() {
-        var offsetX:int;
-        var offsetY:int;
-        var btnWidth:int;
-        var i:int;
-        var onSkillBtnOver:Function;
-        var onSkillBtnOut:Function;
-        var skillBtn:SkillButton = null;
-        super();
-        onSkillBtnOver = function (param1:MouseEvent):void {
-            var _loc2_:Sprite;
-            _loc2_ = param1.currentTarget as Sprite;
-            _tip.initData((param1.currentTarget as ISkillButton).skill());
-            _tip.x = _loc2_.x + 20;
-            _tip.y = _loc2_.y - 10;
-            addChild(_tip);
-            param1.stopImmediatePropagation();
-        };
-        onSkillBtnOut = function (param1:MouseEvent):void {
-            DisplayObjectUtil.removeFromParent(_tip);
-            param1.stopImmediatePropagation();
-        };
-        this.mouseEnabled = false;
-        this._superSkillBtn = new SuperSkillButton();
-        this._superSkillBtn.x = 3;
-        this._superSkillBtn.y = 3;
-        this._superSkillBtn.buttonMode = true;
-        this._superSkillBtn.useHandCursor = true;
-        addChild(this._superSkillBtn);
-        this._superSkillBtn.addEventListener(MouseEvent.CLICK, this.onSkillBtnClick);
-        this._superSkillBtn.addEventListener(MouseEvent.MOUSE_OVER, onSkillBtnOver);
-        this._superSkillBtn.addEventListener(MouseEvent.MOUSE_OUT, onSkillBtnOut);
-        offsetX = 84;
-        offsetY = 20;
-        btnWidth = 171;
-        this._skillBtnVec = new Vector.<SkillButton>();
-        i = 0;
-        while (i < SKILL_BTN_NUM) {
-            skillBtn = new SkillButton();
-            skillBtn.x = offsetX + i * btnWidth;
-            skillBtn.y = offsetY;
-            skillBtn.addEventListener(MouseEvent.CLICK, this.onSkillBtnClick);
-            skillBtn.addEventListener(MouseEvent.MOUSE_OVER, onSkillBtnOver);
-            skillBtn.addEventListener(MouseEvent.MOUSE_OUT, onSkillBtnOut);
-            this._skillBtnVec.push(skillBtn);
-            i++;
+    public function get view():MovieClip { return _view; }
+
+    public function SkillPanel(view:MovieClip) {
+        this._view = view;
+        view.mouseEnabled = false;
+        this._superSkillBtn = new SuperSkillButton(view["superSkill"]);
+        this._superSkillBtn.view.buttonMode = true;
+        this._superSkillBtn.view.useHandCursor = true;
+        bindButton(this._superSkillBtn);
+        for (var i:int = 0; i < SKILL_BTN_NUM; i++) {
+            var button:SkillButton = new SkillButton(view["skill" + i]);
+            this._skillBtnVec.push(button);
+            bindButton(button);
         }
-        this._tip = new SkillTip();
+    }
+
+    private function bindButton(button:ISkillButton):void {
+        this._buttons[button.view] = button;
+        button.view.addEventListener(MouseEvent.CLICK, onSkillBtnClick);
+        button.view.addEventListener(MouseEvent.MOUSE_OVER, onSkillBtnOver);
+        button.view.addEventListener(MouseEvent.MOUSE_OUT, onSkillBtnOut);
     }
 
     public function initData(skills:Vector.<SkillData>):void {
-        this.showNormalSkillBtn(skills);
-        this.showSuperSkillBtn(skills);
-    }
-
-    private function showNormalSkillBtn(param1:Vector.<SkillData>):void {
-        var skills:Vector.<SkillData> = new Vector.<SkillData>();
-        var i:int;
-        for (i = 0; i < param1.length; i++) {
-            var skill:SkillData = param1[i];
-            if (SkillCategoryName.pow().indexOf(skill.category) >= 0) {
-                continue;
-            }
-            skills.push(skill);
+        var normal:Vector.<SkillData> = new Vector.<SkillData>();
+        var power:Vector.<SkillData> = new Vector.<SkillData>();
+        for each (var skill:SkillData in skills) {
+            if (SkillCategoryName.pow().indexOf(skill.category) >= 0) power.push(skill);
+            else normal.push(skill);
         }
-        var count:Number = Math.min(skills.length, SKILL_BTN_NUM);
-        for (i = 0; i < count; i++) {
+        for (var i:int = 0; i < SKILL_BTN_NUM; i++) {
             var button:SkillButton = this._skillBtnVec[i];
-            button.initData(skills[i]);
-            if (!button.parent) {
-                addChild(button);
-            }
+            button.view.visible = i < normal.length;
+            if (button.view.visible) button.initData(normal[i]);
         }
-        for (i = count; i < SKILL_BTN_NUM; i++) {
-            button = this._skillBtnVec[i];
-            DisplayObjectUtil.removeFromParent(button);
-        }
+        this._superSkillBtn.view.visible = power.length > 0;
+        if (this._superSkillBtn.view.visible) this._superSkillBtn.initData(power[0]);
     }
 
-    private function showSuperSkillBtn(param1:Vector.<SkillData>):void {
-        var button:SuperSkillButton = this._superSkillBtn;
-        var powSkills:Vector.<SkillData> = new Vector.<SkillData>();
-        var i:int;
-        for (i = 0; i < param1.length; i++) {
-            var skill:SkillData = param1[i];
-            if (SkillCategoryName.pow().indexOf(skill.category) >= 0) {
-                powSkills.push(skill);
-            }
-        }
-        if (powSkills.length > 0) {
-            button.initData(powSkills[0]);
-            if (!button.parent) {
-                addChild(button);
-            }
-        } else {
-            DisplayObjectUtil.removeFromParent(button);
-        }
+    public function hideTip():void {
+        DisplayObjectUtil.removeFromParent(this._tip);
     }
 
-    private function onSkillBtnClick(param1:MouseEvent):void {
-        var skillBtn:ISkillButton = param1.currentTarget as ISkillButton;
-        dispatchEvent(OperateEvent.skill(skillBtn.skill().id));
+    private function onSkillBtnOver(event:MouseEvent):void {
+        var button:ISkillButton = this._buttons[event.currentTarget];
+        this._tip.initData(button.skill());
+        this._tip.x = button.view.x + 20;
+        this._tip.y = button.view.y - 10;
+        this._view.addChild(this._tip);
+        event.stopImmediatePropagation();
+    }
+
+    private function onSkillBtnOut(event:MouseEvent):void {
+        hideTip();
+        event.stopImmediatePropagation();
+    }
+
+    private function onSkillBtnClick(event:MouseEvent):void {
+        hideTip();
+        var button:ISkillButton = this._buttons[event.currentTarget];
+        this._view.dispatchEvent(OperateEvent.skill(button.skill().id));
     }
 }
 }

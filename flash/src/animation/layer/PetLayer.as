@@ -109,7 +109,7 @@ public class PetLayer extends Sprite {
                     expectHitMax = hits.length;
                     hitDamages = [];
                     //平分伤害并处理余数，防止加起来和实际伤害不等
-                    var eachDamage:Number = totalDamage / expectHitMax;
+                    var eachDamage:int = totalDamage / expectHitMax;
                     for (var i:int = 0; i < expectHitMax - 1; i++) {
                         hitDamages.push(eachDamage);
                     }
@@ -150,6 +150,10 @@ public class PetLayer extends Sprite {
                     var hitDamage:int = hitDamages[hitSnapshot - 1];
 
                     cb && cb(Events.frameMoveHit());
+                    // 旧 UI 在命中并更新受击方状态后弹出异常提示，每次技能只触发一次。
+                    if (isFirstHit) {
+                        fgLayer.playBuffDisabled(pets[defSide].buffs, defSide);
+                    }
                     //声音放在第一段打中的时候播放
                     if (isFirstHit && FighterActionType.superAtk().indexOf(moveLabel) < 0) {
                         soundLayer.playSkillSound(moveData.soundUrl);
@@ -170,7 +174,7 @@ public class PetLayer extends Sprite {
                             fgLayer.playHpReduceSplash(defSide, hitDamage, moveData.critical, moveData.rate);
                         } else if (moveData.miss > 0) {
                             fgLayer.playMiss(defSide);
-                        } else {
+                        } else if (totalDamage === 0) {
                             fgLayer.playAbsorb(defSide);
                         }
                         //多段攻击如果播放暴击或必杀特效会闪瞎眼，只第一帧触发

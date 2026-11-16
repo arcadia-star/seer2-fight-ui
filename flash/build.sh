@@ -1,21 +1,19 @@
-mxmlc \
-  -target-player 32 \
-  -source-path src \
-  -library-path lib/greensock-taomee.swc \
-  -library-path lib/as3corelib.swc \
-  -output out/DemoPlayer.swf \
-  src/DemoPlayer.as
+#!/bin/sh
+set -eu
+cd "$(dirname "$0")"
+: "${AIR_SDK_HOME:?Set AIR_SDK_HOME to the AIR SDK directory}"
 
-mxmlc \
-  -target-player 32 \
-  -source-path src \
-  -library-path lib/greensock-taomee.swc \
-  -library-path lib/as3corelib.swc \
-  -output out/FightPlayer.swf \
-  src/FightPlayer.as
+compile() {
+  java "-Dflexlib=$AIR_SDK_HOME/frameworks" \
+    -jar "$AIR_SDK_HOME/lib/mxmlc-cli.jar" \
+    +configname=flex -target-player=32 \
+    -source-path src \
+    -external-library-path lib/playerglobal.swc \
+    -library-path lib/greensock-taomee.swc \
+    -library-path+=lib/as3corelib.swc \
+    -warnings=false "-output=$2" "$1"
+}
 
-mv out/DemoPlayer.swf ../public/demo/
-mv out/FightPlayer.swf ../public/
-
-git add ../public/demo/DemoPlayer.swf
-git add ../public/FightPlayer.swf
+compile src/FightPlayer.as ../public/FightPlayer.swf
+compile src/DemoPlayer.as ../public/demo/DemoPlayer.swf
+compile src/fonts/FallbackFont.as ../public/FallbackFont.swf

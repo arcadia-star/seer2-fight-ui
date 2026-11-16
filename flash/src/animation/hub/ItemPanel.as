@@ -1,15 +1,19 @@
 package animation.hub {
 import animation.event.OperateEvent;
+import flash.utils.Dictionary;
 
 import data.pet.ItemData;
 
 import flash.display.SimpleButton;
 import flash.display.Sprite;
+import flash.display.MovieClip;
 import flash.events.MouseEvent;
+import utils.an.DisplayObjectUtil;
 
-import ui.hub.UI_FightPage;
-
-internal class ItemPanel extends Sprite {
+internal class ItemPanel {
+    private var _view:MovieClip;
+    private var _items:Dictionary = new Dictionary();
+    public function get view():MovieClip { return _view; }
 
     private static const ITEM_NUM_PAGE:int = 9;
 
@@ -29,29 +33,24 @@ internal class ItemPanel extends Sprite {
 
     private var _capsule:Boolean;
 
-    public function ItemPanel(capsule:Boolean) {
+    public function ItemPanel(capsule:Boolean, view:MovieClip) {
         this._capsule = capsule;
-        var offsetX:int;
-        var offsetY:int;
-        var itemWidth:int;
         var i:int = 0;
         var onOver:Function = null;
         var onOut:Function = null;
         var onNextPage:Function = null;
         var onPrevPage:Function = null;
         var itemDisplay:ItemDisplay = null;
-        super();
+        this._view = view;
         onOver = function (param1:MouseEvent):void {
-            var _loc2_:ItemDisplay = param1.currentTarget as ItemDisplay;
+            var _loc2_:ItemDisplay = _items[param1.currentTarget];
             _tip.initData(_loc2_.item());
-            _tip.x = _loc2_.x + 15;
-            _tip.y = _loc2_.y;
-            addChild(_tip);
+            _tip.x = _loc2_.view.x + 15;
+            _tip.y = _loc2_.view.y;
+            _view.addChild(_tip);
         };
         onOut = function (param1:MouseEvent):void {
-            if (Boolean(_tip) && contains(_tip)) {
-                removeChild(_tip);
-            }
+            DisplayObjectUtil.removeFromParent(_tip);
         };
         onNextPage = function (param1:MouseEvent):void {
             showPage(_pageIndex + 1);
@@ -59,32 +58,20 @@ internal class ItemPanel extends Sprite {
         onPrevPage = function (param1:MouseEvent):void {
             showPage(_pageIndex - 1);
         };
-        this.mouseEnabled = false;
-        offsetX = 28;
-        offsetY = 7;
-        itemWidth = 73;
+        this._view.mouseEnabled = false;
         this._itemDisplayVec = new Vector.<ItemDisplay>();
         i = 0;
         while (i < ITEM_NUM_PAGE) {
-            itemDisplay = new ItemDisplay();
-            itemDisplay.x = offsetX + i * itemWidth;
-            itemDisplay.y = offsetY + i % 2 * 20;
-            itemDisplay.addEventListener(MouseEvent.CLICK, this.onClick);
-            itemDisplay.addEventListener(MouseEvent.MOUSE_OVER, onOver);
-            itemDisplay.addEventListener(MouseEvent.MOUSE_OUT, onOut);
+            itemDisplay = new ItemDisplay(_view.getChildByName("item" + i) as MovieClip);
+            this._items[itemDisplay.view] = itemDisplay;
+            itemDisplay.view.addEventListener(MouseEvent.CLICK, this.onClick);
+            itemDisplay.view.addEventListener(MouseEvent.MOUSE_OVER, onOver);
+            itemDisplay.view.addEventListener(MouseEvent.MOUSE_OUT, onOut);
             this._itemDisplayVec.push(itemDisplay);
-            addChild(itemDisplay);
             i++;
         }
-        this._prevBtn = new UI_FightPage;
-        this._prevBtn.x = 3;
-        this._prevBtn.y = 60;
-        addChild(this._prevBtn);
-        this._nextBtn = new UI_FightPage;
-        this._nextBtn.x = 693;
-        this._nextBtn.y = 47;
-        this._nextBtn.scaleX = -1;
-        addChild(this._nextBtn);
+        this._prevBtn = _view.getChildByName("prev") as SimpleButton;
+        this._nextBtn = _view.getChildByName("next") as SimpleButton;
         this.disableBtn(this._prevBtn);
         this.disableBtn(this._nextBtn);
         this._tip = new ItemTip();
@@ -143,11 +130,11 @@ internal class ItemPanel extends Sprite {
     }
 
     private function onClick(param1:MouseEvent):void {
-        var itemDisplay:ItemDisplay = param1.currentTarget as ItemDisplay;
+        var itemDisplay:ItemDisplay = _items[param1.currentTarget];
         if (_capsule) {
-            dispatchEvent(OperateEvent.capsule(itemDisplay.item().id));
+            this._view.dispatchEvent(OperateEvent.capsule(itemDisplay.item().id));
         } else {
-            dispatchEvent(OperateEvent.item(itemDisplay.item().id));
+            this._view.dispatchEvent(OperateEvent.item(itemDisplay.item().id));
         }
     }
 }

@@ -85,7 +85,7 @@ fight-ui/
 │   │   ├── FrameEditor.tsx   # 单帧编辑与类型分发
 │   │   ├── ArenaEditor.tsx   # 竞技场
 │   │   ├── TeamEditor.tsx    # 队伍
-│   │   ├── PetEditor.tsx     # 精灵
+│   │   ├── FighterEditor.tsx     # 精灵
 │   │   ├── SkillEditor.tsx   # 技能
 │   │   ├── MoveEditor.tsx    # 招式
 │   │   └── ...
@@ -144,3 +144,12 @@ fight-ui/
 ## 许可证
 
 Private 项目，未指定开源许可证。
+
+
+## 可编辑的 Flash UI
+
+底部控制栏和普通、SPT、双打、2v1、渔村状态面板的布局保存在 [battle-ui.fla](flash/src/_assets/battle-ui.fla)。用 Adobe Animate 2020 修改后，直接发布同目录的 `battle-ui.swf`，与原来的 `assets.fla` 使用方式相同。固定位置、组件嵌套、镜像和遮罩由 FLA 维护，AS 按实例名绑定元件。
+
+设置 `AIR_SDK_HOME` 后运行 `bash flash/build.sh`，更新正式播放器、独立 Demo 和备用字体。
+
+帧数据支持可选的 `hpChanges` 和 `angerPayment`：前者在刷新快照时播放血量变化提示，后者描述耗怒前后的数值过渡。播放队列等待状态条动画完成后再进入下一帧。未提供这些字段的原有帧仍沿用原来的播放流程。

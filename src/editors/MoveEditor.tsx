@@ -1,9 +1,9 @@
-import type {Move, Side} from "@/types";
-import {MoveCategory, Side as SideEnum} from "@/types";
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
+import type { Move, FightSide } from '@/types';
+import { MoveCategory, FightSide as SideEnum } from '@/types';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export interface MoveEditorProps {
     value: Move;
@@ -11,19 +11,40 @@ export interface MoveEditorProps {
 }
 
 const sideOptions = [
-    {value: String(SideEnum.Left), label: "左侧 (1)"},
-    {value: String(SideEnum.Right), label: "右侧 (2)"},
+    {
+        value: String(SideEnum.Left),
+        label: '左侧 (1)',
+    },
+    {
+        value: String(SideEnum.Right),
+        label: '右侧 (2)',
+    },
 ];
 
 const categoryOptions = [
-    {value: MoveCategory.Physical, label: MoveCategory.Physical},
-    {value: MoveCategory.Typical, label: MoveCategory.Typical},
-    {value: MoveCategory.Special, label: MoveCategory.Special},
-    {value: MoveCategory.Final, label: MoveCategory.Final},
-    {value: MoveCategory.Fusion, label: MoveCategory.Fusion},
+    {
+        value: MoveCategory.Physical,
+        label: MoveCategory.Physical,
+    },
+    {
+        value: MoveCategory.Typical,
+        label: MoveCategory.Typical,
+    },
+    {
+        value: MoveCategory.Special,
+        label: MoveCategory.Special,
+    },
+    {
+        value: MoveCategory.Final,
+        label: MoveCategory.Final,
+    },
+    {
+        value: MoveCategory.Fusion,
+        label: MoveCategory.Fusion,
+    },
 ];
 
-export function MoveEditor({value, onChange}: MoveEditorProps) {
+export function MoveEditor({ value, onChange }: MoveEditorProps) {
     return (
         <Card className="w-full">
             <CardHeader className="py-3">
@@ -34,10 +55,15 @@ export function MoveEditor({value, onChange}: MoveEditorProps) {
                     <Label>阵营 (side)</Label>
                     <Select
                         value={String(value.side)}
-                        onValueChange={(v) => onChange({...value, side: Number(v) as Side})}
+                        onValueChange={(v) =>
+                            onChange({
+                                ...value,
+                                side: Number(v) as FightSide,
+                            })
+                        }
                     >
                         <SelectTrigger className="w-full">
-                            <SelectValue/>
+                            <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                             {sideOptions.map((opt) => (
@@ -52,7 +78,12 @@ export function MoveEditor({value, onChange}: MoveEditorProps) {
                     <Label>技能 (skill)</Label>
                     <Input
                         value={value.skill}
-                        onChange={(e) => onChange({...value, skill: e.target.value})}
+                        onChange={(e) =>
+                            onChange({
+                                ...value,
+                                skill: e.target.value,
+                            })
+                        }
                     />
                 </div>
                 <div className="space-y-1.5">
@@ -60,11 +91,14 @@ export function MoveEditor({value, onChange}: MoveEditorProps) {
                     <Select
                         value={value.category}
                         onValueChange={(v) =>
-                            onChange({...value, category: v as Move["category"]})
+                            onChange({
+                                ...value,
+                                category: v as Move['category'],
+                            })
                         }
                     >
                         <SelectTrigger className="w-full">
-                            <SelectValue/>
+                            <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                             {categoryOptions.map((opt) => (
@@ -82,7 +116,10 @@ export function MoveEditor({value, onChange}: MoveEditorProps) {
                             type="number"
                             value={value.damage}
                             onChange={(e) =>
-                                onChange({...value, damage: Number(e.target.value) || 0})
+                                onChange({
+                                    ...value,
+                                    damage: Number(e.target.value) || 0,
+                                })
                             }
                         />
                     </div>
@@ -92,7 +129,10 @@ export function MoveEditor({value, onChange}: MoveEditorProps) {
                             type="number"
                             value={value.critical}
                             onChange={(e) =>
-                                onChange({...value, critical: Number(e.target.value) || 0})
+                                onChange({
+                                    ...value,
+                                    critical: Number(e.target.value) || 0,
+                                })
                             }
                         />
                     </div>
@@ -104,7 +144,10 @@ export function MoveEditor({value, onChange}: MoveEditorProps) {
                             type="number"
                             value={value.miss}
                             onChange={(e) =>
-                                onChange({...value, miss: Number(e.target.value) || 0})
+                                onChange({
+                                    ...value,
+                                    miss: Number(e.target.value) || 0,
+                                })
                             }
                         />
                     </div>
@@ -114,7 +157,10 @@ export function MoveEditor({value, onChange}: MoveEditorProps) {
                             type="number"
                             value={value.rate}
                             onChange={(e) =>
-                                onChange({...value, rate: Number(e.target.value) || 0})
+                                onChange({
+                                    ...value,
+                                    rate: Number(e.target.value) || 0,
+                                })
                             }
                         />
                     </div>
@@ -123,14 +169,24 @@ export function MoveEditor({value, onChange}: MoveEditorProps) {
                     <Label>音效 (soundUrl)</Label>
                     <Input
                         value={value.soundUrl}
-                        onChange={(e) => onChange({...value, soundUrl: e.target.value})}
+                        onChange={(e) =>
+                            onChange({
+                                ...value,
+                                soundUrl: e.target.value,
+                            })
+                        }
                     />
                 </div>
                 <div className="space-y-1.5">
                     <Label>特效 (effectUrl)</Label>
                     <Input
                         value={value.effectUrl}
-                        onChange={(e) => onChange({...value, effectUrl: e.target.value})}
+                        onChange={(e) =>
+                            onChange({
+                                ...value,
+                                effectUrl: e.target.value,
+                            })
+                        }
                     />
                 </div>
             </CardContent>

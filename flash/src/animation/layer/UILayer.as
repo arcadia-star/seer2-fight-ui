@@ -3,6 +3,7 @@ import animation.hub.FightControlPanel;
 import animation.status.Double2v1FightStatusPanel;
 import animation.status.DoubleFightStatusPanel;
 import animation.status.FightStatusPanel;
+import animation.status.IFightStatusPanel;
 import animation.status.SPTFightStatusPanel;
 import animation.status.YuCunFightStatusPanel;
 
@@ -16,20 +17,28 @@ import utils.an.DisplayUtil;
 public class UILayer extends Sprite {
     private var _uiStyle:int = 0;
     private var _controlPanel:FightControlPanel;
-    private var _statusPanel:FightStatusPanel;
+    private var _statusPanel:IFightStatusPanel;
     private var _arenaData:ArenaData;
 
     public function UILayer() {
         this._controlPanel = new FightControlPanel();
         this._statusPanel = new FightStatusPanel();
         addChild(_controlPanel);
-        addChild(_statusPanel);
+        addChild(_statusPanel.view);
     }
 
     public function initData(arenaData:ArenaData, smooth:int):void {
         this._arenaData = arenaData;
         this._controlPanel.initData(arenaData.left);
         this._statusPanel.initData(arenaData, smooth);
+    }
+
+    public function playAnger(side:int, before:int, after:int):void {
+        this._statusPanel.playAnger(side, before, after);
+    }
+
+    public function whenSettled(done:Function):void {
+        this._statusPanel.whenSettled(done);
     }
 
     public function showSkillBubble(move:MoveData):void {
@@ -56,17 +65,20 @@ public class UILayer extends Sprite {
             return;
         }
         _uiStyle = uiStyle;
+        var next:IFightStatusPanel;
         if (_uiStyle === 1) {
-            this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new SPTFightStatusPanel());
+            next = new SPTFightStatusPanel();
         } else if (_uiStyle === 2) {
-            this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new DoubleFightStatusPanel());
+            next = new DoubleFightStatusPanel();
         } else if (_uiStyle === 3) {
-            this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new Double2v1FightStatusPanel());
+            next = new Double2v1FightStatusPanel();
         } else if (_uiStyle === 4) {
-            this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new YuCunFightStatusPanel());
+            next = new YuCunFightStatusPanel();
         } else {
-            this._statusPanel = DisplayUtil.replaceChild(_statusPanel, new FightStatusPanel());
+            next = new FightStatusPanel();
         }
+        DisplayUtil.replaceChild(_statusPanel.view,next.view);
+        _statusPanel=next;
         if (_arenaData) {
             this._statusPanel.initData(_arenaData, 0);
         }

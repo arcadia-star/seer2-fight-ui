@@ -1,9 +1,9 @@
-import type {Event, Side} from "@/types";
-import {EventType} from "@/types";
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
+import type { Event, FightSide } from '@/types';
+import { EventType } from '@/types';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export interface EventEditorProps {
     value: Event;
@@ -11,23 +11,51 @@ export interface EventEditorProps {
 }
 
 const sideOptions = [
-    {value: "1", label: "左侧 (1)"},
-    {value: "2", label: "右侧 (2)"},
+    {
+        value: '1',
+        label: '左侧 (1)',
+    },
+    {
+        value: '2',
+        label: '右侧 (2)',
+    },
 ];
 
 const eventTypeOptions = [
-    {value: String(EventType.HP_INCREASE), label: "HP 增加"},
-    {value: String(EventType.HP_DECREASE), label: "HP 减少"},
-    {value: String(EventType.ITEM_HP), label: "道具 HP"},
-    {value: String(EventType.ITEM_ANGER), label: "道具怒气"},
-    {value: String(EventType.CATCH_FAILED), label: "捕捉失败"},
-    {value: String(EventType.CATCH_SUCCESS), label: "捕捉成功"},
-    {value: String(EventType.PET_EXCHANGE), label: "主次换位"},
+    {
+        value: String(EventType.HP_INCREASE),
+        label: 'HP 增加',
+    },
+    {
+        value: String(EventType.HP_DECREASE),
+        label: 'HP 减少',
+    },
+    {
+        value: String(EventType.ITEM_HP),
+        label: '道具 HP',
+    },
+    {
+        value: String(EventType.ITEM_ANGER),
+        label: '道具怒气',
+    },
+    {
+        value: String(EventType.CATCH_FAILED),
+        label: '捕捉失败',
+    },
+    {
+        value: String(EventType.CATCH_SUCCESS),
+        label: '捕捉成功',
+    },
+    {
+        value: String(EventType.PET_EXCHANGE),
+        label: '主次换位',
+    },
 ];
 
-function isChangeEvent(
-    e: Event
-): e is Event & { type: EventType; change?: number } {
+function isChangeEvent(e: Event): e is Event & {
+    type: EventType;
+    change?: number;
+} {
     return (
         e.type === EventType.HP_INCREASE ||
         e.type === EventType.HP_DECREASE ||
@@ -36,7 +64,7 @@ function isChangeEvent(
     );
 }
 
-export function EventEditor({value, onChange}: EventEditorProps) {
+export function EventEditor({ value, onChange }: EventEditorProps) {
     return (
         <Card className="w-full">
             <CardHeader className="py-3">
@@ -48,11 +76,14 @@ export function EventEditor({value, onChange}: EventEditorProps) {
                     <Select
                         value={String(value.side)}
                         onValueChange={(v) =>
-                            onChange({...value, side: Number(v) as Side})
+                            onChange({
+                                ...value,
+                                side: Number(v) as FightSide,
+                            })
                         }
                     >
                         <SelectTrigger className="w-full">
-                            <SelectValue/>
+                            <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                             {sideOptions.map((opt) => (
@@ -69,7 +100,10 @@ export function EventEditor({value, onChange}: EventEditorProps) {
                         type="number"
                         value={value.delay}
                         onChange={(e) =>
-                            onChange({...value, delay: Number(e.target.value) || 0})
+                            onChange({
+                                ...value,
+                                delay: Number(e.target.value) || 0,
+                            })
                         }
                     />
                 </div>
@@ -78,7 +112,7 @@ export function EventEditor({value, onChange}: EventEditorProps) {
                     <Select
                         value={String(value.type)}
                         onValueChange={(v) => {
-                            const type = Number(v) as Event["type"];
+                            const type = Number(v) as Event['type'];
                             if (
                                 type === EventType.HP_INCREASE ||
                                 type === EventType.HP_DECREASE ||
@@ -86,17 +120,22 @@ export function EventEditor({value, onChange}: EventEditorProps) {
                                 type === EventType.ITEM_ANGER
                             ) {
                                 const change =
-                                    isChangeEvent(value) && value.change !== undefined
-                                        ? value.change
-                                        : 0;
-                                onChange({...value, type, change} as Event);
+                                    isChangeEvent(value) && value.change !== undefined ? value.change : 0;
+                                onChange({
+                                    ...value,
+                                    type,
+                                    change,
+                                } as Event);
                             } else {
-                                onChange({...value, type} as Event);
+                                onChange({
+                                    ...value,
+                                    type,
+                                } as Event);
                             }
                         }}
                     >
                         <SelectTrigger className="w-full">
-                            <SelectValue/>
+                            <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                             {eventTypeOptions.map((opt) => (

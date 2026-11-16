@@ -1,33 +1,33 @@
-import * as React from "react";
-import {useRef} from "react";
-import {EndFrame, EventFrame, Frame, Frames, MoveFrame, SleepFrame, UiStyle} from "@/types";
-import {FrameEditor, getFrameKind} from "@/editors/FrameEditor";
-import {Button} from "@/components/ui/button";
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {ScrollArea} from "@/components/ui/scroll-area";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import {toast} from "sonner";
-import {Copy, FileDown, FileUp, Plus, Trash2} from "lucide-react";
-import {FightPlayer} from "@/player/fight-player.tsx";
-import {RufflePlayerEl} from "@/components/ruffle-player.tsx";
-import mock from '@/demo.json'
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select.tsx";
-import {DemoPlayer} from "@/player/demo-player.tsx";
+import * as React from 'react';
+import { useRef } from 'react';
+import { EndFrame, EventFrame, Frame, Frames, MoveFrame, SleepFrame, UiStyle } from '@/types';
+import { FrameEditor, getFrameKind } from '@/editors/FrameEditor';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { toast } from 'sonner';
+import { Copy, FileDown, FileUp, Plus, Trash2 } from 'lucide-react';
+import { FightPlayer } from '@/player/fight-player.tsx';
+import { RufflePlayerEl } from '@/components/ruffle-player.tsx';
+import mock from '@/demo.json';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select.tsx';
+import { DemoPlayer } from '@/player/demo-player.tsx';
 
 function copyTextToClipboard(text: string): Promise<void> {
     if (navigator.clipboard?.writeText) {
         return navigator.clipboard.writeText(text);
     }
-    const el = document.createElement("textarea");
+    const el = document.createElement('textarea');
     el.value = text;
-    el.style.position = "fixed";
-    el.style.opacity = "0";
+    el.style.position = 'fixed';
+    el.style.opacity = '0';
     document.body.appendChild(el);
     el.select();
     try {
-        document.execCommand("copy");
+        document.execCommand('copy');
         return Promise.resolve();
     } finally {
         document.body.removeChild(el);
@@ -35,51 +35,77 @@ function copyTextToClipboard(text: string): Promise<void> {
 }
 
 const FRAME_KIND_LABELS: Record<ReturnType<typeof getFrameKind>, string> = {
-    sleep: "Sleep",
-    start: "Start",
-    end: "End",
-    move: "Move",
-    event: "Event",
-    change: "Change",
-    data: "Data",
+    sleep: 'Sleep',
+    start: 'Start',
+    end: 'End',
+    move: 'Move',
+    event: 'Event',
+    change: 'Change',
+    data: 'Data',
 };
 
 const uiStyleOptions = [
-    {value: UiStyle.Classic, label: "经典"},
-    {value: UiStyle.Spt, label: "SPT"},
-    {value: UiStyle.Double2v2, label: "2v2"},
-    {value: UiStyle.Double2v1, label: "2v1"},
+    {
+        value: UiStyle.Classic,
+        label: '经典',
+    },
+    {
+        value: UiStyle.Spt,
+        label: 'SPT',
+    },
+    {
+        value: UiStyle.Double2v2,
+        label: '2v2',
+    },
+    {
+        value: UiStyle.Double2v1,
+        label: '2v1',
+    },
 ];
 
 function getFrameDisplayName(frame: Frame): string {
-    if (frame._name?.trim()) return frame._name;
-    const kind = getFrameKind(frame);
-    if (kind === "sleep") return `Sleep ${(frame as SleepFrame).sleep ?? 0}ms`;
-    if (kind === "start") return "Start";
-    if (kind === "end") {
-        const w = (frame as EndFrame).end?.winner ?? 0;
-        return w === 1 ? "End (左胜)" : w === 2 ? "End (右胜)" : "End (平局)";
+    if (frame._name?.trim()) {
+        return frame._name;
     }
-    if (kind === "move") return (frame as MoveFrame).move?.skill || "Move";
-    if (kind === "event") return `Event #${(frame as EventFrame).event?.type ?? ""}`;
-    if (kind === "change") return "Change";
-    return "Data";
+    const kind = getFrameKind(frame);
+    if (kind === 'sleep') {
+        return `Sleep ${(frame as SleepFrame).sleep ?? 0}ms`;
+    }
+    if (kind === 'start') {
+        return 'Start';
+    }
+    if (kind === 'end') {
+        const w = (frame as EndFrame).end?.winner ?? 0;
+        return w === 1 ? 'End (左胜)' : w === 2 ? 'End (右胜)' : 'End (平局)';
+    }
+    if (kind === 'move') {
+        return (frame as MoveFrame).move?.skill || 'Move';
+    }
+    if (kind === 'event') {
+        return `Event #${(frame as EventFrame).event?.type ?? ''}`;
+    }
+    if (kind === 'change') {
+        return 'Change';
+    }
+    return 'Data';
 }
 
 const defaultFrame = (): Frame => ({
     logs: [],
     sleep: 0,
-    _name: "",
+    _name: '',
 });
 
 export function FramesEditor() {
-    const [data, setData] = React.useState<Frames>(mock as Frames || {
-        globalVolume: 100,
-        mapVolume: 100,
-        frames: [],
-    });
+    const [data, setData] = React.useState<Frames>(
+        (mock as Frames) || {
+            globalVolume: 100,
+            mapVolume: 100,
+            frames: [],
+        },
+    );
     const [selectedIndex, setSelectedIndex] = React.useState<number | null>(null);
-    const [mainTab, setMainTab] = React.useState<"edit" | "io">("edit");
+    const [mainTab, setMainTab] = React.useState<'edit' | 'io'>('edit');
     const ruffleRef = useRef<RufflePlayerEl>(null);
 
     const frames = data.frames ?? [];
@@ -88,48 +114,67 @@ export function FramesEditor() {
     const updateFrame = (index: number, frame: Frame) => {
         const next = [...frames];
         next[index] = frame;
-        setData({...data, frames: next});
+        setData({
+            ...data,
+            frames: next,
+        });
     };
 
     /** 复制帧：在当前位置后新增一帧（内容为该帧的副本） */
     const duplicateFrame = (e: React.MouseEvent, index: number) => {
         e.stopPropagation();
         const frame = frames[index];
-        if (!frame) return;
+        if (!frame) {
+            return;
+        }
         const copy = JSON.parse(JSON.stringify(frame)) as Frame;
         const next = [...frames];
         next.splice(index + 1, 0, copy);
-        setData({...data, frames: next});
+        setData({
+            ...data,
+            frames: next,
+        });
         setSelectedIndex(index + 1);
-        setMainTab("edit");
-        toast.success("已新增一帧");
+        setMainTab('edit');
+        toast.success('已新增一帧');
     };
 
     const removeFrame = (index: number) => {
         const next = frames.filter((_, i) => i !== index);
-        setData({...data, frames: next});
-        if (selectedIndex === index) setSelectedIndex(null);
-        else if (selectedIndex !== null && selectedIndex > index)
+        setData({
+            ...data,
+            frames: next,
+        });
+        if (selectedIndex === index) {
+            setSelectedIndex(null);
+        } else if (selectedIndex !== null && selectedIndex > index) {
             setSelectedIndex(selectedIndex - 1);
+        }
     };
 
     const addFrame = () => {
         const next = [...frames, defaultFrame()];
-        setData({...data, frames: next});
+        setData({
+            ...data,
+            frames: next,
+        });
         setSelectedIndex(next.length - 1);
     };
 
     const handleImport = (text: string) => {
         try {
             const parsed = JSON.parse(text) as Frames;
-            if (typeof parsed.globalVolume !== "number" || typeof parsed.mapVolume !== "number") {
-                throw new Error("Invalid Frames JSON");
+            if (typeof parsed.globalVolume !== 'number' || typeof parsed.mapVolume !== 'number') {
+                throw new Error('Invalid Frames JSON');
             }
             const importedFrames = parsed.frames != null && Array.isArray(parsed.frames) ? parsed.frames : [];
-            setData({...parsed, frames: importedFrames});
+            setData({
+                ...parsed,
+                frames: importedFrames,
+            });
             setSelectedIndex(null);
         } catch (e) {
-            alert("导入失败：" + (e instanceof Error ? e.message : String(e)));
+            alert('导入失败：' + (e instanceof Error ? e.message : String(e)));
         }
     };
 
@@ -138,16 +183,16 @@ export function FramesEditor() {
             await copyTextToClipboard(text);
             toast.success(`已复制 ${label} 到剪贴板`);
         } catch {
-            toast.error("复制失败，请检查剪贴板权限或使用 HTTPS");
+            toast.error('复制失败，请检查剪贴板权限或使用 HTTPS');
         }
     };
 
     const handleExport = () => {
-        const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
+        const a = document.createElement('a');
         a.href = url;
-        a.download = "frames.json";
+        a.download = 'frames.json';
         a.click();
         URL.revokeObjectURL(url);
     };
@@ -161,17 +206,20 @@ export function FramesEditor() {
                     <div className="space-y-1.5">
                         <Label className="text-xs">UI风格</Label>
                         <Select
-                            value={"" + (data.uiStyle || 0)}
+                            value={'' + (data.uiStyle || 0)}
                             onValueChange={(v) =>
-                                setData({...data, uiStyle: Number(v) || 0})
+                                setData({
+                                    ...data,
+                                    uiStyle: Number(v) || 0,
+                                })
                             }
                         >
                             <SelectTrigger className="w-full">
-                                <SelectValue/>
+                                <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
                                 {uiStyleOptions.map((opt) => (
-                                    <SelectItem key={opt.value} value={"" + opt.value}>
+                                    <SelectItem key={opt.value} value={'' + opt.value}>
                                         {opt.label}
                                     </SelectItem>
                                 ))}
@@ -186,7 +234,10 @@ export function FramesEditor() {
                             max={100}
                             value={data.globalVolume}
                             onChange={(e) =>
-                                setData({...data, globalVolume: Number(e.target.value) || 0})
+                                setData({
+                                    ...data,
+                                    globalVolume: Number(e.target.value) || 0,
+                                })
                             }
                         />
                     </div>
@@ -198,21 +249,22 @@ export function FramesEditor() {
                             max={100}
                             value={data.mapVolume}
                             onChange={(e) =>
-                                setData({...data, mapVolume: Number(e.target.value) || 0})
+                                setData({
+                                    ...data,
+                                    mapVolume: Number(e.target.value) || 0,
+                                })
                             }
                         />
                     </div>
                     <Button type="button" className="w-full" onClick={addFrame}>
-                        <Plus className="size-4 mr-2"/> 添加帧
+                        <Plus className="size-4 mr-2" /> 添加帧
                     </Button>
                 </div>
                 <div className="min-h-0 flex-1 overflow-hidden">
                     <ScrollArea className="h-full">
                         <div className="p-2 space-y-1">
                             {frames.length === 0 ? (
-                                <p className="text-muted-foreground py-4 text-center text-xs">
-                                    暂无帧
-                                </p>
+                                <p className="text-muted-foreground py-4 text-center text-xs">暂无帧</p>
                             ) : (
                                 frames.map((frame, i) => {
                                     const kind = getFrameKind(frame);
@@ -223,7 +275,9 @@ export function FramesEditor() {
                                         <div
                                             key={i}
                                             className={`flex items-center gap-2 rounded-md border px-2 py-2 text-xs transition-colors ${
-                                                isSelected ? "border-primary bg-primary/10" : "hover:bg-muted/50"
+                                                isSelected
+                                                    ? 'border-primary bg-primary/10'
+                                                    : 'hover:bg-muted/50'
                                             }`}
                                         >
                                             <button
@@ -245,7 +299,7 @@ export function FramesEditor() {
                                                 onClick={(e) => duplicateFrame(e, i)}
                                                 title="复制（新增一帧）"
                                             >
-                                                <Copy className="size-3"/>
+                                                <Copy className="size-3" />
                                             </Button>
                                             <Button
                                                 type="button"
@@ -257,7 +311,7 @@ export function FramesEditor() {
                                                 }}
                                                 title="删除"
                                             >
-                                                <Trash2 className="size-3"/>
+                                                <Trash2 className="size-3" />
                                             </Button>
                                         </div>
                                     );
@@ -270,8 +324,11 @@ export function FramesEditor() {
 
             {/* 主栏：可滚动，仅左栏固定 */}
             <main className="flex min-h-0 flex-1 flex-col min-w-0 overflow-auto">
-                <Tabs value={mainTab} onValueChange={(v) => setMainTab(v as "edit" | "io")}
-                      className="flex-1 flex flex-col">
+                <Tabs
+                    value={mainTab}
+                    onValueChange={(v) => setMainTab(v as 'edit' | 'io')}
+                    className="flex-1 flex flex-col"
+                >
                     <div className="border-b px-4">
                         <TabsList className="h-10">
                             <TabsTrigger value="edit">编辑</TabsTrigger>
@@ -301,8 +358,13 @@ export function FramesEditor() {
                                 <CardHeader className="flex flex-row items-center justify-between">
                                     <span className="text-sm font-medium">导入 / 导出</span>
                                     <div className="flex gap-2">
-                                        <Button type="button" variant="outline" size="sm" onClick={handleExport}>
-                                            <FileDown className="size-4 mr-1"/> 导出 JSON
+                                        <Button
+                                            type="button"
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={handleExport}
+                                        >
+                                            <FileDown className="size-4 mr-1" /> 导出 JSON
                                         </Button>
                                         <label className="cursor-pointer">
                                             <input
@@ -311,7 +373,9 @@ export function FramesEditor() {
                                                 className="hidden"
                                                 onChange={(e) => {
                                                     const file = e.target.files?.[0];
-                                                    if (!file) return;
+                                                    if (!file) {
+                                                        return;
+                                                    }
                                                     const reader = new FileReader();
                                                     reader.onload = () => {
                                                         const text = reader.result as string;
@@ -320,10 +384,9 @@ export function FramesEditor() {
                                                     reader.readAsText(file);
                                                 }}
                                             />
-                                            <span
-                                                className="inline-flex items-center justify-center rounded-md text-sm font-medium border bg-background px-3 py-2 h-8 cursor-pointer hover:bg-accent">
-                        <FileUp className="size-4 mr-1"/> 导入 JSON
-                      </span>
+                                            <span className="inline-flex items-center justify-center rounded-md text-sm font-medium border bg-background px-3 py-2 h-8 cursor-pointer hover:bg-accent">
+                                                <FileUp className="size-4 mr-1" /> 导入 JSON
+                                            </span>
                                         </label>
                                     </div>
                                 </CardHeader>
@@ -340,18 +403,21 @@ export function FramesEditor() {
                                             variant="outline"
                                             size="sm"
                                             onClick={() =>
-                                                copyJson(JSON.stringify(selectedFrame, null, 2), "当前帧 JSON")
+                                                copyJson(
+                                                    JSON.stringify(selectedFrame, null, 2),
+                                                    '当前帧 JSON',
+                                                )
                                             }
                                         >
-                                            <Copy className="size-4 mr-1"/> 复制 JSON
+                                            <Copy className="size-4 mr-1" /> 复制 JSON
                                         </Button>
                                     )}
                                 </CardHeader>
                                 <CardContent>
                                     {selectedFrame != null ? (
                                         <pre className="bg-muted rounded-md p-4 text-xs overflow-auto max-h-64">
-                        {JSON.stringify(selectedFrame, null, 2)}
-                      </pre>
+                                            {JSON.stringify(selectedFrame, null, 2)}
+                                        </pre>
                                     ) : (
                                         <p className="text-muted-foreground text-sm">未选择帧</p>
                                     )}
@@ -364,27 +430,29 @@ export function FramesEditor() {
                                         type="button"
                                         variant="outline"
                                         size="sm"
-                                        onClick={() =>
-                                            copyJson(JSON.stringify(data, null, 2), "总 JSON")
-                                        }
+                                        onClick={() => copyJson(JSON.stringify(data, null, 2), '总 JSON')}
                                     >
-                                        <Copy className="size-4 mr-1"/> 复制 JSON
+                                        <Copy className="size-4 mr-1" /> 复制 JSON
                                     </Button>
                                 </CardHeader>
                                 <CardContent>
-                    <pre className="bg-muted rounded-md p-4 text-xs overflow-auto max-h-96">
-                      {JSON.stringify(data, null, 2)}
-                    </pre>
+                                    <pre className="bg-muted rounded-md p-4 text-xs overflow-auto max-h-96">
+                                        {JSON.stringify(data, null, 2)}
+                                    </pre>
                                 </CardContent>
                             </Card>
                         </div>
                     </TabsContent>
                     <TabsContent value="play" className="flex-1 m-0 overflow-auto p-4">
-                        <FightPlayer ruffleRef={ruffleRef} frames={data}
-                                     idx={selectedIndex || 0} onChangeIdx={setSelectedIndex}/>
+                        <FightPlayer
+                            ruffleRef={ruffleRef}
+                            frames={data}
+                            idx={selectedIndex || 0}
+                            onChangeIdx={setSelectedIndex}
+                        />
                     </TabsContent>
                     <TabsContent value="demo" className="flex-1 m-0 overflow-auto p-4">
-                        <DemoPlayer ruffleRef={ruffleRef} frames={data} idx={selectedIndex || 0}/>
+                        <DemoPlayer ruffleRef={ruffleRef} frames={data} idx={selectedIndex || 0} />
                     </TabsContent>
                 </Tabs>
             </main>
@@ -392,6 +460,6 @@ export function FramesEditor() {
     );
 }
 
-function CardDescription({children}: { children: React.ReactNode }) {
+function CardDescription({ children }: { children: React.ReactNode }) {
     return <p className="text-muted-foreground text-xs mt-0.5">{children}</p>;
 }

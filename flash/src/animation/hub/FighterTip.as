@@ -1,10 +1,12 @@
 package animation.hub {
 
 import data.pet.SkillData;
+import data.pet.PetData;
 
 import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.text.TextField;
+import flash.text.TextFormat;
 
 import ui.hub.UI_FightPeTipItem;
 import ui.hub.UI_FightPetTipBack;
@@ -18,6 +20,7 @@ internal class FighterTip extends Sprite {
     private var _back:Sprite;
 
     private var _itemVec:Vector.<MovieClip>;
+    private var _pressTxt:TextField;
 
     public function FighterTip() {
         super();
@@ -33,6 +36,13 @@ internal class FighterTip extends Sprite {
     private function createChildren():void {
         this.createBack();
         this.createItemVec();
+        this._pressTxt = new TextField();
+        this._pressTxt.defaultTextFormat = new TextFormat("Microsoft YaHei", 12, 0xcccccc);
+        this._pressTxt.x = 10;
+        this._pressTxt.y = -25;
+        this._pressTxt.width = 160;
+        this._pressTxt.height = 20;
+        addChild(this._pressTxt);
     }
 
     private function createBack():void {
@@ -54,7 +64,9 @@ internal class FighterTip extends Sprite {
         }
     }
 
-    public function initData(param1:Vector.<SkillData>):void {
+    public function initData(pet:PetData):void {
+        var param1:Vector.<SkillData> = pet.skills;
+        this._pressTxt.text = isNaN(pet.rate) ? "克制关系未知" : "";
         this.resetSkillContent();
         var _loc2_:int = int(param1.length);
         _loc2_ = _loc2_ <= this._itemVec.length ? _loc2_ : int(this._itemVec.length);
