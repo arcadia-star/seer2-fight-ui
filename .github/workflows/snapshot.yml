@@ -45,10 +45,10 @@ jobs:
           export AIR_SDK_HOME="$AIR_HOME"
           mkdir -p public/demo
           # Remove tracked outputs to ensure only freshly compiled files are published.
-          rm -f public/FightPlayer.swf public/demo/DemoPlayer.swf public/FallbackFont.swf
+          rm -f public/FightPlayer.swf public/demo/DemoPlayer.swf public/FallbackFont.swf flash/out/FramePlayer.swf
           bash flash/build.sh
           mkdir -p release-assets
-          for file in public/FightPlayer.swf public/demo/DemoPlayer.swf public/FallbackFont.swf; do
+          for file in public/FightPlayer.swf public/demo/DemoPlayer.swf public/FallbackFont.swf flash/out/FramePlayer.swf; do
             test -s "$file"
             cp "$file" release-assets/
           done
@@ -87,6 +87,7 @@ jobs:
             echo
             echo '### 下载文件'
             echo '- FightPlayer.swf：正式战斗播放器'
+            echo '- FramePlayer.swf：帧播放器'
             echo '- DemoPlayer.swf：独立演示播放器'
             echo '- FallbackFont.swf：备用字体'
             echo '- SHA256SUMS.txt：文件校验值'

@@ -14,6 +14,9 @@ compile() {
     -warnings=false "-output=$2" "$1"
 }
 
+mkdir -p ../public/demo out
+
 compile src/FightPlayer.as ../public/FightPlayer.swf
 compile src/DemoPlayer.as ../public/demo/DemoPlayer.swf
 compile src/fonts/FallbackFont.as ../public/FallbackFont.swf
+compile src/FramePlayer.as out/FramePlayer.swf
