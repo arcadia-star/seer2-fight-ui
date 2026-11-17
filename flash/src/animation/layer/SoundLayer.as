@@ -1,4 +1,7 @@
 package animation.layer {
+import flash.events.Event;
+import flash.events.ErrorEvent;
+import flash.events.EventDispatcher;
 import flash.media.Sound;
 import flash.media.SoundChannel;
 import flash.media.SoundMixer;
@@ -6,7 +9,7 @@ import flash.media.SoundTransform;
 
 import utils.CacheUtils;
 
-public class SoundLayer {
+public class SoundLayer extends EventDispatcher {
     private var currentSkillSound:SoundChannel;
     private var currentSkillSoundUrl:String;
 
@@ -29,6 +32,8 @@ public class SoundLayer {
             }
             clearSound();
             currentSkillSound = sound.play();
+        }, function (error:Event):void {
+            dispatchEvent(new ErrorEvent(ErrorEvent.ERROR, false, false, "技能音效加载失败：" + url + " " + error.toString()));
         });
     }
 

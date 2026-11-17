@@ -5,6 +5,7 @@ import animation.ext.S1Pet;
 import flash.display.Bitmap;
 import flash.display.MovieClip;
 import flash.display.Sprite;
+import flash.events.Event;
 
 import ui.IconFallback;
 import ui.PetFallback;
@@ -12,7 +13,6 @@ import ui.SkillEffect0;
 import ui.UI_Map0;
 import ui.sound.MapSound0;
 import ui.sound.PetSound0;
-import ui.sound.SkillSound0;
 
 public class CacheUtils extends Sprite {
     public static const PET_EXT_S1:String = "ext-s1://";
@@ -46,16 +46,16 @@ public class CacheUtils extends Sprite {
         CacheUtils0.loadContent(url, cb, UI_Map0);
     }
 
-    public static function loadSkillSound(url:String, cb:Function):void {
-        CacheUtils0.loadSound(url, cb, SkillSound0);
+    public static function loadSkillSound(url:String, cb:Function, onError:Function):void {
+        CacheUtils0.loadSound(url, cb, onError);
     }
 
     public static function loadPetSound(url:String, cb:Function):void {
-        CacheUtils0.loadSound(url, cb, PetSound0);
+        CacheUtils0.loadSound(url, cb, function (error:Event):void { cb(new PetSound0); });
     }
 
     public static function loadMapSound(url:String, cb:Function):void {
-        CacheUtils0.loadSound(url, cb, MapSound0);
+        CacheUtils0.loadSound(url, cb, function (error:Event):void { cb(new MapSound0); });
     }
 
     private static function mayLoadAsExtImg(url:String, cb:Function, fallback:Class, wrapper:Class = null):Boolean {
@@ -218,9 +218,9 @@ class CacheUtils0 {
 
     private static const SOUND_CACHE:LRUCache = new LRUCache(1000);
 
-    public static function loadSound(url:String, cb:Function, fallback:Class):void {
+    public static function loadSound(url:String, cb:Function, onError:Function):void {
         if (!url) {
-            cb(new fallback);
+            onError(new Event("empty-url"));
             return;
         }
         var exist:Sound = SOUND_CACHE.get(url);
@@ -231,9 +231,7 @@ class CacheUtils0 {
         Utils.loadSound(proxyHttp2Https(url), function (sound:Sound):void {
             SOUND_CACHE.put(url, sound);
             cb(sound);
-        }, function ():void {
-            cb(new fallback);
-        });
+        }, onError);
     }
 
 

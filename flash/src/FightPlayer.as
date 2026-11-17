@@ -5,6 +5,7 @@ import data.Config;
 import data.pet.FrameData;
 
 import flash.display.Sprite;
+import flash.events.ErrorEvent;
 
 import ui.Resource;
 
@@ -19,11 +20,16 @@ public class FightPlayer extends Sprite {
         this.config = Config.from(this);
         this.framePlayer = new FramePlayer();
         addChild(framePlayer);
+        framePlayer.addEventListener(ErrorEvent.ERROR, function (error:ErrorEvent):void {
+            callJs('error', error.text);
+        });
 
         Utils.addCallbackJs("playFrame", playFrame);
         Utils.addCallbackJs("updateUiStyle", updateUiStyle);
         Utils.addCallbackJs("updateGlobalSound", updateGlobalSound);
         Utils.addCallbackJs("updateMapSound", updateMapSound);
+        Utils.addCallbackJs("setInputEnabled", framePlayer.setInputEnabled);
+        Utils.addCallbackJs("showPetPanel", framePlayer.showPetPanel);
         Utils.async(function ():void {
             callJs('init')
         });

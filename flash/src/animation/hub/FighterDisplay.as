@@ -6,18 +6,16 @@ import animation.common.PetIconDisplay;
 import data.pet.PetData;
 
 import flash.display.MovieClip;
-import flash.display.Shape;
 import flash.display.Sprite;
 import flash.text.TextField;
 
-import ui.hub.UI_FightFighterMark;
-import ui.hub.UI_FightPetBtn;
-import ui.hub.UI_FightPetHealthBar;
-import ui.hub.UI_FightPetInfo;
-
 import utils.an.DisplayObjectUtil;
 
-internal class FighterDisplay extends Sprite {
+internal class FighterDisplay {
+
+    private var _view:MovieClip;
+
+    public function get view():MovieClip { return _view; }
 
     private var _fighter:PetData;
 
@@ -39,40 +37,29 @@ internal class FighterDisplay extends Sprite {
 
     private var _mark:MovieClip;
 
-    private var _cover:MovieClip;
-
     private var _preeMc:MovieClip;
 
 
-    public function FighterDisplay() {
-        super();
-        this.mouseChildren = false;
-        this.buttonMode = true;
-        this._backBtn = new UI_FightPetBtn;
-        addChild(this._backBtn);
-        this._cover = this._backBtn["cover"];
+    public function FighterDisplay(view:MovieClip) {
+        this._view = view;
+        this._view.mouseChildren = false;
+        this._view.buttonMode = true;
+        this._backBtn = _view.getChildByName("back") as MovieClip;
         this._iconDisplayer = new PetIconDisplay();
-        this._iconDisplayer.x = 16.5;
-        this._iconDisplayer.y = 7;
+        MovieClip(this._backBtn["icon"]).addChild(this._iconDisplayer);
         this._iconDisplayer.setSize(55);
-        this._iconDisplayer.mask = this._cover;
-        this._backBtn.addChild(this._iconDisplayer);
         this._healthBar = this._backBtn["healthBar"];
         this._infoDisplay = this._backBtn["infoMc"];
         this._lvTxt = this._infoDisplay["lvTxt"];
         this._hpTxt = this._infoDisplay["hpTxt"];
         this._nameTxt = this._infoDisplay["nameTxt"];
-        this._backBtn.setChildIndex(this._infoDisplay, this._backBtn.numChildren - 1);
         this._typeIcon = new IconDisplay();
-        this._typeIcon.x = 65;
+        MovieClip(_view["typeIcon"]).addChild(this._typeIcon);
         DisplayObjectUtil.disableSprite(this._typeIcon);
-        addChild(this._typeIcon);
         this._mark = this._backBtn["mark"];
         this._mark.visible = false;
         this._preeMc = this._backBtn["preeMc"];
         this._preeMc.gotoAndStop(1);
-        this._backBtn.setChildIndex(this._mark, this._backBtn.numChildren - 2);
-        this._backBtn.setChildIndex(this._infoDisplay, this._backBtn.numChildren - 1);
     }
 
     public function initData(param1:PetData):void {
@@ -84,7 +71,9 @@ internal class FighterDisplay extends Sprite {
         return this._fighter;
     }
 
-    public function updatePressStatus(rate:uint):void {
+    public function updatePressStatus(rate:Number):void {
+        this._preeMc.visible = !isNaN(rate);
+        if (isNaN(rate)) return;
         var _loc4_:int = 1;
         if (rate <= 0) {
             _loc4_ = 4;
@@ -110,17 +99,17 @@ internal class FighterDisplay extends Sprite {
 
     private function updateInteraction():void {
         if (this._fighter.alive <= 0) {
-            this.mouseEnabled = false;
-            DisplayObjectUtil.darkenDisplayObject(this);
+            this._view.mouseEnabled = false;
+            DisplayObjectUtil.darkenDisplayObject(this._view);
         } else {
-            this.mouseEnabled = true;
-            DisplayObjectUtil.recoverDisplayObject(this);
+            this._view.mouseEnabled = true;
+            DisplayObjectUtil.recoverDisplayObject(this._view);
         }
         if (this._fighter.position != 0) {
-            this.mouseEnabled = false;
+            this._view.mouseEnabled = false;
         }
         //都放开点击，让调用方自己控制
-        this.mouseEnabled = true;
+        this._view.mouseEnabled = true;
     }
 
     private function updateInfoDisplay():void {
@@ -154,13 +143,13 @@ internal class FighterDisplay extends Sprite {
         if (param1) {
             this._infoDisplay.visible = true;
             this._healthBar.visible = true;
-            this._typeIcon.visible = true;
-            this.mouseEnabled = true;
+            this._view["typeIcon"].visible = true;
+            this._view.mouseEnabled = true;
         } else {
             this._infoDisplay.visible = false;
             this._healthBar.visible = false;
-            this._typeIcon.visible = false;
-            this.mouseEnabled = false;
+            this._view["typeIcon"].visible = false;
+            this._view.mouseEnabled = false;
         }
     }
 }

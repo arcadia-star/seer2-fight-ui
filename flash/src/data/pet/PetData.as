@@ -1,7 +1,8 @@
 package data.pet {
 
 public class PetData {
-    public var pid:int;
+    public var pid:uint;
+    public var hideInBag:Boolean;
     public var petIcon:String;
     public var petSwf:String;
     public var petSound:String;
@@ -14,7 +15,7 @@ public class PetData {
     public var maxAnger:int;
     public var hp:int;
     public var maxHp:int;
-    public var rate:int;
+    public var rate:Number; // NaN 表示未知的属性克制预览。
     public var atk:int;
     public var def:int;
     public var spa:int;
@@ -28,6 +29,7 @@ public class PetData {
     public static function from(obj:Object):PetData {
         var target:PetData = new PetData;
         target.pid = obj.pid;
+        target.hideInBag = obj.hideInBag === true;
         target.petIcon = obj.petIcon;
         target.petSwf = obj.petSwf;
         target.petSound = obj.petSound;
@@ -40,7 +42,7 @@ public class PetData {
         target.maxAnger = obj.maxAnger;
         target.hp = obj.hp;
         target.maxHp = obj.maxHp;
-        target.rate = obj.rate;
+        target.rate = obj.rate === null ? NaN : obj.rate;
         target.atk = obj.atk;
         target.def = obj.def;
         target.spa = obj.spa;
@@ -56,6 +58,7 @@ public class PetData {
     public static function clone(obj:PetData):PetData {
         var target:PetData = new PetData;
         target.pid = obj.pid;
+        target.hideInBag = obj.hideInBag;
         target.petIcon = obj.petIcon;
         target.petSwf = obj.petSwf;
         target.petSound = obj.petSound;

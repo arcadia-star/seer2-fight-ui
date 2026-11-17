@@ -8,11 +8,13 @@ import animation.layer.SoundLayer;
 import animation.layer.UILayer;
 
 import data.pet.EndData;
+import data.pet.ChangeData;
 
 import data.pet.FrameData;
 
 import flash.display.Sprite;
 import flash.events.Event;
+import flash.events.ErrorEvent;
 import flash.system.System;
 import flash.text.TextField;
 import flash.utils.setInterval;
@@ -31,6 +33,7 @@ public class FramePlayer extends Sprite {
     private var soundLayer:SoundLayer;
 
     private var _version:int;
+    private var _inputEnabled:Boolean = true;
 
     public function FramePlayer() {
         this.bgLayer = new BackLayer();
@@ -39,6 +42,9 @@ public class FramePlayer extends Sprite {
         this.fgLayer = new FrontLayer();
         this.faceLayer = new FaceLayer();
         this.soundLayer = new SoundLayer();
+        soundLayer.addEventListener(ErrorEvent.ERROR, function (error:ErrorEvent):void {
+            dispatchEvent(error.clone());
+        });
 
         addChild(bgLayer);
         addChild(petLayer);
@@ -67,25 +73,48 @@ public class FramePlayer extends Sprite {
             if (!checkVersion(version)) {
                 return;
             }
-            uiLayer.controlPanel.enableFightControlPanel(true);
+            uiLayer.controlPanel.enableFightControlPanel(_inputEnabled);
             next0();
         }
 
         function loadFrame(cb:Function):void {
             var flag:Boolean = false;
+            var remaining:int = 2;
+            function complete():void {
+                if (!checkVersion(version)) return;
+                remaining--;
+                if (remaining === 0) cb();
+            }
+            function updateUi():void {
+                if (flag) return;
+                flag = true;
+                bgLayer.initData(frame.data.mapSwf);
+                soundLayer.playMapSound(frame.data.mapSound);
+                var smooth:int = frame.smooth > 0 ? frame.smooth : (frame.move ? FrameData.SMOOTH_TRUE : FrameData.SMOOTH_FALSE);
+                uiLayer.initData(frame.data, smooth);
+                if (frame.hpChanges) {
+                    for each (var change:Object in frame.hpChanges) {
+                        if (change.kind === "Heal") fgLayer.playHPIncrease(change.side, change.change);
+                        else if (change.kind === "LoseHp" || change.kind === "Damage") fgLayer.playHPDecrease(change.side, change.change);
+                    }
+                }
+                uiLayer.whenSettled(complete);
+            }
+            // 替换帧先刷新头像和技能；模型动画完成仍独立驱动播放队列。
+            // 耗怒与攻击同时开始；打击点的最终怒气交给怒气条顺序过渡。
+            if (frame.angerPayment) {
+                uiLayer.playAnger(frame.angerPayment.side, frame.angerPayment.before, frame.angerPayment.after);
+            }
+            if (frame.change && (frame.change.left === ChangeData.REPLACE || frame.change.right === ChangeData.REPLACE)) {
+                updateUi();
+            }
             petLayer.initData(frame, function (event:Event):void {
                 if (!checkVersion(version)) {
                     return;
                 }
-                if (!flag) {
-                    flag = true;
-                    bgLayer.initData(frame.data.mapSwf);
-                    soundLayer.playMapSound(frame.data.mapSound);
-                    var smooth:int = frame.smooth > 0 ? frame.smooth : (frame.move ? FrameData.SMOOTH_TRUE : FrameData.SMOOTH_FALSE);
-                    uiLayer.initData(frame.data, smooth);
-                }
+                updateUi();
                 if (event.type === Events.FRAME_PLAY_END) {
-                    cb();
+                    complete();
                 }
             });
         }
@@ -181,6 +210,13 @@ public class FramePlayer extends Sprite {
 
     public function showPetPanel():void {
         uiLayer.showPetPanel();
+    }
+
+    public function setInputEnabled(enabled:Boolean):void {
+        _inputEnabled = enabled;
+        uiLayer.controlPanel.mouseChildren = enabled;
+        uiLayer.controlPanel.mouseEnabled = enabled;
+        uiLayer.controlPanel.enableFightControlPanel(enabled);
     }
 
     public function updateAutoFightStatus(show:Boolean):void {

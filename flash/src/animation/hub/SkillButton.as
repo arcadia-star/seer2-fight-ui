@@ -5,18 +5,15 @@ import animation.common.IconDisplay;
 import data.pet.SkillData;
 
 import flash.display.MovieClip;
-import flash.display.SimpleButton;
-import flash.display.Sprite;
 import flash.text.TextField;
-
-import ui.hub.UI_FightSkillBrief;
-import ui.hub.UI_FightSkillBtn;
 
 import utils.an.DisplayObjectUtil;
 
-internal class SkillButton extends Sprite implements ISkillButton {
+internal class SkillButton implements ISkillButton {
 
-    private var _btn:SimpleButton;
+    private var _view:MovieClip;
+
+    public function get view():MovieClip { return _view; }
 
     private var _brief:MovieClip;
 
@@ -34,16 +31,13 @@ internal class SkillButton extends Sprite implements ISkillButton {
 
     private var _info:SkillData;
 
-    public function SkillButton() {
-        super();
-        this.createChildren();
+    public function SkillButton(view:MovieClip) {
+        this._view = view;
+        this.bindView();
     }
 
-    private function createChildren():void {
-        this._btn = new UI_FightSkillBtn;
-        addChild(this._btn);
-        this._brief = new UI_FightSkillBrief;
-        addChild(this._brief);
+    private function bindView():void {
+        this._brief = _view.getChildByName("brief") as MovieClip;
         this._brief.mouseChildren = false;
         this._brief.mouseEnabled = false;
         var _loc1_:TextField = this._brief["txtAnger"];
@@ -57,11 +51,9 @@ internal class SkillButton extends Sprite implements ISkillButton {
         this._powerValueTxt.text = "0";
         this._categoryTxt = this._brief["txtSkillCategory"];
         this._typeIcon = new IconDisplay();
+        MovieClip(_view["typeIcon"]).addChild(this._typeIcon);
         this._typeIcon.setScale(40/40, 40/40);
         DisplayObjectUtil.disableSprite(this._typeIcon);
-        this._typeIcon.x = 11;
-        this._typeIcon.y = 13;
-        addChild(this._typeIcon);
     }
 
     public function initData(param1:SkillData):void {
@@ -72,9 +64,9 @@ internal class SkillButton extends Sprite implements ISkillButton {
         this._categoryTxt.text = this._info.category;
         this._typeIcon.initData(this._info.typeIcon);
         if (param1.enable) {
-            DisplayObjectUtil.recoverDisplayObject(this);
+            DisplayObjectUtil.recoverDisplayObject(this._view);
         } else {
-            DisplayObjectUtil.darkenDisplayObject(this);
+            DisplayObjectUtil.darkenDisplayObject(this._view);
         }
     }
 

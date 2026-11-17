@@ -1,16 +1,16 @@
-import type {Arena} from "@/types";
-import {TeamEditor} from "@/editors/TeamEditor";
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
-import {Input} from "@/components/ui/input";
-import {Label} from "@/components/ui/label";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import type { Arena } from '@/types';
+import { TeamEditor } from '@/editors/TeamEditor';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export interface ArenaEditorProps {
     value: Arena;
     onChange: (value: Arena) => void;
 }
 
-export function ArenaEditor({value, onChange}: ArenaEditorProps) {
+export function ArenaEditor({ value, onChange }: ArenaEditorProps) {
     return (
         <Card className="w-full">
             <CardHeader className="py-3">
@@ -24,7 +24,10 @@ export function ArenaEditor({value, onChange}: ArenaEditorProps) {
                             type="number"
                             value={value.round}
                             onChange={(e) =>
-                                onChange({...value, round: Number(e.target.value) || 0})
+                                onChange({
+                                    ...value,
+                                    round: Number(e.target.value) || 0,
+                                })
                             }
                         />
                     </div>
@@ -33,14 +36,24 @@ export function ArenaEditor({value, onChange}: ArenaEditorProps) {
                     <Label>地图 SWF (mapSwf)</Label>
                     <Input
                         value={value.mapSwf}
-                        onChange={(e) => onChange({...value, mapSwf: e.target.value})}
+                        onChange={(e) =>
+                            onChange({
+                                ...value,
+                                mapSwf: e.target.value,
+                            })
+                        }
                     />
                 </div>
                 <div className="space-y-1.5">
                     <Label>地图音效 (mapSound)</Label>
                     <Input
                         value={value.mapSound}
-                        onChange={(e) => onChange({...value, mapSound: e.target.value})}
+                        onChange={(e) =>
+                            onChange({
+                                ...value,
+                                mapSound: e.target.value,
+                            })
+                        }
                     />
                 </div>
                 <div className="grid grid-cols-2 gap-2">
@@ -49,7 +62,10 @@ export function ArenaEditor({value, onChange}: ArenaEditorProps) {
                         <Input
                             value={value.weatherIcon}
                             onChange={(e) =>
-                                onChange({...value, weatherIcon: e.target.value})
+                                onChange({
+                                    ...value,
+                                    weatherIcon: e.target.value,
+                                })
                             }
                         />
                     </div>
@@ -58,7 +74,10 @@ export function ArenaEditor({value, onChange}: ArenaEditorProps) {
                         <Input
                             value={value.weatherTips}
                             onChange={(e) =>
-                                onChange({...value, weatherTips: e.target.value})
+                                onChange({
+                                    ...value,
+                                    weatherTips: e.target.value,
+                                })
                             }
                         />
                     </div>
@@ -76,14 +95,24 @@ export function ArenaEditor({value, onChange}: ArenaEditorProps) {
                     <TabsContent value="left" className="mt-2">
                         <TeamEditor
                             value={value.left}
-                            onChange={(team) => onChange({...value, left: team})}
+                            onChange={(team) =>
+                                onChange({
+                                    ...value,
+                                    left: team,
+                                })
+                            }
                             title="左侧队伍"
                         />
                     </TabsContent>
                     <TabsContent value="right" className="mt-2">
                         <TeamEditor
                             value={value.right}
-                            onChange={(team) => onChange({...value, right: team})}
+                            onChange={(team) =>
+                                onChange({
+                                    ...value,
+                                    right: team,
+                                })
+                            }
                             title="右侧队伍"
                         />
                     </TabsContent>

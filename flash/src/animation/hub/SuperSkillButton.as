@@ -3,24 +3,20 @@ package animation.hub {
 import data.pet.SkillData;
 
 import flash.display.MovieClip;
-import flash.display.Sprite;
 
-import ui.hub.UI_FightSuperSkill;
+internal class SuperSkillButton implements ISkillButton {
 
-internal class SuperSkillButton extends Sprite implements ISkillButton {
+    private var _view:MovieClip;
+
+    public function get view():MovieClip { return _view; }
 
     private var _mc:MovieClip;
 
     private var _skillInfo:SkillData;
 
-    public function SuperSkillButton() {
-        super();
-        this.createChildren();
-    }
-
-    private function createChildren():void {
-        this._mc = new UI_FightSuperSkill;
-        addChild(this._mc);
+    public function SuperSkillButton(view:MovieClip) {
+        this._view = view;
+        this._mc = view["mc"];
     }
 
     public function initData(param1:SkillData):void {

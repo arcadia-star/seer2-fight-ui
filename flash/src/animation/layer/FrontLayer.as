@@ -1,7 +1,9 @@
 package animation.layer {
 
 import animation.event.Events;
+import com.greensock.TweenLite;
 import animation.fight.BaoJiHitAnimation;
+import animation.fight.BuffDisabledAnimation;
 import animation.fight.CatchFighterFailAnimation;
 import animation.fight.CatchFighterSuccessAnimation;
 import animation.fight.CatchHintAnimation;
@@ -18,6 +20,7 @@ import animation.fight.PowSkillStartAnimation;
 import animation.fight.PresentAnimation;
 
 import data.location.FighterLocation;
+import data.pet.BuffData;
 
 import enums.FightSide;
 
@@ -25,6 +28,7 @@ import enums.SkillTypeRelation;
 
 import flash.display.MovieClip;
 import flash.display.Sprite;
+import flash.events.Event;
 
 import utils.CacheUtils;
 import utils.Utils;
@@ -32,6 +36,30 @@ import utils.an.DisplayObjectUtil;
 
 public class FrontLayer extends Sprite {
     private var currentSkillEffectUrl:String;
+
+    public function playBuffDisabled(buffs:Vector.<BuffData>, side:int):void {
+        for (var index:int = 0; index < buffs.length; index++) {
+            var buffId:int = buffs[index].id;
+            if (BuffDisabledAnimation.BUFF_IDS.indexOf(buffId) !== -1) {
+                var animation:BuffDisabledAnimation = new BuffDisabledAnimation(buffId, side);
+                animation.visible = false;
+                addChild(animation);
+                animation.addEventListener(Events.ANIMATION_END, onBuffTipEnd);
+                TweenLite.delayedCall(index * 0.5, startBuffTip, [animation]);
+            }
+        }
+    }
+
+    private function startBuffTip(animation:BuffDisabledAnimation):void {
+        animation.visible = true;
+        animation.play();
+    }
+
+    private function onBuffTipEnd(event:Event):void {
+        var animation:BuffDisabledAnimation = event.currentTarget as BuffDisabledAnimation;
+        animation.removeEventListener(Events.ANIMATION_END, onBuffTipEnd);
+        DisplayObjectUtil.removeFromParent(animation);
+    }
 
     public function FrontLayer() {
         DisplayObjectUtil.disableSprite(this);

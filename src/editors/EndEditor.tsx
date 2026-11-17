@@ -1,8 +1,8 @@
-import type {End} from "@/types";
-import {Side} from "@/types";
-import {Card, CardContent, CardHeader} from "@/components/ui/card";
-import {Label} from "@/components/ui/label";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue,} from "@/components/ui/select";
+import type { End } from '@/types';
+import { FightSide } from '@/types';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 export interface EndEditorProps {
     value: End;
@@ -10,12 +10,21 @@ export interface EndEditorProps {
 }
 
 const winnerOptions = [
-    {value: String(Side.Left), label: "左侧胜 (1)"},
-    {value: String(Side.Right), label: "右侧胜 (2)"},
-    {value: "0", label: "平局 (0)"},
+    {
+        value: String(FightSide.Left),
+        label: '左侧胜 (1)',
+    },
+    {
+        value: String(FightSide.Right),
+        label: '右侧胜 (2)',
+    },
+    {
+        value: '0',
+        label: '平局 (0)',
+    },
 ];
 
-export function EndEditor({value, onChange}: EndEditorProps) {
+export function EndEditor({ value, onChange }: EndEditorProps) {
     return (
         <Card className="w-full">
             <CardHeader className="py-3">
@@ -26,12 +35,10 @@ export function EndEditor({value, onChange}: EndEditorProps) {
                     <Label>胜方 (winner)</Label>
                     <Select
                         value={String(value.winner)}
-                        onValueChange={(v) =>
-                            onChange({winner: Number(v)})
-                        }
+                        onValueChange={(v) => onChange({ winner: Number(v) })}
                     >
                         <SelectTrigger className="w-full">
-                            <SelectValue/>
+                            <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
                             {winnerOptions.map((opt) => (

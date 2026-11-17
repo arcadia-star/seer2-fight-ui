@@ -30,3 +30,6 @@ stats.html
 flash-single/
 
 *.iml
+
+# Animate HTML publication output
+flash/src/_assets/*.html

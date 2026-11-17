@@ -11,7 +11,7 @@ export type IconUrl = String;
 //eg: ext-img://<url, image>
 export type PetSwfUrl = String;
 
-export const enum Side {
+export const enum FightSide {
     Left = 1,
     Right = 2,
 }
@@ -21,10 +21,10 @@ export const enum ChangeType {
     Morph = 2,
 }
 
-export const enum Position {
-    Default = 0,
-    Master = 1,
-    Slave = 2,
+export const enum FightPosition {
+    Inactive = 0,
+    Main = 1,
+    Sub = 2,
 }
 
 export const enum MoveCategory {
@@ -47,16 +47,22 @@ export type Frames = {
     globalVolume: int;
     mapVolume: int;
     frames?: Frame[];
-}
-export type BaseFrame = { logs?: String[]; _name?: String; }
-export type SleepFrame = BaseFrame & { sleep: int; }
-export type DataFrame = BaseFrame & { data: Arena; }
-export type StartFrame = DataFrame & { start: Start; }
-export type EndFrame = DataFrame & { end: End; }
-export type MoveFrame = DataFrame & { move: Move; }
-export type EventFrame = DataFrame & { event: Event; }
-export type ChangeFrame = DataFrame & { change: Change; }
-export type Frame = SleepFrame | StartFrame | EndFrame | MoveFrame | EventFrame | ChangeFrame | DataFrame
+};
+export type BaseFrame = {
+    logs?: String[];
+    _name?: String;
+    smooth?: 1 | 2;
+    angerPayment?: { side: FightSide; before: number; after: number };
+    hpChanges?: { side: FightSide; kind: 'Damage' | 'Heal' | 'LoseHp' | 'SetHp'; change: number }[];
+};
+export type SleepFrame = BaseFrame & { sleep: int };
+export type DataFrame = BaseFrame & { data: Arena };
+export type StartFrame = DataFrame & { start: Start };
+export type EndFrame = DataFrame & { end: End };
+export type MoveFrame = DataFrame & { move: Move };
+export type EventFrame = DataFrame & { event: Event };
+export type ChangeFrame = DataFrame & { change: Change };
+export type Frame = SleepFrame | StartFrame | EndFrame | MoveFrame | EventFrame | ChangeFrame | DataFrame;
 
 export type Arena = {
     left: Team;
@@ -66,27 +72,29 @@ export type Arena = {
     mapSound: String;
     weatherIcon: IconUrl;
     weatherTips: String;
-}
+};
 export type Team = {
-    pets: Pet[];
+    pets: Fighter[];
     items?: Item[];
     capsules?: Item[];
-}
-export type Pet = {
+};
+export type Fighter = {
     pid: int;
+    hideInBag?: Boolean;
     petIcon: IconUrl;
     petSwf: PetSwfUrl;
     petSound: String;
     name: String;
     level: int;
     typeIcon: IconUrl;
-    position: Position;
+    position: FightPosition;
     alive: int;
     anger: int;
     maxAnger: int;
     hp: int;
     maxHp: int;
-    rate: int;
+    rate: int | null; // null 表示本地属性克制表缺项，仅用于阵容预览。
+
     atk: int;
     def: int;
     spa: int;
@@ -95,7 +103,7 @@ export type Pet = {
     skills?: Skill[];
     buffs?: Buff[];
     items?: Item[];
-}
+};
 export type Skill = {
     id: int;
     name: String;
@@ -105,23 +113,24 @@ export type Skill = {
     typeIcon: IconUrl;
     tips: String;
     enable: Boolean;
-}
+};
 export type Buff = {
     id: int;
     name: String;
     count: int;
     icon: IconUrl;
     tips: String;
-}
+};
 export type Item = {
     id: int;
+    type?: int;
     name: String;
     count: int;
     icon: IconUrl;
     tips: String;
-}
+};
 export type Move = {
-    side: Side;
+    side: FightSide;
     skill: String;
     category: MoveCategory;
     damage: int;
@@ -130,11 +139,12 @@ export type Move = {
     rate: int;
     soundUrl: String;
     effectUrl: String;
-}
+    hits?: int[]; // 模型动画中需要显示受击反馈的帧序号。
+};
 export type Change = {
     left?: ChangeType;
     right?: ChangeType;
-}
+};
 
 export const enum EventType {
     HP_INCREASE = 1,
@@ -146,7 +156,10 @@ export const enum EventType {
     PET_EXCHANGE = 7,
 }
 
-export type BaseEvent = { side: Side; delay: int };
+export type BaseEvent = {
+    side: FightSide;
+    delay: int;
+};
 export type ChangeEvent = BaseEvent & {
     type: EventType.HP_INCREASE | EventType.HP_DECREASE | EventType.ITEM_HP | EventType.ITEM_ANGER;
     change: int;
@@ -158,7 +171,8 @@ export type Event = ChangeEvent | CatchEvent | ExchangeEvent;
 export type Start = {
     urls?: String[];
     tips?: String[];
-}
+};
 export type End = {
     winner: int;
-}
+    alert?: 0 | 2;
+};

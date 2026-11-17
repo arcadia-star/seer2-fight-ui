@@ -1,5 +1,6 @@
 package animation.hub {
 import animation.event.Events;
+import flash.events.EventDispatcher;
 
 import flash.display.DisplayObject;
 import flash.display.InteractiveObject;
@@ -11,9 +12,10 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.events.MouseEvent;
 
-import ui.hub.UI_FightHub;
+internal class HubButtonPanel extends EventDispatcher {
 
-internal class HubButtonPanel extends Sprite {
+    private var _view:MovieClip;
+    public function get view():MovieClip { return _view; }
 
     public static const EVT_FIGHT:String = "fight";
 
@@ -49,15 +51,14 @@ internal class HubButtonPanel extends Sprite {
 
     private var currentMc:MovieClip;
 
-    private var _hub:UI_FightHub;
+    private var _hub:MovieClip;
 
-    //private var _morphBtn:SimpleButton;
 
-    public function HubButtonPanel() {
+    public function HubButtonPanel(view:MovieClip) {
         super();
-        this.mouseEnabled = false;
-        this._hub = new UI_FightHub;
-        addChild(this._hub);
+        this._view = view;
+        this._view.mouseEnabled = false;
+        this._hub = _view.getChildByName("hub") as MovieClip;
         this._fightBtn = this._hub["fightBtn"];
         this._autoBtn = this._hub["autoBtn"];
         this._settingBtn = this._hub["settingBtn"];
@@ -80,11 +81,6 @@ internal class HubButtonPanel extends Sprite {
         this._catchBtn.addEventListener(MouseEvent.CLICK, this.onCatchClick);
         this._autoBtn.addEventListener(MouseEvent.CLICK, this.onAutoClick);
         this._settingBtn.addEventListener(MouseEvent.CLICK, this.onSettingClick);
-        //this._morphBtn = new New_UI_DepositTxt;
-        //_morphBtn.x = 870;
-        //_morphBtn.y = -50;
-        //addChild(_morphBtn);
-        //_morphBtn.addEventListener(MouseEvent.CLICK, this.onMorphClick)
     }
 
     public function reset():void {

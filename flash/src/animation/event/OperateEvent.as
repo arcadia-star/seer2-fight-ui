@@ -22,15 +22,16 @@ public class OperateEvent extends Event {
         return event;
     }
 
-    public static function pet(pet:int):OperateEvent {
+    public static function pet(pet:uint):OperateEvent {
         var event:OperateEvent = new OperateEvent(OPERATE_END);
         event.data.pet = pet;
         return event;
     }
 
-    public static function item(item:int):OperateEvent {
+    public static function item(item:int, target:uint = 0):OperateEvent {
         var event:OperateEvent = new OperateEvent(OPERATE_END);
         event.data.item = item;
+        event.data.target = target;
         return event;
     }
 

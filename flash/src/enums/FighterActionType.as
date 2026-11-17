@@ -46,8 +46,8 @@ public class FighterActionType {
         return [UNDER_ATK, UNDER_ULTRA, MISS];
     }
 
-    public static function end():Array {
-        return [WIN, DEAD];
+    public static function stopAtLastFrame():Array {
+        return [ABOUT_TO_DIE, DEAD, WIN];
     }
 
     public static function status():Array {
