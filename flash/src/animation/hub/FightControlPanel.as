@@ -14,7 +14,7 @@ import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.events.Event;
 
-public class FightControlPanel extends UI_FightControlLayout {
+public class FightControlPanel extends Sprite {
 
     private var _view:MovieClip;
 
@@ -39,7 +39,9 @@ public class FightControlPanel extends UI_FightControlLayout {
 
     public function FightControlPanel() {
         super();
-        this._view = getChildByName("controlPanel") as MovieClip;
+        var layout:UI_FightControlLayout = new UI_FightControlLayout();
+        addChild(layout);
+        this._view = layout.getChildByName("controlPanel") as MovieClip;
         this._back = _view.getChildByName("back") as MovieClip;
         this._depositMc = _view.getChildByName("deposit") as MovieClip;
         this._depositMc.stop();
