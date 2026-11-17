@@ -150,11 +150,11 @@ Private 项目，未指定开源许可证。
 
 底部控制栏和普通、SPT、双打、2v1、渔村状态面板的布局保存在 [battle-ui.fla](flash/src/_assets/battle-ui.fla)。用 Adobe Animate 2020 修改后，直接发布同目录的 `battle-ui.swf`，与原来的 `assets.fla` 使用方式相同。固定位置、组件嵌套、镜像和遮罩由 FLA 维护，AS 按实例名绑定元件。
 
-设置 `AIR_SDK_HOME` 后运行 `bash flash/build.sh`，更新正式播放器、独立 Demo 和备用字体。
+设置 `AIR_SDK_HOME` 后运行 `bash flash/build.sh`，更新正式播放器、独立 Demo 和备用字体，并生成 `flash/out/FramePlayer.swf` 帧播放器。
 
 ### SNAPSHOT 自动发布
 
-推送到 `master` 后，GitHub Actions 会执行 `flash/build.sh`，将 `FightPlayer.swf`、`DemoPlayer.swf`、`FallbackFont.swf` 和 SHA-256 校验文件上传到新的 GitHub 预发布。也可以在 **Actions → Build and release SNAPSHOT → Run workflow** 手动触发，构建所选分支。
+推送到 `master` 后，GitHub Actions 会执行 `flash/build.sh`，将 `FightPlayer.swf`、`FramePlayer.swf`、`DemoPlayer.swf`、`FallbackFont.swf` 和 SHA-256 校验文件上传到新的 GitHub 预发布。也可以在 **Actions → Build and release SNAPSHOT → Run workflow** 手动触发，构建所选分支。
 
 Release 标题包含北京时间和短提交号，标签包含 UTC 时间、提交号和运行编号，历史快照会保留。发布说明汇总上次已发布且属于当前提交历史的 SNAPSHOT 之后的提交标题和作者；首次发布包含全部提交，重复构建会标明没有新增提交。
 
