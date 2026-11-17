@@ -1,0 +1,121 @@
+name: Build and release SNAPSHOT
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Serialize publishing so each changelog starts at the preceding successful release.
+concurrency:
+  group: snapshot-release
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # AIR_HOME is exported by this action; build.sh expects AIR_SDK_HOME.
+      - uses: joshtynjala/setup-adobe-air-action@v2
+        with:
+          air-version: '50.0.1.1'
+          accept-license: true
+
+      - name: Compile SWFs using flash/build.sh
+        run: |
+          set -euo pipefail
+          export AIR_SDK_HOME="$AIR_HOME"
+          mkdir -p public/demo
+          # Remove tracked outputs to ensure only freshly compiled files are published.
+          rm -f public/FightPlayer.swf public/demo/DemoPlayer.swf public/FallbackFont.swf
+          bash flash/build.sh
+          mkdir -p release-assets
+          for file in public/FightPlayer.swf public/demo/DemoPlayer.swf public/FallbackFont.swf; do
+            test -s "$file"
+            cp "$file" release-assets/
+          done
+          (cd release-assets && sha256sum *.swf > SHA256SUMS.txt)
+
+      - name: Prepare timestamp and commit summary
+        id: release
+        run: |
+          set -euo pipefail
+          timestamp=$(date -u +'%Y%m%d-%H%M%S')
+          display_time=$(TZ=Asia/Shanghai date +'%Y-%m-%d %H:%M:%S UTC+8')
+          short_sha=$(git rev-parse --short=8 HEAD)
+          tag="SNAPSHOT-${timestamp}-${short_sha}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "title=SNAPSHOT ${display_time} (${short_sha})" >> "$GITHUB_OUTPUT"
+
+          # Use published releases only, including older pages; fail on API errors.
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/releases?per_page=100" \
+            --jq '.[] | select(.draft == false and (.tag_name | startswith("SNAPSHOT-"))) | .tag_name' \
+            > snapshot-tags.txt
+          previous=''
+          while IFS= read -r candidate; do
+            if git rev-parse --verify --quiet "refs/tags/$candidate" >/dev/null &&
+               git merge-base --is-ancestor "refs/tags/$candidate" HEAD; then
+              previous="$candidate"
+              break
+            fi
+          done < snapshot-tags.txt
+
+          {
+            echo '自动构建的开发快照，供测试与体验使用。'
+            echo
+            echo "- 构建时间：${display_time}"
+            echo "- 来源：\`${GITHUB_REF_NAME}\` / [\`${short_sha}\`](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/commit/$(git rev-parse HEAD))"
+            echo "- 工作流：[查看构建日志](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID})"
+            echo
+            echo '### 下载文件'
+            echo '- FightPlayer.swf：正式战斗播放器'
+            echo '- DemoPlayer.swf：独立演示播放器'
+            echo '- FallbackFont.swf：备用字体'
+            echo '- SHA256SUMS.txt：文件校验值'
+            echo
+            echo '### 提交记录'
+            if [ -n "$previous" ]; then
+              echo "自 [${previous}](${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/releases/tag/${previous}) 以来："
+              range="${previous}..HEAD"
+            else
+              echo '首次快照，包含当前版本的全部提交：'
+              range=HEAD
+            fi
+            echo
+            if [ -n "$(git rev-list -1 "$range")" ]; then
+              git log "$range" --format='- %s (`%h`, %an)'
+            else
+              echo '- 没有新增提交，本次为重新构建。'
+            fi
+          } > release-notes.md
+
+      - name: Publish SNAPSHOT prerelease
+        env:
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_TITLE: ${{ steps.release.outputs.title }}
+        run: |
+          set -euo pipefail
+          gh release create "$RELEASE_TAG" release-assets/* \
+            --target "$(git rev-parse HEAD)" \
+            --title "$RELEASE_TITLE" \
+            --notes-file release-notes.md \
+            --prerelease --draft
+          gh release edit "$RELEASE_TAG" --draft=false

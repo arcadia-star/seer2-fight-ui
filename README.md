@@ -152,4 +152,12 @@ Private 项目，未指定开源许可证。
 
 设置 `AIR_SDK_HOME` 后运行 `bash flash/build.sh`，更新正式播放器、独立 Demo 和备用字体。
 
+### SNAPSHOT 自动发布
+
+推送到 `master` 后，GitHub Actions 会执行 `flash/build.sh`，将 `FightPlayer.swf`、`DemoPlayer.swf`、`FallbackFont.swf` 和 SHA-256 校验文件上传到新的 GitHub 预发布。也可以在 **Actions → Build and release SNAPSHOT → Run workflow** 手动触发，构建所选分支。
+
+Release 标题包含北京时间和短提交号，标签包含 UTC 时间、提交号和运行编号，历史快照会保留。发布说明汇总上次已发布且属于当前提交历史的 SNAPSHOT 之后的提交标题和作者；首次发布包含全部提交，重复构建会标明没有新增提交。
+
+工作流使用 Windows、Java 17 和 AIR SDK 50.0.1.1，并通过 SDK 安装 Action 接受 AIR SDK 许可协议。发布使用自带的 `GITHUB_TOKEN`（`contents: write`），无需配置额外 Secret。FLA 仍需用 Adobe Animate 发布为仓库中的 SWF 后提交。
+
 帧数据支持可选的 `hpChanges` 和 `angerPayment`：前者在刷新快照时播放血量变化提示，后者描述耗怒前后的数值过渡。播放队列等待状态条动画完成后再进入下一帧。未提供这些字段的原有帧仍沿用原来的播放流程。
