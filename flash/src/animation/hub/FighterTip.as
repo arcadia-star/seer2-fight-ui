@@ -40,7 +40,7 @@ internal class FighterTip extends Sprite {
         this._pressTxt.defaultTextFormat = new TextFormat("Microsoft YaHei", 12, 0xcccccc);
         this._pressTxt.x = 10;
         this._pressTxt.y = -25;
-        this._pressTxt.width = 160;
+        this._pressTxt.width = 164;
         this._pressTxt.height = 20;
         addChild(this._pressTxt);
     }
@@ -70,7 +70,7 @@ internal class FighterTip extends Sprite {
         this.resetSkillContent();
         var _loc2_:int = int(param1.length);
         _loc2_ = _loc2_ <= this._itemVec.length ? _loc2_ : int(this._itemVec.length);
-        this._back.height = ITEM_HEIGHT * _loc2_ + 40;
+        this._back.height = ITEM_HEIGHT * _loc2_ + 36;
         var _loc3_:int = 0;
         while (_loc3_ < _loc2_) {
             if (this._itemVec[_loc3_] != null) {

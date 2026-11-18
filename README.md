@@ -135,17 +135,6 @@ fight-ui/
   结构的战斗数据。
 - **用途**：快速验证某份 JSON 在播放器中的效果、调试 SWF 与 Ruffle 兼容性、或给他人一个「只播不编」的演示入口。
 
-## 开发说明
-
-- 路径别名：`@` 指向 `src/`
-- 构建时会通过 `vite-plugin-static-copy` 将 Ruffle 运行时复制到输出目录的 `ruffle/`
-- SWF 通过 `assetsInclude: ['**/*.swf']` 被 Vite 视为静态资源处理
-
-## 许可证
-
-Private 项目，未指定开源许可证。
-
-
 ## 可编辑的 Flash UI
 
 底部控制栏和普通、SPT、双打、2v1、渔村状态面板的布局保存在 [battle-ui.fla](flash/src/_assets/battle-ui.fla)。用 Adobe Animate 2020 修改后，直接发布同目录的 `battle-ui.swf`，与原来的 `assets.fla` 使用方式相同。固定位置、组件嵌套、镜像和遮罩由 FLA 维护，AS 按实例名绑定元件。
@@ -160,4 +149,12 @@ Release 标题包含北京时间和短提交号，标签包含 UTC 时间、提�
 
 工作流使用 Windows、Java 17 和 AIR SDK 50.0.1.1，并通过 SDK 安装 Action 接受 AIR SDK 许可协议。发布使用自带的 `GITHUB_TOKEN`（`contents: write`），无需配置额外 Secret。FLA 仍需用 Adobe Animate 发布为仓库中的 SWF 后提交。
 
-帧数据支持可选的 `hpChanges` 和 `angerPayment`：前者在刷新快照时播放血量变化提示，后者描述耗怒前后的数值过渡。播放队列等待状态条动画完成后再进入下一帧。未提供这些字段的原有帧仍沿用原来的播放流程。
+## 开发说明
+
+- 路径别名：`@` 指向 `src/`
+- 构建时会通过 `vite-plugin-static-copy` 将 Ruffle 运行时复制到输出目录的 `ruffle/`
+- SWF 通过 `assetsInclude: ['**/*.swf']` 被 Vite 视为静态资源处理
+
+## 许可证
+
+Private 项目，未指定开源许可证。

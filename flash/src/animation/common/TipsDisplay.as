@@ -44,7 +44,7 @@ public class TipsDisplay extends Sprite {
         }
         this._tipTxt.htmlText = _tips || '';
         _back.width = _tipTxt.textWidth + 20;
-        _back.height = _tipTxt.textHeight + 20;
+        _back.height = _tipTxt.textHeight + 17;
         this.deployTooltip();
         stage.addChild(_tipSkin);
     }
