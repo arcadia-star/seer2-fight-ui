@@ -1,7 +1,6 @@
 package animation.layer {
 
 import animation.event.Events;
-import com.greensock.TweenLite;
 import animation.fight.BaoJiHitAnimation;
 import animation.fight.BuffDisabledAnimation;
 import animation.fight.CatchFighterFailAnimation;
@@ -17,18 +16,21 @@ import animation.fight.ItemUseAnimation;
 import animation.fight.KOAnimation;
 import animation.fight.PowSkillHitAnimation;
 import animation.fight.PowSkillStartAnimation;
-import animation.fight.PresentAnimation;
 
+import com.greensock.TweenLite;
+
+import data.FightPet;
 import data.location.FighterLocation;
-import data.pet.BuffData;
 
+import enums.FightPosition;
 import enums.FightSide;
-
 import enums.SkillTypeRelation;
 
 import flash.display.MovieClip;
 import flash.display.Sprite;
 import flash.events.Event;
+
+import ui.splash.UI_FightPresent;
 
 import utils.CacheUtils;
 import utils.Utils;
@@ -37,16 +39,13 @@ import utils.an.DisplayObjectUtil;
 public class FrontLayer extends Sprite {
     private var currentSkillEffectUrl:String;
 
-    public function playBuffDisabled(buffs:Vector.<BuffData>, side:int):void {
-        for (var index:int = 0; index < buffs.length; index++) {
-            var buffId:int = buffs[index].id;
-            if (BuffDisabledAnimation.BUFF_IDS.indexOf(buffId) !== -1) {
-                var animation:BuffDisabledAnimation = new BuffDisabledAnimation(buffId, side);
-                animation.visible = false;
-                addChild(animation);
-                animation.addEventListener(Events.ANIMATION_END, onBuffTipEnd);
-                TweenLite.delayedCall(index * 0.5, startBuffTip, [animation]);
-            }
+    public function playHitTips(tipIds:Vector.<int>, side:int):void {
+        for (var index:int = 0; index < tipIds.length; index++) {
+            var animation:BuffDisabledAnimation = new BuffDisabledAnimation(tipIds[index], side);
+            animation.visible = false;
+            addChild(animation);
+            animation.addEventListener(Events.ANIMATION_END, onBuffTipEnd);
+            TweenLite.delayedCall(index * 0.5, startBuffTip, [animation]);
         }
     }
 
@@ -119,19 +118,22 @@ public class FrontLayer extends Sprite {
         })
     }
 
-    public function playLeftPresent(pcb:Function, ecb:Function):void {
-        var sprite:PresentAnimation = new PresentAnimation;
-        addChild(sprite);
-        sprite.initData({
-            "onFighterPresentFun": pcb
+    public function playLeftPresent(fighter:FightPet, onPresent:Function, onComplete:Function):void {
+        var capsule:UI_FightPresent = new UI_FightPresent();
+        // 素材以左侧主位为锚点，副位沿用精灵本身的缩放和站位。
+        var main:FighterLocation = FighterLocation.build(FightSide.LEFT, FightPosition.MAIN);
+        capsule.scaleX = fighter.scaleX;
+        capsule.scaleY = fighter.scaleY;
+        capsule.x = fighter.x - main.targetX * capsule.scaleX;
+        capsule.y = fighter.y - main.targetY * capsule.scaleY;
+
+        Utils.once(capsule, "present", onPresent);
+        Utils.once(capsule, "end", function ():void {
+            onComplete();
+            DisplayObjectUtil.removeFromParent(capsule);
         });
-        sprite.play();
-        Utils.once(sprite, Events.ANIMATION_END, function ():void {
-            if(ecb != null) {
-                ecb();
-            }
-            DisplayObjectUtil.removeFromParent(sprite);
-        })
+        addChild(capsule);
+        capsule.play();
     }
 
     public function playHPIncrease(side:int, change:int):void {

@@ -1,14 +1,11 @@
 package animation.hub {
 
-import animation.event.OperateEvent;
-
 import flash.display.MovieClip;
 import flash.display.SimpleButton;
 import flash.display.Sprite;
 import flash.events.MouseEvent;
 import flash.text.TextField;
 import flash.text.TextFormat;
-
 
 public class FightPointPanel extends Sprite {
 

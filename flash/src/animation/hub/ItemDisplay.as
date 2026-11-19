@@ -4,18 +4,17 @@ import animation.common.IconDisplay;
 
 import data.pet.ItemData;
 
-import flash.display.Sprite;
 import flash.display.MovieClip;
+import flash.display.Sprite;
 
 import ui.UINumberGenerator;
+
 import utils.an.DisplayObjectUtil;
 
-internal class ItemDisplay {
-
-    private var _view:MovieClip;
-
-    public function get view():MovieClip { return _view; }
-
+[Embed(source="/_assets/battle-ui.swf", symbol="ItemDisplay")]
+public dynamic class ItemDisplay extends MovieClip {
+    public var icon:MovieClip;
+    public var count:MovieClip;
 
     private var _info:ItemData;
 
@@ -23,15 +22,14 @@ internal class ItemDisplay {
 
     private var _numSprite:Sprite;
 
-    public function ItemDisplay(view:MovieClip) {
-        this._view = view;
-        this._view.mouseChildren = false;
-        this._view.buttonMode = true;
+    public function ItemDisplay() {
+        this.mouseChildren = false;
+        this.buttonMode = true;
         this._iconDisplay = new IconDisplay();
-        MovieClip(_view["icon"]).addChild(this._iconDisplay);
+        icon.addChild(this._iconDisplay);
         _iconDisplay.setSize(60);
         DisplayObjectUtil.disableSprite(this._iconDisplay);
-        DisplayObjectUtil.disableSprite(this._view);
+        DisplayObjectUtil.disableSprite(this);
     }
 
     public function initData(param1:ItemData):void {
@@ -39,7 +37,7 @@ internal class ItemDisplay {
             return;
         }
         if (!param1) {
-            DisplayObjectUtil.disableSprite(this._view);
+            DisplayObjectUtil.disableSprite(this);
             DisplayObjectUtil.removeFromParent(_numSprite);
             this._numSprite = null;
             this._iconDisplay.initData(null);
@@ -47,7 +45,7 @@ internal class ItemDisplay {
             return;
         }
 
-        DisplayObjectUtil.enableSprite(this._view);
+        DisplayObjectUtil.enableSprite(this);
         if (param1.count <= 1) {
             DisplayObjectUtil.removeFromParent(_numSprite);
             this._numSprite = null;
@@ -57,7 +55,7 @@ internal class ItemDisplay {
             _numSprite.x = -_numSprite.width;
             _numSprite.mouseChildren = false;
             _numSprite.mouseEnabled = false;
-            MovieClip(_view["count"]).addChild(_numSprite);
+            count.addChild(_numSprite);
         }
         this._iconDisplay.initData(param1.icon);
         this._info = param1;

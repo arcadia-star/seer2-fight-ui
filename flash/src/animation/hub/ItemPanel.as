@@ -1,140 +1,103 @@
 package animation.hub {
 import animation.event.OperateEvent;
-import flash.utils.Dictionary;
 
 import data.pet.ItemData;
 
-import flash.display.SimpleButton;
-import flash.display.Sprite;
 import flash.display.MovieClip;
+import flash.display.SimpleButton;
 import flash.events.MouseEvent;
+
 import utils.an.DisplayObjectUtil;
 
-internal class ItemPanel {
-    private var _view:MovieClip;
-    private var _items:Dictionary = new Dictionary();
-    public function get view():MovieClip { return _view; }
-
-    private static const ITEM_NUM_PAGE:int = 9;
+[Embed(source="/_assets/battle-ui.swf", symbol="ItemPanel")]
+public dynamic class ItemPanel extends MovieClip {
+    public var item0:ItemDisplay;
+    public var item1:ItemDisplay;
+    public var item2:ItemDisplay;
+    public var item3:ItemDisplay;
+    public var item4:ItemDisplay;
+    public var item5:ItemDisplay;
+    public var item6:ItemDisplay;
+    public var item7:ItemDisplay;
+    public var item8:ItemDisplay;
+    public var prev:SimpleButton;
+    public var next:SimpleButton;
 
     private var _pageIndex:int;
-
-    private var _maxPageIndex:int;
-
-    private var _petItemVec:Vector.<ItemData>;
-
-    private var _itemDisplayVec:Vector.<ItemDisplay>;
-
-    private var _nextBtn:SimpleButton;
-
-    private var _prevBtn:SimpleButton;
-
+    private var _items:Vector.<ItemData>;
+    private var _slots:Vector.<ItemDisplay>;
     private var _tip:ItemTip;
 
     private var _capsule:Boolean;
+    private var _selectTarget:Function;
 
-    public function ItemPanel(capsule:Boolean, view:MovieClip) {
-        this._capsule = capsule;
-        var i:int = 0;
-        var onOver:Function = null;
-        var onOut:Function = null;
-        var onNextPage:Function = null;
-        var onPrevPage:Function = null;
-        var itemDisplay:ItemDisplay = null;
-        this._view = view;
-        onOver = function (param1:MouseEvent):void {
-            var _loc2_:ItemDisplay = _items[param1.currentTarget];
-            _tip.initData(_loc2_.item());
-            _tip.x = _loc2_.view.x + 15;
-            _tip.y = _loc2_.view.y;
-            _view.addChild(_tip);
-        };
-        onOut = function (param1:MouseEvent):void {
-            DisplayObjectUtil.removeFromParent(_tip);
-        };
-        onNextPage = function (param1:MouseEvent):void {
-            showPage(_pageIndex + 1);
-        };
-        onPrevPage = function (param1:MouseEvent):void {
-            showPage(_pageIndex - 1);
-        };
-        this._view.mouseEnabled = false;
-        this._itemDisplayVec = new Vector.<ItemDisplay>();
-        i = 0;
-        while (i < ITEM_NUM_PAGE) {
-            itemDisplay = new ItemDisplay(_view.getChildByName("item" + i) as MovieClip);
-            this._items[itemDisplay.view] = itemDisplay;
-            itemDisplay.view.addEventListener(MouseEvent.CLICK, this.onClick);
-            itemDisplay.view.addEventListener(MouseEvent.MOUSE_OVER, onOver);
-            itemDisplay.view.addEventListener(MouseEvent.MOUSE_OUT, onOut);
-            this._itemDisplayVec.push(itemDisplay);
-            i++;
+    public function ItemPanel() {
+        mouseEnabled = false;
+        _tip = new ItemTip();
+        _slots = new <ItemDisplay>[item0, item1, item2, item3, item4, item5, item6, item7, item8];
+        for each (var item:ItemDisplay in _slots) {
+            item.addEventListener(MouseEvent.CLICK, onClick);
+            item.addEventListener(MouseEvent.MOUSE_OVER, onOver);
+            item.addEventListener(MouseEvent.MOUSE_OUT, onOut);
         }
-        this._prevBtn = _view.getChildByName("prev") as SimpleButton;
-        this._nextBtn = _view.getChildByName("next") as SimpleButton;
-        this.disableBtn(this._prevBtn);
-        this.disableBtn(this._nextBtn);
-        this._tip = new ItemTip();
-        this._nextBtn.addEventListener(MouseEvent.CLICK, onNextPage);
-        this._prevBtn.addEventListener(MouseEvent.CLICK, onPrevPage);
+        setButtonEnabled(prev, false);
+        setButtonEnabled(next, false);
+        next.addEventListener(MouseEvent.CLICK, function (event:MouseEvent):void {
+            showPage(_pageIndex + 1);
+        });
+        prev.addEventListener(MouseEvent.CLICK, function (event:MouseEvent):void {
+            showPage(_pageIndex - 1);
+        });
+    }
+
+    internal function configure(capsule:Boolean, selectTarget:Function = null):void {
+        _capsule = capsule;
+        _selectTarget = selectTarget;
+    }
+
+    private function onOver(event:MouseEvent):void {
+        var item:ItemDisplay = ItemDisplay(event.currentTarget);
+        _tip.initData(item.item());
+        _tip.x = item.x + 15;
+        _tip.y = item.y;
+        addChild(_tip);
+    }
+
+    private function onOut(event:MouseEvent):void {
+        DisplayObjectUtil.removeFromParent(_tip);
     }
 
     public function initData(items:Vector.<ItemData>):void {
-        this._petItemVec = items;
-        this._pageIndex = 0;
-        this._maxPageIndex = Math.max(0, Math.floor((this._petItemVec.length - 1) / ITEM_NUM_PAGE));
-        this.showPage(this._pageIndex);
+        _items = items;
+        showPage(0);
     }
 
-    private function showPage(param1:int):void {
-        if (param1 < 0 || param1 > _maxPageIndex) {
-            return;
-        }
-        this._pageIndex = param1;
-        var start:int = param1 * ITEM_NUM_PAGE;
-        var end:Number = Math.min((param1 + 1) * ITEM_NUM_PAGE, _petItemVec.length);
-        var items:Vector.<ItemData> = new Vector.<ItemData>();
-        for (var i:int = start; i < end; i++) {
-            items.push(_petItemVec[i]);
-        }
-        var count:Number = Math.min(items.length, ITEM_NUM_PAGE);
-        for (i = 0; i < count; i++) {
-            var display:ItemDisplay = this._itemDisplayVec[i];
-            display.initData(items[i]);
-        }
-        for (i = count; i < ITEM_NUM_PAGE; i++) {
-            display = this._itemDisplayVec[i];
-            display.initData(null);
-        }
+    private function showPage(page:int):void {
+        var start:int = page * _slots.length;
+        if (page < 0 || (page > 0 && start >= _items.length)) return;
 
-        if (param1 > 0) {
-            this.enableBtn(this._prevBtn);
-        } else {
-            this.disableBtn(this._prevBtn);
+        _pageIndex = page;
+        for (var i:int = 0; i < _slots.length; i++) {
+            var index:int = start + i;
+            _slots[i].initData(index < _items.length ? _items[index] : null);
         }
-        if (param1 < this._maxPageIndex) {
-            this.enableBtn(this._nextBtn);
-        } else {
-            this.disableBtn(this._nextBtn);
-        }
+        setButtonEnabled(prev, page > 0);
+        setButtonEnabled(next, start + _slots.length < _items.length);
     }
 
-    private function enableBtn(param1:SimpleButton):void {
-        param1.enabled = true;
-        param1.mouseEnabled = true;
-    }
-
-    private function disableBtn(param1:SimpleButton):void {
-        param1.enabled = false;
-        param1.mouseEnabled = false;
+    private function setButtonEnabled(button:SimpleButton, enabled:Boolean):void {
+        button.enabled = button.mouseEnabled = enabled;
     }
 
     private function onClick(param1:MouseEvent):void {
-        var itemDisplay:ItemDisplay = _items[param1.currentTarget];
+        var itemDisplay:ItemDisplay = ItemDisplay(param1.currentTarget);
+        var item:ItemData = itemDisplay.item();
         if (_capsule) {
-            this._view.dispatchEvent(OperateEvent.capsule(itemDisplay.item().id));
+            this.dispatchEvent(OperateEvent.capsule(item.id));
+        } else if (item.targetPids) {
+            this._selectTarget(item);
         } else {
-            this._view.dispatchEvent(OperateEvent.item(itemDisplay.item().id));
+            this.dispatchEvent(OperateEvent.item(item.id));
         }
     }
 }

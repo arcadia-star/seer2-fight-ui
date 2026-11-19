@@ -38,13 +38,12 @@ public class IconDisplay extends Sprite {
             if (_url === url) {
                 DisplayObjectUtil.removeFromParent(_icon);
                 _icon = mayWrapIcon(url, obj);
-                if(_useScale) {
+                if (_useScale) {
                     if (!isNaN(_scaleX)) {
                         _icon.scaleX = _scaleX;
                         _icon.scaleY = _scaleY;
                     }
-                }
-                else {
+                } else {
                     if (!isNaN(_maxWidth)) {
                         DisplayObjectUtil.setSize(_icon, _maxWidth, _maxHeight);
                     }
@@ -62,7 +61,7 @@ public class IconDisplay extends Sprite {
         this._useScale = false;
         this._maxWidth = param1;
         this._maxHeight = param2;
-        if(_icon) {
+        if (_icon) {
             DisplayObjectUtil.setSize(_icon, _maxWidth, _maxHeight);
         }
     }
@@ -73,9 +72,13 @@ public class IconDisplay extends Sprite {
         特别地,某参数为0时则维持原判(保持原来的缩放倍率);
         非常不希望你设置缩放0倍,不想让他显示的话建议直接设置visible*/
         this._useScale = true;
-        if(scaleX){this._scaleX = scaleX;}
-        if(scaleX){this._scaleY = scaleY;}
-        if(_icon) {
+        if (scaleX) {
+            this._scaleX = scaleX;
+        }
+        if (scaleX) {
+            this._scaleY = scaleY;
+        }
+        if (_icon) {
             _icon.scaleX = scaleX;
             _icon.scaleY = scaleY;
         }

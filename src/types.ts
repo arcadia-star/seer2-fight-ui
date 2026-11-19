@@ -80,9 +80,9 @@ export type Team = {
 };
 export type Fighter = {
     pid: int;
-    hideInBag?: Boolean;
     petIcon: IconUrl;
     petSwf: PetSwfUrl;
+    pose?: string | null; // 模型姿势标签；省略为待机，null 表示保持当前画面。
     petSound: String;
     name: String;
     level: int;
@@ -123,7 +123,7 @@ export type Buff = {
 };
 export type Item = {
     id: int;
-    type?: int;
+    targetPids?: int[] | null;
     name: String;
     count: int;
     icon: IconUrl;
@@ -140,6 +140,7 @@ export type Move = {
     soundUrl: String;
     effectUrl: String;
     hits?: int[]; // 模型动画中需要显示受击反馈的帧序号。
+    hitTipIds?: int[] | null; // 首次命中时按顺序播放的提示素材。
 };
 export type Change = {
     left?: ChangeType;

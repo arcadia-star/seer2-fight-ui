@@ -1,55 +1,81 @@
 package animation.hub {
 import animation.event.OperateEvent;
+
+import data.pet.ItemData;
 import data.pet.PetData;
+
 import flash.display.MovieClip;
+import flash.display.SimpleButton;
 import flash.events.MouseEvent;
-import flash.utils.Dictionary;
+
 import utils.an.DisplayObjectUtil;
 
-internal class FighterPanel {
-    private static const MAX_NUM_FIGHTER:int = 6;
-    private var _view:MovieClip;
-    private var _fighterDisplayVec:Vector.<FighterDisplay> = new Vector.<FighterDisplay>();
-    private var _fighters:Dictionary = new Dictionary();
+[Embed(source="/_assets/battle-ui.swf", symbol="FighterPanel")]
+public dynamic class FighterPanel extends MovieClip {
+    public var fighter0:FighterDisplay;
+    public var fighter1:FighterDisplay;
+    public var fighter2:FighterDisplay;
+    public var fighter3:FighterDisplay;
+    public var fighter4:FighterDisplay;
+    public var fighter5:FighterDisplay;
+    private var _fighterDisplayVec:Vector.<FighterDisplay>;
+    public var prev:SimpleButton;
+    public var next:SimpleButton;
+    private var _pets:Vector.<PetData>;
+    private var _page:int;
     private var _tip:FighterTip = new FighterTip();
-    private var _reviveItem:int;
+    private var _targetItem:ItemData;
 
-    public function get view():MovieClip { return _view; }
-
-    public function FighterPanel(view:MovieClip) {
-        this._view = view;
-        view.mouseEnabled = false;
-        for (var i:int = 0; i < MAX_NUM_FIGHTER; i++) {
-            var display:FighterDisplay = new FighterDisplay(view["fighter" + i]);
-            this._fighterDisplayVec.push(display);
-            this._fighters[display.view] = display;
-            display.view.addEventListener(MouseEvent.CLICK, onMouseClick);
-            display.view.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
-            display.view.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
+    public function FighterPanel() {
+        mouseEnabled = false;
+        _fighterDisplayVec = new <FighterDisplay>[fighter0, fighter1, fighter2, fighter3, fighter4, fighter5];
+        for each (var display:FighterDisplay in _fighterDisplayVec) {
+            display.addEventListener(MouseEvent.CLICK, onMouseClick);
+            display.addEventListener(MouseEvent.MOUSE_OVER, onMouseOver);
+            display.addEventListener(MouseEvent.MOUSE_OUT, onMouseOut);
         }
+        prev.visible = next.visible = false;
+        prev.addEventListener(MouseEvent.CLICK, function (event:MouseEvent):void {
+            showPage(_page - 1);
+        });
+        next.addEventListener(MouseEvent.CLICK, function (event:MouseEvent):void {
+            showPage(_page + 1);
+        });
     }
 
     public function initData(pets:Vector.<PetData>):void {
-        // 合体、备用变身实体用于战场显示，不是普通换宠候选。
-        pets = pets.filter(function(pet:PetData, index:int, all:Vector.<PetData>):Boolean { return !pet.hideInBag; });
-        for (var i:int = 0; i < MAX_NUM_FIGHTER; i++) {
-            var display:FighterDisplay = this._fighterDisplayVec[i];
-            display.view.visible = i < pets.length;
-            if (display.view.visible) display.initData(pets[i]);
-        }
+        _pets = pets;
+        showPage(0);
     }
 
-    public function setReviveItem(item:int):void {
-        this._reviveItem = item;
+    private function showPage(page:int):void {
+        var start:int = page * _fighterDisplayVec.length;
+        if (page < 0 || (page > 0 && start >= _pets.length)) return;
+
+        DisplayObjectUtil.removeFromParent(_tip);
+        _page = page;
+        for (var i:int = 0; i < _fighterDisplayVec.length; i++) {
+            var display:FighterDisplay = _fighterDisplayVec[i];
+            var index:int = start + i;
+            display.visible = index < _pets.length;
+            if (display.visible) display.initData(_pets[index]);
+        }
+        prev.visible = next.visible = _pets.length > _fighterDisplayVec.length;
+        prev.enabled = prev.mouseEnabled = page > 0;
+        next.enabled = next.mouseEnabled = start + _fighterDisplayVec.length < _pets.length;
+    }
+
+    public function setTargetItem(item:ItemData):void {
+        this._targetItem = item;
         DisplayObjectUtil.removeFromParent(this._tip);
     }
 
     private function onMouseOver(event:MouseEvent):void {
-        var display:FighterDisplay = this._fighters[event.currentTarget];
-        this._tip.x = display.view.x + 15;
-        this._tip.y = display.view.y;
+        var display:FighterDisplay = FighterDisplay(event.currentTarget);
+        this._tip.x = display.x + 15;
+        this._tip.y = display.y;
         this._tip.initData(display.pet());
-        this._view.addChild(this._tip);
+        this.addChild(this._tip);
     }
 
     private function onMouseOut(event:MouseEvent):void {
@@ -57,16 +83,16 @@ internal class FighterPanel {
     }
 
     private function onMouseClick(event:MouseEvent):void {
-        var display:FighterDisplay = this._fighters[event.currentTarget];
-        if (this._reviveItem > 0) {
-            var pet:PetData = display.pet();
-            if (pet.position != 0 || pet.hp > 0) return;
-            var item:int = this._reviveItem;
-            setReviveItem(0);
-            this._view.dispatchEvent(OperateEvent.item(item, pet.pid));
+        var display:FighterDisplay = FighterDisplay(event.currentTarget);
+        var pid:uint = display.pet().pid;
+        if (this._targetItem) {
+            if (this._targetItem.targetPids.indexOf(pid) < 0) return;
+            var item:int = this._targetItem.id;
+            setTargetItem(null);
+            this.dispatchEvent(OperateEvent.item(item, pid));
             return;
         }
-        this._view.dispatchEvent(OperateEvent.pet(display.pet().pid));
+        this.dispatchEvent(OperateEvent.pet(pid));
     }
 }
 }

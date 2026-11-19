@@ -2,6 +2,7 @@ package animation.layer {
 import animation.event.Events;
 
 import com.greensock.TweenLite;
+
 import com.greensock.easing.Strong;
 
 import data.FightPet;
@@ -89,8 +90,7 @@ public class PetLayer extends Sprite {
                     if (!checkVersion(version)) {
                         return;
                     }
-                    //todo 是否切换petSwf
-                    updateStatus(atk, buildIdleLabel(pets[atkSide]));
+                    finishAction(atk, pets[atkSide].pose);
                     resolve();
                     //兜底事件
                     atk.dispatchEvent(new Event("hit"));
@@ -150,9 +150,8 @@ public class PetLayer extends Sprite {
                     var hitDamage:int = hitDamages[hitSnapshot - 1];
 
                     cb && cb(Events.frameMoveHit());
-                    // 旧 UI 在命中并更新受击方状态后弹出异常提示，每次技能只触发一次。
-                    if (isFirstHit) {
-                        fgLayer.playBuffDisabled(pets[defSide].buffs, defSide);
+                    if (isFirstHit && moveData.hitTipIds) {
+                        fgLayer.playHitTips(moveData.hitTipIds, defSide);
                     }
                     //声音放在第一段打中的时候播放
                     if (isFirstHit && FighterActionType.superAtk().indexOf(moveLabel) < 0) {
@@ -163,7 +162,7 @@ public class PetLayer extends Sprite {
                         fgLayer.playSkillEffect(moveData.effectUrl, atkSide);
                     }
                     if (FighterActionType.ATK_BUF === moveLabel) {
-                        updateStatus(def, buildIdleLabel(pets[defSide]));
+                        updateStatus(def, pets[defSide].pose);
                         if (isLastHit) {
                             resolve();
                         }
@@ -203,7 +202,7 @@ public class PetLayer extends Sprite {
                             return;
                         }
                         //todo 是否切换petSwf
-                        updateStatus(def, buildIdleLabel(pets[defSide]));
+                        finishAction(def, pets[defSide].pose);
                         if (isLastHit) {
                             resolve();
                         }
@@ -302,31 +301,37 @@ public class PetLayer extends Sprite {
     private function loadFrame(frame:FrameData, cb:Function, version:int):void {
         var arenaData:ArenaData = frame.data;
         var change:ChangeData = frame.change || new ChangeData();
-        var winner:int = frame.end ? frame.end.winner : 0;
         var showReplace:int = frame.start ? ChangeData.REPLACE : 0;
         Utils.promiseAll([
             function (resolve:Function):void {
-                lazyApplyPet(fighters[LEFT_SUB], arenaData.left.slave, showReplace || 0, version, resolve, winner);
+                lazyApplyPet(fighters[LEFT_SUB], arenaData.left.slave, showReplace || 0, version, resolve);
             },
             function (resolve:Function):void {
-                lazyApplyPet(fighters[RIGHT_SUB], arenaData.right.slave, showReplace || 0, version, resolve, winner);
+                lazyApplyPet(fighters[RIGHT_SUB], arenaData.right.slave, showReplace || 0, version, resolve);
             },
             function (resolve:Function):void {
-                lazyApplyPet(fighters[LEFT_MAIN], arenaData.left.master, showReplace || change.left, version, resolve, winner);
+                lazyApplyPet(fighters[LEFT_MAIN], arenaData.left.master, showReplace || change.left, version, resolve);
             },
             function (resolve:Function):void {
-                lazyApplyPet(fighters[RIGHT_MAIN], arenaData.right.master, showReplace || change.right, version, resolve, winner);
+                lazyApplyPet(fighters[RIGHT_MAIN], arenaData.right.master, showReplace || change.right, version, resolve);
             }
         ], function ():void {
             cb && cb(Events.framePlayEnd());
         });
     }
 
+    private function finishAction(pet:MovieClip, pose:String):void {
+        if (pose) {
+            updateStatus(pet, pose);
+        } else {
+            MovieClip(pet.getChildAt(0)).stop();
+        }
+    }
+
     private function updateStatus(pet:MovieClip, label:String):void {
+        if (!label) return;
         if (!Utils.hasLabel(pet, label)) {
-            if (label === FighterActionType.ABOUT_TO_DIE) {
-                label = FighterActionType.DEAD;
-            } else if (FighterActionType.atk().indexOf(label) >= 0) {
+            if (FighterActionType.atk().indexOf(label) >= 0) {
                 label = FighterActionType.ATK_PHY;
             } else if (FighterActionType.hurt().indexOf(label) >= 0) {
                 label = FighterActionType.UNDER_ATK;
@@ -348,6 +353,7 @@ public class PetLayer extends Sprite {
     private function stopActionAtLastFrame(pet:MovieClip, label:String):void {
         // 停止属于当前动作，不属于某个数据帧。切换到其他动作时撤销旧监听。
         pet.addEventListener(Event.ENTER_FRAME, onActionFrame);
+
         function onActionFrame(event:Event):void {
             if (pet.currentFrameLabel !== label) {
                 pet.removeEventListener(Event.ENTER_FRAME, onActionFrame);
@@ -361,7 +367,7 @@ public class PetLayer extends Sprite {
         }
     }
 
-    private function lazyApplyPet(fighter:FightPet, petData:PetData, change:int, version:int, resolve:Function, winner:int):void {
+    private function lazyApplyPet(fighter:FightPet, petData:PetData, change:int, version:int, resolve:Function):void {
         if (!petData) {
             fighter.url = FightPet.UNREACHABLE_URL;
             fighter.pet.visible = false;
@@ -371,12 +377,8 @@ public class PetLayer extends Sprite {
 
         var url:String = petData.petSwf;
         var petSound:String = petData.petSound;
-        var status:String = buildIdleLabel(petData);
-        if (winner === fighter.side) {
-            status = FighterActionType.WIN;
-        }
         if (!change && fighter.url === url) {
-            updateStatus(fighter.pet, status);
+            updateStatus(fighter.pet, petData.pose);
             resolve();
             return;
         }
@@ -429,11 +431,11 @@ public class PetLayer extends Sprite {
                         if (!checkVersion(version)) {
                             return;
                         }
-                        updateStatus(pet, status);
+                        finishAction(pet, petData.pose);
                         //resolve();//胶囊动画时resolve应该在动画结束后调用，为适配这个，改变了resolve位置
                     });
                 } else {
-                    updateStatus(pet, status);
+                    updateStatus(pet, petData.pose);
                     //resolve();
                 }
             }
@@ -456,7 +458,7 @@ public class PetLayer extends Sprite {
             else if (change === ChangeData.REPLACE) {
                 if (fighter.side === FightSide.LEFT) {
                     petDisappear(exist);
-                    fgLayer.playLeftPresent(function ():void {
+                    fgLayer.playLeftPresent(fighter, function ():void {
                         if (!checkVersion(version)) {
                             if (exist) {
                                 exist.x = fighter.x;
@@ -484,16 +486,6 @@ public class PetLayer extends Sprite {
 
     private function checkVersion(version:int):Boolean {
         return this._version === version;
-    }
-
-    private function buildIdleLabel(pet:PetData):String {
-        if (pet.alive <= 0) {
-            return FighterActionType.DEAD;
-        } else if (pet.hp < pet.maxHp * 0.2) {
-            return FighterActionType.ABOUT_TO_DIE;
-        } else {
-            return FighterActionType.IDLE;
-        }
     }
 
     private function buildHurtLabel(miss:int, critical:int):String {

@@ -1,18 +1,21 @@
 package animation.fight {
 import animation.event.Events;
+
 import com.greensock.TweenLite;
 import com.greensock.easing.Expo;
+
 import enums.FightSide;
+
 import flash.display.Sprite;
+
 import ui.splash.BuffTipResources;
+
 import utils.an.DisplayObjectUtil;
 
 // 对应旧 UI BuffDisabledAnimation：原资源、大字缩放上浮及淡出。
 public class BuffDisabledAnimation extends Sprite {
-    public static const BUFF_IDS:Vector.<int> = Vector.<int>([1, 2, 3, 5, 6, 7, 8, 9, 12]);
-
-    public function BuffDisabledAnimation(buffId:int, side:int) {
-        var tipClass:Class = BuffTipResources.getTip(buffId);
+    public function BuffDisabledAnimation(tipId:int, side:int) {
+        var tipClass:Class = BuffTipResources.getTip(tipId);
         addChild(new tipClass());
         x = side === FightSide.LEFT ? 200 : 760;
         y = 350;

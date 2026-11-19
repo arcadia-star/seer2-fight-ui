@@ -1,6 +1,6 @@
 package animation.layer {
-import flash.events.Event;
 import flash.events.ErrorEvent;
+import flash.events.Event;
 import flash.events.EventDispatcher;
 import flash.media.Sound;
 import flash.media.SoundChannel;

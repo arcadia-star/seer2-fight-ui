@@ -4,7 +4,6 @@ import animation.common.IconDisplay;
 import flash.display.LoaderInfo;
 import flash.display.Sprite;
 
-
 [SWF(width="128", height="128", frameRate="24")]
 public class ItemPlayer extends Sprite {
 

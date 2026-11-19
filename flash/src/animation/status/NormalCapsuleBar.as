@@ -1,106 +1,106 @@
 package animation.status {
 import animation.common.PetIconDisplay;
+
 import data.pet.PetData;
-import flash.display.DisplayObject;
+
 import flash.display.MovieClip;
-import flash.display.Sprite;
 import flash.events.MouseEvent;
 import flash.geom.ColorTransform;
+import flash.geom.Matrix;
 
-internal class NormalCapsuleBar {
-    private static const CAPSULE_NUM:int=6;
-    private var _view:MovieClip;
-    private var _backVec:Vector.<MovieClip>=new Vector.<MovieClip>();
-    private var _tipVec:Vector.<MovieClip>=new Vector.<MovieClip>();
-    private var _petIconVec:Vector.<PetIconDisplay>=new Vector.<PetIconDisplay>();
-    public function NormalCapsuleBar(view:MovieClip) {
-        _view=view;
-        for(var i:int=0;i<CAPSULE_NUM;i++) {
-            var back:MovieClip=view["pet"+i];
-            var tip:MovieClip=view["tip"+i];
-            tip.visible=false;
-            _backVec.push(back);_tipVec.push(tip);
-            back["capsule"].gotoAndStop(1);back["back"].gotoAndStop(1);back["cover"].gotoAndStop(1);
-            (function(b:MovieClip,t:MovieClip):void {
-                b.addEventListener(MouseEvent.MOUSE_OVER,function(e:MouseEvent):void {t.visible=true;});
-                b.addEventListener(MouseEvent.MOUSE_OUT,function(e:MouseEvent):void {t.visible=false;});
-            })(back,tip);
-            var icon:PetIconDisplay=new PetIconDisplay();
-            icon.setSize(30);icon.mouseEnabled=icon.mouseChildren=false;icon.visible=false;
-            back["portrait"].addChild(icon);_petIconVec.push(icon);
-        }
+[Embed(source="/_assets/battle-ui.swf", symbol="NormalCapsuleBar")]
+public dynamic class NormalCapsuleBar extends MovieClip {
+    public var pet0:CapsuleSlot;
+    public var pet1:CapsuleSlot;
+    public var tip0:CapsuleTag;
+    public var tip1:CapsuleTag;
+
+    private var _backVec:Vector.<CapsuleSlot> = new Vector.<CapsuleSlot>();
+    private var _tipVec:Vector.<CapsuleTag> = new Vector.<CapsuleTag>();
+    private var _petIconVec:Vector.<PetIconDisplay> = new Vector.<PetIconDisplay>();
+
+    internal function initLayout(side:String):void {
+        gotoAndStop(side);
+        bindSlot(pet0, tip0);
+        bindSlot(pet1, tip1);
     }
-    public function initData(param1:Vector.<PetData>):void {
-        this._view.visible = true;
-        for (var idx:int = 0; idx < CAPSULE_NUM; idx++) {
-            var icon:PetIconDisplay = this._petIconVec[idx];
-            this._backVec[idx].visible = idx < param1.length;
-            if (idx < param1.length) {
-                var pet:PetData = param1[idx];
-                icon.initData(pet.petIcon);
-                if (!pet.ext || pet.ext.showIcon) {
-                    icon.visible = true;
-                    var mc:MovieClip = this._backVec[idx]["capsule"];
-                    if(mc.currentFrame == 1) {
-                        (function(m:MovieClip):void {
-                            m.addFrameScript(m.totalFrames - 1, function():void {
-                                m.stop();
-                            });
-                        })(mc);
-                        mc.play();
-                    }
-                    mc = this._backVec[idx]["back"];
-                    if(mc.currentFrame == 1) {
-                        (function(m:MovieClip):void {
-                            m.addFrameScript(m.totalFrames - 1, function():void {
-                                m.stop();
-                            });
-                        })(mc);
-                        mc.play();
-                    }
-                    mc = this._backVec[idx]["cover"];
-                    if(mc.currentFrame == 1) {
-                        (function(m:MovieClip):void {
-                            m.addFrameScript(m.totalFrames - 1, function():void {
-                                m.stop();
-                            });
-                        })(mc);
-                        mc.play();
-                    }
-                    this._tipVec[idx]["nameTxt"].text = pet.name;
-                    this._tipVec[idx]["hpTxt"].text = pet.hp + "/" + pet.maxHp;
-                }
-                else {
-                    icon.visible = false;
-                    this._tipVec[idx]["nameTxt"].text = "???";
-                    this._tipVec[idx]["hpTxt"].text = "???/???";
-                }
-                if (pet.alive > 0) {
-                    setColor(icon,true);
-                } else {
-                    setColor(icon,false);
-                }
-            }
-            else {
+
+    private function bindSlot(slot:CapsuleSlot, tip:CapsuleTag):void {
+        tip.visible = false;
+        slot.capsule.gotoAndStop(1);
+        slot.back.gotoAndStop(1);
+        slot.cover.gotoAndStop(1);
+        bindTip(slot, tip);
+
+        var icon:PetIconDisplay = new PetIconDisplay();
+        icon.setSize(30);
+        icon.mouseEnabled = icon.mouseChildren = false;
+        icon.visible = false;
+        slot.portrait.addChild(icon);
+        _backVec.push(slot);
+        _tipVec.push(tip);
+        _petIconVec.push(icon);
+    }
+
+    private function appendSlot():void {
+        var index:int = _backVec.length;
+        var slot:CapsuleSlot = new CapsuleSlot();
+        var tip:CapsuleTag = new CapsuleTag();
+        slot.transform.matrix = slotMatrix(pet0, pet1, index);
+        tip.transform.matrix = slotMatrix(tip0, tip1, index);
+        addChildAt(tip, 0);
+        addChild(slot);
+        bindSlot(slot, tip);
+    }
+
+    private function slotMatrix(first:MovieClip, second:MovieClip, index:int):Matrix {
+        var matrix:Matrix = first.transform.matrix;
+        matrix.translate((second.x - first.x) * index, (second.y - first.y) * index);
+        return matrix;
+    }
+
+    private function reveal(clip:MovieClip):void {
+        if (clip.currentFrame != 1) return;
+        clip.addFrameScript(clip.totalFrames - 1, clip.stop);
+        clip.play();
+    }
+
+    private function bindTip(slot:CapsuleSlot, tip:CapsuleTag):void {
+        slot.addEventListener(MouseEvent.MOUSE_OVER, function (event:MouseEvent):void {
+            tip.visible = true;
+        });
+        slot.addEventListener(MouseEvent.MOUSE_OUT, function (event:MouseEvent):void {
+            tip.visible = false;
+        });
+    }
+
+    public function initData(pets:Vector.<PetData>):void {
+        visible = true;
+        while (_backVec.length < pets.length) appendSlot();
+        for (var i:int = 0; i < _backVec.length; i++) {
+            var slot:CapsuleSlot = _backVec[i];
+            var icon:PetIconDisplay = _petIconVec[i];
+            slot.visible = i < pets.length;
+            if (!slot.visible) {
                 icon.visible = false;
+                _tipVec[i].visible = false;
+                continue;
             }
-        }
-    }
 
-    private function setColor(mc:DisplayObject, hasColor:Boolean):void {
-        var ct:ColorTransform = new ColorTransform();
-        if (!hasColor) {
-            // 黑白：降低饱和度效果
-            ct.redMultiplier = 0.33;
-            ct.greenMultiplier = 0.33;
-            ct.blueMultiplier = 0.33;
-        } else {
-            // 彩色：恢复正常
-            ct.redMultiplier = 1;
-            ct.greenMultiplier = 1;
-            ct.blueMultiplier = 1;
+            var pet:PetData = pets[i];
+            var tip:CapsuleTag = _tipVec[i];
+            icon.initData(pet.petIcon);
+            icon.visible = !pet.ext || pet.ext.showIcon;
+            if (icon.visible) {
+                reveal(slot.capsule);
+                reveal(slot.back);
+                reveal(slot.cover);
+            }
+            tip.nameTxt.text = icon.visible ? pet.name : "???";
+            tip.hpTxt.text = icon.visible ? pet.hp + "/" + pet.maxHp : "???/???";
+            var brightness:Number = pet.alive > 0 ? 1 : 0.33;
+            icon.transform.colorTransform = new ColorTransform(brightness, brightness, brightness);
         }
-        mc.transform.colorTransform = ct;
     }
 }
 }

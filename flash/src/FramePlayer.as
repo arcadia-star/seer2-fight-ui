@@ -7,19 +7,17 @@ import animation.layer.PetLayer;
 import animation.layer.SoundLayer;
 import animation.layer.UILayer;
 
-import data.pet.EndData;
 import data.pet.ChangeData;
-
+import data.pet.EndData;
 import data.pet.FrameData;
 
 import flash.display.Sprite;
-import flash.events.Event;
 import flash.events.ErrorEvent;
+import flash.events.Event;
 import flash.system.System;
 import flash.text.TextField;
 import flash.utils.setInterval;
 import flash.utils.setTimeout;
-
 
 import utils.an.DisplayObjectUtil;
 
@@ -80,11 +78,13 @@ public class FramePlayer extends Sprite {
         function loadFrame(cb:Function):void {
             var flag:Boolean = false;
             var remaining:int = 2;
+
             function complete():void {
                 if (!checkVersion(version)) return;
                 remaining--;
                 if (remaining === 0) cb();
             }
+
             function updateUi():void {
                 if (flag) return;
                 flag = true;
@@ -100,6 +100,7 @@ public class FramePlayer extends Sprite {
                 }
                 uiLayer.whenSettled(complete);
             }
+
             // 替换帧先刷新头像和技能；模型动画完成仍独立驱动播放队列。
             // 耗怒与攻击同时开始；打击点的最终怒气交给怒气条顺序过渡。
             if (frame.angerPayment) {
@@ -186,12 +187,12 @@ public class FramePlayer extends Sprite {
         setInterval(function ():void {
             var _this:FramePlayer = framePlayer;
             textField.text = ""
-                    + "bgLayer children:" + _this.bgLayer.numChildren + "\n"
-                    + "petLayer children:" + _this.petLayer.numChildren + "\n"
-                    + "uiLayer children:" + _this.uiLayer.numChildren + "\n"
-                    + "fgLayer children:" + _this.fgLayer.numChildren + "\n"
-                    + "faceLayer children:" + _this.faceLayer.numChildren + "\n"
-                    + "system memory:" + int(System.totalMemory / 1024 / 1024) + "MB" + "\n"
+                + "bgLayer children:" + _this.bgLayer.numChildren + "\n"
+                + "petLayer children:" + _this.petLayer.numChildren + "\n"
+                + "uiLayer children:" + _this.uiLayer.numChildren + "\n"
+                + "fgLayer children:" + _this.fgLayer.numChildren + "\n"
+                + "faceLayer children:" + _this.faceLayer.numChildren + "\n"
+                + "system memory:" + int(System.totalMemory / 1024 / 1024) + "MB" + "\n"
             ;
         }, 1000);
     }

@@ -18,7 +18,17 @@ public class BuffTipResources {
     private static var tip9:Class;
     [Embed(source="/_assets/buff-tips.swf", symbol="UI_BuffTip_12")]
     private static var tip12:Class;
-    private static const tips:Object = {1: tip1, 2: tip2, 3: tip3, 5: tip5, 6: tip6, 7: tip7, 8: tip8, 9: tip9, 12: tip12};
+    private static const tips:Object = {
+        1: tip1,
+        2: tip2,
+        3: tip3,
+        5: tip5,
+        6: tip6,
+        7: tip7,
+        8: tip8,
+        9: tip9,
+        12: tip12
+    };
 
     public static function getTip(buffId:int):Class {
         return tips[buffId];

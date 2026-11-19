@@ -3,7 +3,6 @@ import animation.hub.FightControlPanel;
 import animation.status.Double2v1FightStatusPanel;
 import animation.status.DoubleFightStatusPanel;
 import animation.status.FightStatusPanel;
-import animation.status.IFightStatusPanel;
 import animation.status.SPTFightStatusPanel;
 import animation.status.YuCunFightStatusPanel;
 
@@ -12,19 +11,22 @@ import data.pet.MoveData;
 
 import flash.display.Sprite;
 
+import animation.hub.UI_FightControlLayout;
+
 import utils.an.DisplayUtil;
 
 public class UILayer extends Sprite {
     private var _uiStyle:int = 0;
     private var _controlPanel:FightControlPanel;
-    private var _statusPanel:IFightStatusPanel;
+    private var _statusPanel:FightStatusPanel;
     private var _arenaData:ArenaData;
 
     public function UILayer() {
-        this._controlPanel = new FightControlPanel();
+        var controlLayout:UI_FightControlLayout = new UI_FightControlLayout();
+        this._controlPanel = controlLayout.controlPanel;
         this._statusPanel = new FightStatusPanel();
-        addChild(_controlPanel);
-        addChild(_statusPanel.view);
+        addChild(controlLayout);
+        addChild(_statusPanel);
     }
 
     public function initData(arenaData:ArenaData, smooth:int):void {
@@ -65,7 +67,7 @@ public class UILayer extends Sprite {
             return;
         }
         _uiStyle = uiStyle;
-        var next:IFightStatusPanel;
+        var next:FightStatusPanel;
         if (_uiStyle === 1) {
             next = new SPTFightStatusPanel();
         } else if (_uiStyle === 2) {
@@ -77,8 +79,8 @@ public class UILayer extends Sprite {
         } else {
             next = new FightStatusPanel();
         }
-        DisplayUtil.replaceChild(_statusPanel.view,next.view);
-        _statusPanel=next;
+        DisplayUtil.replaceChild(_statusPanel, next);
+        _statusPanel = next;
         if (_arenaData) {
             this._statusPanel.initData(_arenaData, 0);
         }

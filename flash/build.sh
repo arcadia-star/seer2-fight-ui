@@ -4,7 +4,8 @@ cd "$(dirname "$0")"
 : "${AIR_SDK_HOME:?Set AIR_SDK_HOME to the AIR SDK directory}"
 
 compile() {
-  java "-Dflexlib=$AIR_SDK_HOME/frameworks" \
+  # AIR SDK may stall in the shared Embed cache during parallel compilation.
+  java -XX:ActiveProcessorCount=1 "-Dflexlib=$AIR_SDK_HOME/frameworks" \
     -jar "$AIR_SDK_HOME/lib/mxmlc-cli.jar" \
     +configname=flex -target-player=32 \
     -source-path src \

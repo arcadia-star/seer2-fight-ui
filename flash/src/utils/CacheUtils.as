@@ -51,11 +51,15 @@ public class CacheUtils extends Sprite {
     }
 
     public static function loadPetSound(url:String, cb:Function):void {
-        CacheUtils0.loadSound(url, cb, function (error:Event):void { cb(new PetSound0); });
+        CacheUtils0.loadSound(url, cb, function (error:Event):void {
+            cb(new PetSound0);
+        });
     }
 
     public static function loadMapSound(url:String, cb:Function):void {
-        CacheUtils0.loadSound(url, cb, function (error:Event):void { cb(new MapSound0); });
+        CacheUtils0.loadSound(url, cb, function (error:Event):void {
+            cb(new MapSound0);
+        });
     }
 
     private static function mayLoadAsExtImg(url:String, cb:Function, fallback:Class, wrapper:Class = null):Boolean {
@@ -98,7 +102,6 @@ import flash.display.LoaderInfo;
 import flash.events.Event;
 import flash.media.Sound;
 import flash.utils.clearTimeout;
-import flash.utils.getTimer;
 import flash.utils.setTimeout;
 
 import ui.Resource;
