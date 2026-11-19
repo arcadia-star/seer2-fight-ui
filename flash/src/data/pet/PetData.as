@@ -1,10 +1,12 @@
 package data.pet {
 
+import enums.FighterActionType;
+
 public class PetData {
     public var pid:uint;
-    public var hideInBag:Boolean;
     public var petIcon:String;
     public var petSwf:String;
+    public var pose:String = FighterActionType.IDLE;
     public var petSound:String;
     public var name:String;
     public var level:int;
@@ -29,9 +31,9 @@ public class PetData {
     public static function from(obj:Object):PetData {
         var target:PetData = new PetData;
         target.pid = obj.pid;
-        target.hideInBag = obj.hideInBag === true;
         target.petIcon = obj.petIcon;
         target.petSwf = obj.petSwf;
+        target.pose = obj.pose === undefined ? FighterActionType.IDLE : obj.pose;
         target.petSound = obj.petSound;
         target.name = obj.name;
         target.level = obj.level;
@@ -58,9 +60,9 @@ public class PetData {
     public static function clone(obj:PetData):PetData {
         var target:PetData = new PetData;
         target.pid = obj.pid;
-        target.hideInBag = obj.hideInBag;
         target.petIcon = obj.petIcon;
         target.petSwf = obj.petSwf;
+        target.pose = obj.pose;
         target.petSound = obj.petSound;
         target.name = obj.name;
         target.level = obj.level;

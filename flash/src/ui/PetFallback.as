@@ -64,7 +64,7 @@ public class PetFallback extends MovieClip {
             var origin:MovieClip = event.target as MovieClip;
             var child0:MovieClip = origin.numChildren ? origin.getChildAt(0) as MovieClip : null;
             _text.text = origin.currentFrame + "/" + origin.totalFrames + "," +
-                    (child0 ? (child0.currentFrame + "/" + child0.totalFrames) : "");
+                (child0 ? (child0.currentFrame + "/" + child0.totalFrames) : "");
         });
         return _text;
     }

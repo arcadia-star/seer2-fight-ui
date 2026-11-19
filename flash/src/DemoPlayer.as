@@ -20,8 +20,6 @@ import flash.display.Sprite;
 import flash.events.Event;
 import flash.text.TextField;
 
-import ui.Resource;
-
 import utils.NumberUtil;
 import utils.Utils;
 

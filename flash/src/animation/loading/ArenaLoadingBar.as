@@ -101,7 +101,7 @@ public class ArenaLoadingBar extends Sprite {
         this._animation = new UI_FightLoading_An;
         this._animation.x = 116;
         this._animation.y = 56;
-        this._loadingBar.addChildAt(this._animation,1);
+        this._loadingBar.addChildAt(this._animation, 1);
         this._infoHolder = this._loadingBar["fighterInfoHolder"];
         this._infoHolder.visible = false;
         this._digitalVec = Vector.<MovieClip>([this._loadingBar["digital0"], this._loadingBar["digital1"], this._loadingBar["digital2"]]);

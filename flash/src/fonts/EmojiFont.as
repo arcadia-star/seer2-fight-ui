@@ -4,8 +4,8 @@ import flash.text.Font;
 
 public class EmojiFont extends Sprite {
     [Embed(source="/_assets/NotoEmoji-VariableFont_wght.ttf",
-            fontName="emoji",
-            mimeType="application/x-font-truetype")]
+        fontName="emoji",
+        mimeType="application/x-font-truetype")]
     private var FontClass:Class;
 
     public function EmojiFont() {

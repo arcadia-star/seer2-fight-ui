@@ -18,7 +18,7 @@ internal class ShrinkBar extends Sprite {
         this.mouseChildren = false;
         this._bar = param1;
         this._bar.stop();
-        if(!isOnStage)//如果BarBack里包含了血条,那么就不需要addChild,重置后的barBack都包含血条
+        if (!isOnStage)//如果BarBack里包含了血条,那么就不需要addChild,重置后的barBack都包含血条
         {
             addChild(this._bar);
         }
@@ -62,6 +62,7 @@ internal class ShrinkBar extends Sprite {
             done();
         } else {
             addEventListener(Event.COMPLETE, complete);
+
             function complete(event:Event):void {
                 removeEventListener(Event.COMPLETE, complete);
                 done();

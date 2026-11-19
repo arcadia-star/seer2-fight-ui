@@ -7,8 +7,6 @@ import data.pet.FrameData;
 import flash.display.Sprite;
 import flash.events.ErrorEvent;
 
-import ui.Resource;
-
 import utils.Utils;
 
 [SWF(width="1200", height="660", frameRate="24")]

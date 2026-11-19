@@ -3,6 +3,7 @@ package animation.fight {
 import animation.event.Events;
 
 import com.greensock.TweenLite;
+
 import com.greensock.easing.Expo;
 
 import enums.FightSide;

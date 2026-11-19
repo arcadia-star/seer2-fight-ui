@@ -13,7 +13,7 @@ import flash.media.Sound;
 import flash.net.URLLoader;
 import flash.net.URLLoaderDataFormat;
 import flash.net.URLRequest;
-import flash.system.Security;
+import flash.system.LoaderContext;
 import flash.utils.clearTimeout;
 import flash.utils.setTimeout;
 
@@ -57,7 +57,7 @@ public class Utils {
             contentLoaderInfo.removeEventListener(SecurityErrorEvent.SECURITY_ERROR, onSecurityError);
             onError && onError(event)
         });
-        loader.load(new URLRequest(url));
+        loader.load(new URLRequest(url), new LoaderContext(true));
         return loader;
     }
 

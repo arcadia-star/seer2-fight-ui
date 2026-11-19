@@ -2,30 +2,38 @@ package animation.status {
 import data.pet.BuffData;
 import data.pet.ItemData;
 import data.pet.PetData;
+
 import flash.display.MovieClip;
 import flash.display.Sprite;
+
 import utils.an.DisplayObjectUtil;
 import utils.ds.HashMap;
 
-internal class NormalBuffIconBar {
-    private var _view:MovieClip;
-    private var _origin:Sprite;
+public dynamic class NormalBuffIconBar extends MovieClip {
+    public var origin:Sprite;
+    public var column:Sprite;
+    public var row:Sprite;
+    public var lineEnd:Sprite;
+    public var items:Sprite;
     private var _columnX:Number;
     private var _columnY:Number;
     private var _rowX:Number;
     private var _rowY:Number;
     private var _maxLine:uint;
-    private var _iconMap:HashMap=new HashMap();
-    private var _iconMap2:HashMap=new HashMap();
-    private var _iconMap3:HashMap=new HashMap();
-    public function NormalBuffIconBar(view:MovieClip) {
-        _view=view;_origin=view["origin"];
-        _columnX=view["column"].x-_origin.x;_columnY=view["column"].y-_origin.y;
-        _rowX=view["row"].x-_origin.x;_rowY=view["row"].y-_origin.y;
-        _maxLine=int((view["lineEnd"].x-_origin.x)/_columnX);
+    private var _iconMap:HashMap = new HashMap();
+    private var _iconMap2:HashMap = new HashMap();
+    private var _iconMap3:HashMap = new HashMap();
+
+    public function NormalBuffIconBar() {
+        _columnX = this.column.x - origin.x;
+        _columnY = this.column.y - origin.y;
+        _rowX = this.row.x - origin.x;
+        _rowY = this.row.y - origin.y;
+        _maxLine = int((lineEnd.x - origin.x) / _columnX);
     }
+
     public function initData(param1:PetData):void {
-        DisplayObjectUtil.removeAllChildren(_view["items"]);
+        DisplayObjectUtil.removeAllChildren(items);
         var buffs:Vector.<BuffData> = param1.buffs;
         var itemBuffs:Vector.<BuffData> = buildItemBuffs(param1.items);
         var lvBuffs:Vector.<BuffData> = buildLvBuffs(param1);
@@ -52,12 +60,12 @@ internal class NormalBuffIconBar {
                 }
                 buffIcon = _iconMap.getValue(buff.id);
             }
-            var column:int=idx%_maxLine;
-            var row:int=int(idx/_maxLine);
-            buffIcon.view.x=_origin.x+column*_columnX+row*_rowX;
-            buffIcon.view.y=_origin.y+column*_columnY+row*_rowY;
+            var colIndex:int = idx % _maxLine;
+            var rowIndex:int = int(idx / _maxLine);
+            buffIcon.view.x = origin.x + colIndex * _columnX + rowIndex * _rowX;
+            buffIcon.view.y = origin.y + colIndex * _columnY + rowIndex * _rowY;
             buffIcon.initData(buff);
-            _view["items"].addChild(buffIcon.view);
+            items.addChild(buffIcon.view);
         }
     }
 

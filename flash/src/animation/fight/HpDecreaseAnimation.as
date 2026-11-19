@@ -3,6 +3,7 @@ package animation.fight {
 import animation.event.Events;
 
 import com.greensock.TweenLite;
+
 import com.greensock.easing.Expo;
 
 import enums.FightSide;
@@ -104,7 +105,7 @@ public class HpDecreaseAnimation extends Sprite {
         }
         var _loc6_:uint = 2;
         var _loc7_:uint = 2;
-        if (this._isBaoJi == true) {
+        if (this._isBaoJi) {
             _loc6_ = _loc7_ = 3;
         }
         TweenLite.to(this, 0.5, {

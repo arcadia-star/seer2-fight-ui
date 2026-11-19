@@ -1,7 +1,7 @@
 package animation.hub {
 
-import data.pet.SkillData;
 import data.pet.PetData;
+import data.pet.SkillData;
 
 import flash.display.MovieClip;
 import flash.display.Sprite;
